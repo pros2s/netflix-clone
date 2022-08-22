@@ -2,12 +2,30 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import Header from '../components/Header';
+import { Movie } from '../types';
 import requests from '../utils/requests';
 
+interface NextPageProps {
+  netflixOriginals: Movie[];
+  trendingNow: Movie[];
+  topRated: Movie[];
+  actionMovies: Movie[];
+  comedyMovies: Movie[];
+  horrorMovies: Movie[];
+  romanceMovies: Movie[];
+  documentaries: Movie[];
+}
 
-const Home: NextPage = ({ netflixOriginals }) => {
-  console.log(netflixOriginals);
-
+const Home: NextPage<NextPageProps> = ({
+  netflixOriginals,
+  actionMovies,
+  comedyMovies,
+  documentaries,
+  horrorMovies,
+  romanceMovies,
+  topRated,
+  trendingNow,
+}) => {
   return (
     <div className='relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]'>
       <Head>
@@ -57,6 +75,5 @@ export const getServerSideProps = async () => {
     },
   };
 };
-
 
 export default Home;
