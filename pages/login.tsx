@@ -1,7 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import useAuth from '../hooks/useAuth';
 
 interface Inputs {
   email: string;
@@ -9,13 +11,21 @@ interface Inputs {
 }
 
 const login: NextPage = () => {
+  const [login, setLogin] = useState(false);
+  const { signIn, signUp } = useAuth();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (login) {
+      await signIn(data.email, data.password);
+    } else {
+      await signUp(data.email, data.password);
+    }
+  };
 
   return (
     <div className='relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent'>
@@ -72,13 +82,19 @@ const login: NextPage = () => {
           </label>
         </div>
 
-        <button className='w-full rounded bg-[#e50914] py-3 font-semibold' type='submit'>
+        <button
+          className='w-full rounded bg-[#e50914] py-3 font-semibold'
+          type='submit'
+          onClick={() => setLogin(true)}>
           Sign In
         </button>
 
         <div className='text-[gray]'>
           New to Netflix?{' '}
-          <button className='cursor-pointer text-white hover:underline' type='submit'>
+          <button
+            className='cursor-pointer text-white hover:underline'
+            type='submit'
+            onClick={() => setLogin(false)}>
             Sign up now
           </button>
         </div>
