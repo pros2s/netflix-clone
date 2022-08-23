@@ -28,4 +28,8 @@
   .chevronIcon {
     @apply absolute top-0 bottom-0 z-40 m-auto h-9 w-9 opacity-0 cursor-pointer transition hover:scale-125 group-hover:opacity-100;
   }
+
+  .defaultText {
+    @apply text-sm md:text-lg lg:text-xl
+  }
 }

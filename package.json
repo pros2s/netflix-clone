@@ -8,12 +8,16 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@reduxjs/toolkit": "^1.8.5",
+    "@types/redux-persist": "^4.3.1",
     "firebase": "^9.9.3",
     "next": "latest",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "^7.34.2",
     "react-icons": "^4.4.0",
+    "react-redux": "^8.0.2",
+    "redux-persist": "^6.0.0",
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {

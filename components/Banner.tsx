@@ -37,10 +37,12 @@ const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
 
       <div className='flex space-x-3'>
         <button className='bannerButton bg-white text-black'>
-          <FaPlay className='h-4 w-4 text-black md:h-7 md:w-7' /> Play
+          <FaPlay className='h-4 w-4 text-black md:h-7 md:w-7' />{' '}
+          <p className='defaultText'>Play</p>
         </button>
         <button className='bannerButton bg-[gray]/70'>
-          More Info <InformationCircleIcon className='h-5 w-5 md:h-8 md:w-8' />
+          <p className='defaultText'>More Info</p>{' '}
+          <InformationCircleIcon className='h-5 w-5 md:h-8 md:w-8' />
         </button>
       </div>
     </div>
