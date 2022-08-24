@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { AnyAction, configureStore, ThunkDispatch } from '@reduxjs/toolkit';
 import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 import { persistedReducer, rootReducer } from './rootReducer';

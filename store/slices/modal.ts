@@ -3,10 +3,12 @@ import { RootState } from '../store';
 
 interface IModalState {
   isOpenedModal: boolean;
+  isMutedVideo: boolean;
 }
 
 const initialState: IModalState = {
   isOpenedModal: false,
+  isMutedVideo: true,
 };
 
 const modalSlice = createSlice({
@@ -19,13 +21,13 @@ const modalSlice = createSlice({
     openModal(state) {
       state.isOpenedModal = true;
     },
-    toggleModal(state) {
-      state.isOpenedModal = !state.isOpenedModal;
+    toggleMuteVideo(state) {
+      state.isMutedVideo = !state.isMutedVideo;
     },
   },
 });
 
 export const modalSelector = (state: RootState) => state.modal;
-export const { closeModal, openModal, toggleModal } = modalSlice.actions;
+export const { closeModal, openModal, toggleMuteVideo } = modalSlice.actions;
 
 export default modalSlice.reducer;

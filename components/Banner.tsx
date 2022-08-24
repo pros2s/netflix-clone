@@ -6,6 +6,7 @@ import { FaPlay } from 'react-icons/fa';
 import { baseUrl } from '../constants/movie';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { openModal } from '../store/slices/modal';
+import { setCurrentMovie } from '../store/slices/movie';
 import { Movie } from '../types';
 
 interface BannerProps {
@@ -47,6 +48,7 @@ const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
           className='bannerButton bg-[gray]/70'
           onClick={() => {
             dispatch(openModal());
+            movie && dispatch(setCurrentMovie(movie));
           }}>
           <p className='defaultText'>More Info</p>{' '}
           <InformationCircleIcon className='h-5 w-5 md:h-8 md:w-8' />
