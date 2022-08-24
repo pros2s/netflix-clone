@@ -4,6 +4,8 @@ import { FC, useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
 
 import { baseUrl } from '../constants/movie';
+import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import { openModal } from '../store/slices/modal';
 import { Movie } from '../types';
 
 interface BannerProps {
@@ -11,6 +13,7 @@ interface BannerProps {
 }
 
 const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
+  const dispatch = useTypedDispatch();
   const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
@@ -40,7 +43,11 @@ const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
           <FaPlay className='h-4 w-4 text-black md:h-7 md:w-7' />{' '}
           <p className='defaultText'>Play</p>
         </button>
-        <button className='bannerButton bg-[gray]/70'>
+        <button
+          className='bannerButton bg-[gray]/70'
+          onClick={() => {
+            dispatch(openModal());
+          }}>
           <p className='defaultText'>More Info</p>{' '}
           <InformationCircleIcon className='h-5 w-5 md:h-8 md:w-8' />
         </button>

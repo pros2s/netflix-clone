@@ -1,11 +1,15 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Banner from '../components/Banner';
 
 import Header from '../components/Header';
+import Banner from '../components/Banner';
+import Modal from '../components/Modal';
 import Row from '../components/Row';
+
 import requests from '../utils/requests';
 import { Movie } from '../types';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { modalSelector } from '../store/slices/modal';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -28,6 +32,8 @@ const Home: NextPage<NextPageProps> = ({
   topRated,
   trendingNow,
 }) => {
+  const { isOpenedModal } = useTypedSelector(modalSelector);
+
   return (
     <div className='relative h-screen bg-gradient-to-b lg:h-[140vh]'>
       <Head>
@@ -48,6 +54,8 @@ const Home: NextPage<NextPageProps> = ({
           <Row title='Romance Movies' movies={romanceMovies} />
           <Row title='Documentaries' movies={documentaries} />
         </section>
+
+        {isOpenedModal && <Modal />}
       </main>
     </div>
   );
