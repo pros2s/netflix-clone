@@ -1,15 +1,18 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
+import Plans from '../components/Plans';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
 import Modal from '../components/Modal';
 import Row from '../components/Row';
 
+import { subscriptionSelector } from '../store/slices/sutbscription';
 import requests from '../utils/requests';
 import { Movie } from '../types';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { modalSelector } from '../store/slices/modal';
+import useAuth from '../hooks/useAuth';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -33,10 +36,15 @@ const Home: NextPage<NextPageProps> = ({
   trendingNow,
 }) => {
   const { isOpenedModal } = useTypedSelector(modalSelector);
+  const { isSubscription } = useTypedSelector(subscriptionSelector);
+  const { loading } = useAuth();
+
+  if (loading) return null;
+  if (!isSubscription) return <Plans />;
 
   return (
     <div
-      className={`relative h-screen bg-gradient-to-b lg:h-[140vh] ${
+      className={`relative h-screen bg-gradient-to-b lg:h-[140vh] selection:bg-red-600 ${
         isOpenedModal && 'overflow-hidden h-screen'
       }`}>
       <Head>
