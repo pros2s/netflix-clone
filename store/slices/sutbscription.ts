@@ -6,7 +6,7 @@ interface ISubcriptionState {
   isSubscription: boolean;
   isChangingPlan: boolean;
   plan: Plan | null;
-  startDate: Date | null;
+  startDate: string | null;
 }
 
 const initialState: ISubcriptionState = {
@@ -29,7 +29,7 @@ const subscriptionSlice = createSlice({
     userCurrentPlan(state, { payload }: PayloadAction<Plan>) {
       state.plan = payload;
     },
-    userPlanStartDate(state, { payload }: PayloadAction<Date>) {
+    userPlanStartDate(state, { payload }: PayloadAction<string>) {
       state.startDate = payload;
     },
     userIsChangingPlan(state) {

@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import modalReducer from './slices/modal';
 import movieReducer from './slices/movie';
 import subscriptionReducer from './slices/sutbscription';
+import privateSettingsReducer from './slices/privateSettings';
 
 const persistConfig = {
   key: 'root',
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   modal: modalReducer,
   movie: movieReducer,
   subscription: subscriptionReducer,
+  privateSettings: privateSettingsReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

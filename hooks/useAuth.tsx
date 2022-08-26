@@ -3,6 +3,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateEmail,
   User,
 } from 'firebase/auth';
 import { useRouter } from 'next/router';
@@ -13,6 +14,7 @@ interface IAuth {
   user: User | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
+  setNewEmail: (newEmail: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
 }
@@ -22,6 +24,7 @@ const AuthContext = createContext<IAuth>({
   signIn: async () => {},
   signUp: async () => {},
   logout: async () => {},
+  setNewEmail: async () => {},
   loading: false,
 });
 
@@ -79,12 +82,27 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     setLoading(true);
 
-    signOut(auth)
+    await signOut(auth)
       .then(() => {
         setUser(null);
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
+  };
+
+  const setNewEmail = async (newEmail: string) => {
+    setLoading(true);
+
+    if (auth.currentUser) {
+      await updateEmail(auth.currentUser, newEmail)
+        .then(() => {
+          // Email updated!
+          // ...
+          setLoading(false);
+        })
+        .catch((error) => alert(error.message))
+        .finally(() => setLoading(false));
+    }
   };
 
   const memoedValue = useMemo(
@@ -94,14 +112,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       signIn,
       loading,
       logout,
+      setNewEmail,
     }),
     [user, loading],
   );
 
   return (
-    <AuthContext.Provider value={memoedValue}>
-      {!InitialLoading && children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={memoedValue}>{!InitialLoading && children}</AuthContext.Provider>
   );
 };
 

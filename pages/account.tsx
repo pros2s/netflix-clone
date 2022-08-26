@@ -4,22 +4,30 @@ import Link from 'next/link';
 import dateFormat from 'dateformat';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import useAuth from '../hooks/useAuth';
-import Membership from '../components/Membership';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
+import useAuth from '../hooks/useAuth';
+
+import LoginChanging from '../components/LoginChanging';
+import Membership from '../components/Membership';
 import Plans from '../components/Plans';
+
+import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
+import { privateSettingsSelector } from '../store/slices/privateSettings';
+import PasswordChanging from '../components/PasswordChanging';
 
 const account: FC = () => {
   const { logout } = useAuth();
   const dispatch = useTypedDispatch();
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
+  const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
 
   let formatDate;
   if (startDate) {
     formatDate = dateFormat(startDate);
   }
 
+  if (isLoginChanging) return <LoginChanging />;
+  if (isPasswordChanging) return <PasswordChanging />;
   if (isChangingPlan) return <Plans />;
 
   return (
@@ -64,9 +72,9 @@ const account: FC = () => {
 
         <div className='mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0'>
           <h4 className='text-lg text-[gray]'>Settings</h4>
-          <p className='col-span-3 cursor-pointer text-blue-500 hover:underline' onClick={logout}>
+          <button className='text-start col-span-3 cursor-pointer text-blue-500 hover:underline' onClick={logout}>
             Sign out of all devices
-          </p>
+          </button>
         </div>
       </main>
     </div>

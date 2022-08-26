@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { subscriptionSelector, userUnsubscribed } from '../store/slices/sutbscription';
+import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
 
 const Membership: FC = () => {
   const { user } = useAuth();
@@ -21,7 +22,6 @@ const Membership: FC = () => {
       setIsPaymentInformation(false);
     }, 3000);
 
-    console.log(isPaymentInformation);
     return () => clearTimeout(timeout);
   }, [isPaymentInformation]);
 
@@ -54,9 +54,13 @@ const Membership: FC = () => {
             <p className='font-medium'>{user?.email}</p>
             <p className='text-[gray]'>Password: ********</p>
           </div>
-          <div className='md:text-right'>
-            <p className='membershipLink'>Change email</p>
-            <p className='membershipLink'>Change password</p>
+          <div className='flex flex-col items-end md:text-right'>
+            <button className='membershipLink' onClick={() => dispatch(loginIsChanging())}>
+              Change email
+            </button>
+            <button className='membershipLink' onClick={() => dispatch(passwordIsChanging())}>
+              Change password
+            </button>
           </div>
         </div>
 
@@ -65,11 +69,11 @@ const Membership: FC = () => {
             <p>Your next billing date is {endDate}</p>
             {isPaymentInformation && <p className='text-red-600'>Payment has not integrated yet</p>}
           </div>
-          <div className='md:text-right' onClick={() => setIsPaymentInformation(true)}>
-            <p className='membershipLink'>Manage payment info</p>
-            <p className='membershipLink'>Add backup payment method</p>
-            <p className='membershipLink'>Billing Details</p>
-            <p className='membershipLink'>Change billing day</p>
+          <div className='flex flex-col items-end md:text-right' onClick={() => setIsPaymentInformation(true)}>
+            <button className='membershipLink'>Manage payment info</button>
+            <button className='membershipLink'>Add backup payment method</button>
+            <button className='membershipLink'>Billing Details</button>
+            <button className='membershipLink'>Change billing day</button>
           </div>
         </div>
       </div>

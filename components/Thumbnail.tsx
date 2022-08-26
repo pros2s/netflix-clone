@@ -24,6 +24,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {
         src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
         className='rounded-sm object-cover md:rounded'
         layout='fill'
+        priority
         alt={movie?.name || movie?.original_name}
       />
     </div>
