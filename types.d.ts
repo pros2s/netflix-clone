@@ -22,6 +22,14 @@ export interface Movie {
   vote_count: number;
 }
 
+export interface Plan {
+  name: string;
+  price: number;
+  quality: string;
+  resolution: string;
+  id: number;
+}
+
 export interface Element {
   type: 'Bloopers' | 'Featurette' | 'Behind the Scenes' | 'Clip' | 'Trailer' | 'Teaser';
 }

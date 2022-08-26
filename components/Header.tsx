@@ -2,9 +2,12 @@ import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { BellIcon, SearchIcon } from '@heroicons/react/solid';
 import useAuth from '../hooks/useAuth';
+import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import { userUnsubscribed } from '../store/slices/sutbscription';
 
 const Header: FC = () => {
   const { logout } = useAuth();
+  const dispatch = useTypedDispatch();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -48,7 +51,10 @@ const Header: FC = () => {
           src='https://rb.gy/g1pwyx'
           alt='accounts'
           className='cursor-pointer rounded'
-          onClick={logout}
+          onClick={() => {
+            logout();
+            dispatch(userUnsubscribed());
+          }}
         />
         {/* </Link> */}
       </div>
