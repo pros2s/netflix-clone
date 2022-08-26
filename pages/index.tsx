@@ -44,7 +44,7 @@ const Home: NextPage<NextPageProps> = ({
 
   return (
     <div
-      className={`relative h-screen bg-gradient-to-b lg:h-[140vh] selection:bg-red-600 ${
+      className={`relative h-screen bg-gradient-to-b lg:h-[140vh] selection:bg-red-600 selection:text-white ${
         isOpenedModal && 'overflow-hidden h-screen'
       }`}>
       <Head>

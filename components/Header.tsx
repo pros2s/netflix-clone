@@ -1,13 +1,8 @@
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { BellIcon, SearchIcon } from '@heroicons/react/solid';
-import useAuth from '../hooks/useAuth';
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import { userUnsubscribed } from '../store/slices/sutbscription';
 
 const Header: FC = () => {
-  const { logout } = useAuth();
-  const dispatch = useTypedDispatch();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -46,17 +41,9 @@ const Header: FC = () => {
         <SearchIcon className='hidden w-6 h-6 sm:inline' />
         <p className='hidden lg:inline'>Kids</p>
         <BellIcon className='h-6 w-6' />
-        {/* <Link href='/accounts'> */}
-        <img
-          src='https://rb.gy/g1pwyx'
-          alt='accounts'
-          className='cursor-pointer rounded'
-          onClick={() => {
-            logout();
-            dispatch(userUnsubscribed());
-          }}
-        />
-        {/* </Link> */}
+        <Link href='/account'>
+          <img src='https://rb.gy/g1pwyx' alt='accounts' className='cursor-pointer rounded' />
+        </Link>
       </div>
     </header>
   );

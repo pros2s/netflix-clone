@@ -19,7 +19,7 @@ const PlanTable: FC<PlanTableProps> = ({ plans, selectedPlan }) => {
     <table>
       <tbody className='divide-y divide-[gray]'>
         {tableRowsNames.map((rowName, i) => (
-          <tr className='tableRow'>
+          <tr key={rowName} className='tableRow'>
             <td className='tableDataTitle'>{rowName}</td>
             {plans.map((plan) => (
               <td

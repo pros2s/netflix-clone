@@ -28,7 +28,7 @@ const login: NextPage = () => {
   };
 
   return (
-    <div className='relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent'>
+    <div className='relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <Head>
         <title>Netflix</title>
         <link rel='icon' href='/favicon.ico' />

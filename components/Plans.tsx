@@ -4,20 +4,32 @@ import Link from 'next/link';
 import { CheckIcon } from '@heroicons/react/outline';
 import PlanTable from './PlanTable';
 
-import { subsBenefits, subsPlans } from '../utils/subscription';
-import useAuth from '../hooks/useAuth';
 import { Plan } from '../types';
+import { subsBenefits, subsPlans } from '../utils/subscription';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import { userSubscribed } from '../store/slices/sutbscription';
+import useAuth from '../hooks/useAuth';
+import {
+  subscriptionSelector,
+  userCurrentPlan,
+  userIsNotChangingPlan,
+  userPlanStartDate,
+  userSubscribed,
+} from '../store/slices/sutbscription';
+import { useTypedSelector } from '../hooks/useTypedSelector';
 
 const Plans: FC = () => {
-  const { logout, user } = useAuth();
   const dispatch = useTypedDispatch();
+  const { isChangingPlan } = useTypedSelector(subscriptionSelector);
+  const { logout, user } = useAuth();
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
 
   const subscribeToPlan = () => {
     if (!user) return;
 
+    isChangingPlan && dispatch(userIsNotChangingPlan());
+
+    selectedPlan && dispatch(userCurrentPlan(selectedPlan));
+    dispatch(userPlanStartDate(new Date().toString()));
     dispatch(userSubscribed());
   };
 
@@ -72,8 +84,13 @@ const Plans: FC = () => {
               !selectedPlan && 'opacity-60 cursor-default hover:bg-[#E50914]'
             }`}
             onClick={subscribeToPlan}>
-            Subscribe
+            {isChangingPlan ? 'Change plan' : 'Subscribe'}
           </button>
+          {isChangingPlan && (
+            <button className='membershipLink' onClick={() => dispatch(userIsNotChangingPlan())}>
+              Cancel
+            </button>
+          )}
         </div>
       </main>
     </div>
