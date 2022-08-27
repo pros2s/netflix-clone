@@ -1,20 +1,26 @@
+import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { auth } from '../firebase';
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signOut,
   updateEmail,
   User,
 } from 'firebase/auth';
-import { useRouter } from 'next/router';
-import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
-import { auth } from '../firebase';
+
+import { loginIsChanging } from '../store/slices/privateSettings';
+import { useTypedDispatch } from './useTypedDispatch';
 
 interface IAuth {
   user: User | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   setNewEmail: (newEmail: string) => Promise<void>;
+  reAuth: (oldPassword: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
 }
@@ -25,6 +31,7 @@ const AuthContext = createContext<IAuth>({
   signUp: async () => {},
   logout: async () => {},
   setNewEmail: async () => {},
+  reAuth: async () => {},
   loading: false,
 });
 
@@ -33,6 +40,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
+  const dispatch = useTypedDispatch();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -90,17 +98,26 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .finally(() => setLoading(false));
   };
 
+  const reAuth = async (oldPassword: string) => {
+    setLoading(true);
+
+    if (auth.currentUser?.email) {
+      const credential = EmailAuthProvider.credential(auth.currentUser.email, oldPassword);
+      await reauthenticateWithCredential(auth.currentUser, credential).finally(() =>
+        setLoading(false),
+      );
+    }
+  };
+
   const setNewEmail = async (newEmail: string) => {
     setLoading(true);
 
     if (auth.currentUser) {
       await updateEmail(auth.currentUser, newEmail)
-        .then(() => {
-          // Email updated!
-          // ...
-          setLoading(false);
+        .catch((error) => {
+          dispatch(loginIsChanging());
+          alert(error.message);
         })
-        .catch((error) => alert(error.message))
         .finally(() => setLoading(false));
     }
   };
@@ -113,6 +130,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       loading,
       logout,
       setNewEmail,
+      reAuth,
     }),
     [user, loading],
   );
