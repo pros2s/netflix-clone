@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   EmailAuthProvider,
@@ -57,6 +57,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         router.push('/login');
       }
 
+      setLoading(false);
       setInitialLoading(false);
     });
   }, [auth]);
@@ -70,7 +71,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         router.push('/');
         setLoading(false);
       })
-      .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
   };
 
@@ -83,7 +83,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         router.push('/');
         setLoading(false);
       })
-      .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
   };
 
@@ -106,6 +105,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       await reauthenticateWithCredential(auth.currentUser, credential).finally(() =>
         setLoading(false),
       );
+    } else {
+      setLoading(false);
     }
   };
 
@@ -119,6 +120,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           alert(error.message);
         })
         .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   };
 
