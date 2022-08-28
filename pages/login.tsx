@@ -20,6 +20,7 @@ const login: NextPage = () => {
 
   const [isEqualPasswords, setIsEqualPasswords] = useState<boolean>(true);
   const [isWrongPassword, setIsWrongPassword] = useState<boolean>(false);
+  const [isWeakPassword, setIsWeakPassword] = useState<boolean>(false);
 
   const [doesEmailAlreadyExist, setIDoesEmailAlreadyExist] = useState<boolean>(false);
   const [isExistUser, setIsExistUser] = useState<boolean>(true);
@@ -45,7 +46,10 @@ const login: NextPage = () => {
     min: 6,
     max: 60,
     required: true,
-    onChange: () => setIsWrongPassword(false),
+    onChange: () => {
+      setIsWrongPassword(false);
+      setIsWeakPassword(false);
+    },
   };
 
   const buttonClickHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -73,11 +77,15 @@ const login: NextPage = () => {
 
     if (isSignUp) {
       if (data.password === data.equalPassword) {
-        await signUp(data.email, data.password).catch((error) =>
-          error.message.match(/email-already-in-use/gi)
-            ? setIDoesEmailAlreadyExist(true)
-            : alert(error.message),
-        );
+        await signUp(data.email, data.password).catch((error) => {
+          if (error.message.match(/email-already-in-use/gi)) {
+            setIDoesEmailAlreadyExist(true);
+          } else if (error.message.match(/weak-password/gi)) {
+            setIsWeakPassword(true);
+          } else {
+            alert(error.message);
+          }
+        });
         setIsEqualPasswords(true);
       } else {
         setIsEqualPasswords(false);
@@ -109,6 +117,7 @@ const login: NextPage = () => {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
+        noValidate
         className='relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14'>
         <h1 className='text-4xl font-semibold'>{isSignIn ? 'Sign In' : 'Sign Up'}</h1>
         <div className='space-y-4'>
@@ -150,6 +159,11 @@ const login: NextPage = () => {
             {isSignIn && isWrongPassword && (
               <p className='p-1 text-[13px] font-light  text-orange-500'>
                 Wrong password. Please enter a correct password.
+              </p>
+            )}
+            {isSignUp && isWeakPassword && (
+              <p className='p-1 text-[13px] font-light  text-orange-500'>
+                Password should be at least 6 characters
               </p>
             )}
           </label>

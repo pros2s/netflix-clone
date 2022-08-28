@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, MouseEvent, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -15,13 +15,21 @@ const EmailChanging: FC = () => {
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
 
+  const [isWeakPassword, setIsWeakPassword] = useState<boolean>(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
   const [isPasswordConfirmed, setIsPasswordConfirmed] = useState<boolean>(false);
   const [isEmailCorrect, setIsEmailCorrect] = useState<boolean>(true);
 
-  const confirmCurrentPassword = () => {
+  const confirmCurrentPassword = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsPasswordConfirmed(true);
     setIsPasswordCorrect(true);
+
+    if (!passwordValue) {
+      setIsPasswordConfirmed(false);
+      setIsWeakPassword(true);
+      return;
+    }
 
     reAuth(passwordValue).catch((error) => {
       setIsPasswordConfirmed(false);
@@ -29,7 +37,8 @@ const EmailChanging: FC = () => {
     });
   };
 
-  const confirmNewEmail = () => {
+  const confirmNewEmail = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (!emailValue || !emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi)) {
       setIsEmailCorrect(false);
       return;
@@ -41,6 +50,7 @@ const EmailChanging: FC = () => {
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!isPasswordConfirmed) {
       setIsPasswordCorrect(true);
+      setIsWeakPassword(false);
       setPasswordValue(e.target.value);
     } else {
       setEmailValue(e.target.value);
@@ -66,7 +76,9 @@ const EmailChanging: FC = () => {
         </Link>
       </header>
 
-      <form className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-lg md:px-14'>
+      <form
+        noValidate
+        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-lg md:px-14'>
         <h1 className='text-4xl font-semibold'>
           {!isPasswordConfirmed ? 'Enter your password' : 'Enter your new email'}
         </h1>
@@ -90,6 +102,11 @@ const EmailChanging: FC = () => {
                   Email address is not correct. Try again
                 </p>
               )}
+              {isWeakPassword && (
+                <p className='absolute text-sm text-red-600 pl-2 '>
+                  Password should be at least 6 characters
+                </p>
+              )}
             </div>
           </label>
         </div>
@@ -97,7 +114,9 @@ const EmailChanging: FC = () => {
         <button
           className='w-full rounded bg-[#e50914] py-3 font-semibold'
           type='submit'
-          onClick={!isPasswordConfirmed ? confirmCurrentPassword : confirmNewEmail}>
+          onClick={(e) => {
+            !isPasswordConfirmed ? confirmCurrentPassword(e) : confirmNewEmail(e);
+          }}>
           {loading ? (
             <Loader color='dark:fill-gray-300' />
           ) : !isPasswordConfirmed ? (

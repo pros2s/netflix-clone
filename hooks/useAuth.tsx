@@ -132,12 +132,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
 
     if (auth.currentUser) {
-      await updatePassword(auth.currentUser, newPassword)
-        .catch((error) => {
-          dispatch(passwordIsChanging());
-          alert(error.message);
-        })
-        .finally(() => setLoading(false));
+      await updatePassword(auth.currentUser, newPassword).finally(() => setLoading(false));
     } else {
       setLoading(false);
     }

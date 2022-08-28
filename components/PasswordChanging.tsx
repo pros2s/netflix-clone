@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
-import { passwordIsNotChanging } from '../store/slices/privateSettings';
+import { passwordIsChanging, passwordIsNotChanging } from '../store/slices/privateSettings';
 import Loader from './Loader';
 
 interface Passwords {
@@ -19,6 +19,7 @@ const PasswordChanging: FC = () => {
 
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [newPasswordValue, setNewPasswordValue] = useState<string>('');
+  const [isWeakPassword, setIsWeakPassword] = useState<boolean>(false);
   const [isEqualNewPasswords, setIsEqualNewPasswords] = useState<boolean>(true);
 
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
@@ -34,6 +35,12 @@ const PasswordChanging: FC = () => {
     setIsPasswordConfirmed(true);
     setIsPasswordCorrect(true);
 
+    if (!passwordValue) {
+      setIsPasswordConfirmed(false);
+      setIsWeakPassword(true);
+      return;
+    }
+
     reAuth(passwordValue).catch((error) => {
       setIsPasswordConfirmed(false);
       error.message.match(/wrong-password/gi) ? setIsPasswordCorrect(false) : alert(error.message);
@@ -43,9 +50,11 @@ const PasswordChanging: FC = () => {
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!isPasswordConfirmed) {
       setIsPasswordCorrect(true);
+      setIsWeakPassword(false);
       setPasswordValue(e.target.value);
     } else {
       setNewPasswordValue(e.target.value);
+      setIsWeakPassword(false);
     }
   };
 
@@ -56,9 +65,14 @@ const PasswordChanging: FC = () => {
     }
 
     if (newPasswordValue === data.repeatNewPassword) {
-      await setNewPassword(newPasswordValue).catch((error) => alert(error.message));
+      if (newPasswordValue.length < 6) {
+        setIsWeakPassword(true);
+        return;
+      }
+
+      await setNewPassword(newPasswordValue);
       setIsEqualNewPasswords(true);
-      dispatch(passwordIsNotChanging());
+      !isWeakPassword && dispatch(passwordIsNotChanging());
     } else if (newPasswordValue) {
       setIsEqualNewPasswords(false);
     }
@@ -85,6 +99,7 @@ const PasswordChanging: FC = () => {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
+        noValidate
         className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-xl md:px-14'>
         <h1 className='text-4xl font-semibold'>
           {!isPasswordConfirmed ? 'Enter your password' : 'Enter your new password'}
@@ -92,43 +107,46 @@ const PasswordChanging: FC = () => {
 
         <div className='space-y-4'>
           <label className='inline-block w-full'>
-            <div>
-              <input
-                value={!isPasswordConfirmed ? passwordValue : newPasswordValue}
-                onChange={(e) => handleInputsChange(e)}
-                type='password'
-                required
-                placeholder={!isPasswordConfirmed ? 'Your password' : 'New Password'}
-                className='input'
-              />
-              {!isPasswordCorrect && (
-                <p className='absolute text-sm text-red-600 pl-2 '>Wrong password. Try again</p>
-              )}
-              {isPasswordConfirmed && (
-                <label className='inline-block w-full pt-4'>
-                  <input
-                    type='password'
-                    placeholder='Repeat new password'
-                    className='input'
-                    {...register('repeatNewPassword', {
-                      required: true,
-                      onChange: () => setIsEqualNewPasswords(true),
-                    })}
-                  />
-                  {errors.repeatNewPassword && (
-                    <p className='p-1 text-[13px] font-light  text-orange-500'>
-                      Your password must contain between 6 and 60 characters.
-                    </p>
-                  )}
-                  {!isEqualNewPasswords && (
-                    <p className='p-1 text-[13px] font-light  text-orange-500'>
-                      Passwords are not equal.
-                    </p>
-                  )}
-                </label>
-              )}
-            </div>
+            <input
+              value={!isPasswordConfirmed ? passwordValue : newPasswordValue}
+              onChange={(e) => handleInputsChange(e)}
+              type='password'
+              placeholder={!isPasswordConfirmed ? 'Your password' : 'New Password'}
+              className='input'
+            />
+            {!isPasswordCorrect && (
+              <p className='absolute text-sm text-red-600 pl-2 '>Wrong password. Try again</p>
+            )}
+            {(isWeakPassword) && (
+              <p className='absolute text-sm text-red-600 pl-2 '>
+                Password should be at least 6 characters
+              </p>
+            )}
           </label>
+
+          {isPasswordConfirmed && (
+            <label className='inline-block w-full pt-4'>
+              <input
+                type='password'
+                placeholder='Repeat new password'
+                className='input'
+                {...register('repeatNewPassword', {
+                  required: true,
+                  onChange: () => setIsEqualNewPasswords(true),
+                })}
+              />
+              {errors.repeatNewPassword && (
+                <p className='p-1 text-[13px] font-light  text-orange-500'>
+                  Your password must contain between 6 and 60 characters.
+                </p>
+              )}
+              {!isEqualNewPasswords && (
+                <p className='p-1 text-[13px] font-light  text-orange-500'>
+                  Passwords are not equal.
+                </p>
+              )}
+            </label>
+          )}
         </div>
 
         <button className='w-full rounded bg-[#e50914] py-3 font-semibold' type='submit'>
