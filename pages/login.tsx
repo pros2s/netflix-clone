@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import type { NextPage } from 'next';
@@ -20,7 +20,7 @@ const login: NextPage = () => {
 
   const [isEqualPasswords, setIsEqualPasswords] = useState<boolean>(true);
   const [isWrongPassword, setIsWrongPassword] = useState<boolean>(false);
-  
+
   const [doesEmailAlreadyExist, setIDoesEmailAlreadyExist] = useState<boolean>(false);
   const [isExistUser, setIsExistUser] = useState<boolean>(true);
 
@@ -30,6 +30,34 @@ const login: NextPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const emailValidation = {
+    required: true,
+    pattern:
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    onChange: () => {
+      setIDoesEmailAlreadyExist(false);
+      setIsExistUser(true);
+    },
+  };
+
+  const passwordValidation = {
+    min: 6,
+    max: 60,
+    required: true,
+    onChange: () => setIsWrongPassword(false),
+  };
+
+  const buttonClickHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    if (isSignIn) {
+      e.preventDefault();
+      setIsSignIn(false);
+      setIsSignUp(true);
+    } else {
+      setIsSignIn(true);
+      setIsSignUp(false);
+    }
+  };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     isSignIn &&
@@ -89,15 +117,7 @@ const login: NextPage = () => {
               type='email'
               placeholder='Email'
               className='input'
-              {...register('email', {
-                required: true,
-                pattern:
-                  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                onChange: () => {
-                  setIDoesEmailAlreadyExist(false);
-                  setIsExistUser(true);
-                },
-              })}
+              {...register('email', emailValidation)}
             />
             {errors.email && (
               <p className='p-1 text-[13px] font-light text-orange-500'>
@@ -120,12 +140,7 @@ const login: NextPage = () => {
               type='password'
               placeholder='Password'
               className='input'
-              {...register('password', {
-                min: 6,
-                max: 60,
-                required: true,
-                onChange: () => setIsWrongPassword(false),
-              })}
+              {...register('password', passwordValidation)}
             />
             {errors.password && (
               <p className='p-1 text-[13px] font-light  text-orange-500'>
@@ -167,33 +182,15 @@ const login: NextPage = () => {
           {loading ? <Loader color='dark:fill-gray-300' /> : isSignIn ? 'Sign In' : 'Sign Up'}
         </button>
 
-        {isSignIn ? (
-          <div className='text-[gray]'>
-            New to Netflix?{' '}
-            <button
-              className='cursor-pointer text-white hover:underline'
-              type='button'
-              onClick={(e) => {
-                e.preventDefault();
-                setIsSignIn(false);
-                setIsSignUp(true);
-              }}>
-              Sign up now
-            </button>
-          </div>
-        ) : (
-          <div className='text-[gray]'>
-            Already have account?{' '}
-            <button
-              className='cursor-pointer text-white hover:underline'
-              onClick={() => {
-                setIsSignIn(true);
-                setIsSignUp(false);
-              }}>
-              Sign in
-            </button>
-          </div>
-        )}
+        <div className='text-[gray]'>
+          {isSignIn ? 'New to Netflix? ' : 'Already have account? '}
+          <button
+            className='cursor-pointer text-white hover:underline'
+            type='button'
+            onClick={(e) => buttonClickHandler(e)}>
+            {isSignIn ? 'Sign up now' : 'Sign in'}
+          </button>
+        </div>
       </form>
     </div>
   );
