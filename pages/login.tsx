@@ -179,12 +179,12 @@ const login: NextPage = () => {
                 })}
               />
               {errors.equalPassword && (
-                <p className='p-1 text-[13px] font-light  text-orange-500'>
+                <p className='p-1 text-[13px] font-light text-orange-500'>
                   Your password must contain between 6 and 60 characters.
                 </p>
               )}
               {!isEqualPasswords && (
-                <p className='p-1 text-[13px] font-light  text-orange-500'>
+                <p className='p-1 text-[13px] font-light text-orange-500'>
                   Passwords is not equal.
                 </p>
               )}
