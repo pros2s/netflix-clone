@@ -20,7 +20,7 @@ const EmailChanging: FC = () => {
   const [isPasswordConfirmed, setIsPasswordConfirmed] = useState<boolean>(false);
   const [isEmailCorrect, setIsEmailCorrect] = useState<boolean>(true);
 
-  const confirmCurrentPassword = (e: MouseEvent<HTMLButtonElement>) => {
+  const confirmCurrentPassword = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsPasswordConfirmed(true);
     setIsPasswordCorrect(true);
@@ -31,20 +31,20 @@ const EmailChanging: FC = () => {
       return;
     }
 
-    reAuth(passwordValue).catch((error) => {
+    await reAuth(passwordValue).catch((error) => {
       setIsPasswordConfirmed(false);
       error.message.match(/wrong-password/gi) ? setIsPasswordCorrect(false) : alert(error.message);
     });
   };
 
-  const confirmNewEmail = (e: MouseEvent<HTMLButtonElement>) => {
+  const confirmNewEmail = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!emailValue || !emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi)) {
       setIsEmailCorrect(false);
       return;
     }
     dispatch(loginIsNotChanging());
-    setNewEmail(emailValue);
+    await setNewEmail(emailValue);
   };
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {

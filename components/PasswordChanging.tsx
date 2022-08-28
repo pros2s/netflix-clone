@@ -31,7 +31,7 @@ const PasswordChanging: FC = () => {
     formState: { errors },
   } = useForm<Passwords>();
 
-  const confirmCurrentPassword = () => {
+  const confirmCurrentPassword = async () => {
     setIsPasswordConfirmed(true);
     setIsPasswordCorrect(true);
 
@@ -41,7 +41,7 @@ const PasswordChanging: FC = () => {
       return;
     }
 
-    reAuth(passwordValue).catch((error) => {
+    await reAuth(passwordValue).catch((error) => {
       setIsPasswordConfirmed(false);
       error.message.match(/wrong-password/gi) ? setIsPasswordCorrect(false) : alert(error.message);
     });
