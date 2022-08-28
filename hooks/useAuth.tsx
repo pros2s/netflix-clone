@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { auth, db } from '../firebase';
+import { auth } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   EmailAuthProvider,
@@ -9,10 +9,11 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateEmail,
+  updatePassword,
   User,
 } from 'firebase/auth';
 
-import { loginIsChanging } from '../store/slices/privateSettings';
+import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
 import { useTypedDispatch } from './useTypedDispatch';
 
 interface IAuth {
@@ -20,6 +21,7 @@ interface IAuth {
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   setNewEmail: (newEmail: string) => Promise<void>;
+  setNewPassword: (newPassword: string) => Promise<void>;
   reAuth: (oldPassword: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
@@ -31,6 +33,7 @@ const AuthContext = createContext<IAuth>({
   signUp: async () => {},
   logout: async () => {},
   setNewEmail: async () => {},
+  setNewPassword: async () => {},
   reAuth: async () => {},
   loading: false,
 });
@@ -125,6 +128,21 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const setNewPassword = async (newPassword: string) => {
+    setLoading(true);
+
+    if (auth.currentUser) {
+      await updatePassword(auth.currentUser, newPassword)
+        .catch((error) => {
+          dispatch(passwordIsChanging());
+          alert(error.message);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  };
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -133,6 +151,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       loading,
       logout,
       setNewEmail,
+      setNewPassword,
       reAuth,
     }),
     [user, loading],

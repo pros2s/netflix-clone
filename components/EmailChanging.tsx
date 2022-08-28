@@ -1,20 +1,23 @@
+import { ChangeEvent, FC, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { ChangeEvent, FC, useState } from 'react';
+
 import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
+
 import { loginIsNotChanging } from '../store/slices/privateSettings';
+import Loader from './Loader';
 
 const EmailChanging: FC = () => {
   const dispatch = useTypedDispatch();
-  const { setNewEmail, reAuth } = useAuth();
+  const { setNewEmail, reAuth, loading } = useAuth();
 
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
 
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
-  const [isEmailCorrect, setIsEmailCorrect] = useState<boolean>(true);
   const [isPasswordConfirmed, setIsPasswordConfirmed] = useState<boolean>(false);
+  const [isEmailCorrect, setIsEmailCorrect] = useState<boolean>(true);
 
   const confirmCurrentPassword = () => {
     setIsPasswordConfirmed(true);
@@ -95,7 +98,13 @@ const EmailChanging: FC = () => {
           className='w-full rounded bg-[#e50914] py-3 font-semibold'
           type='submit'
           onClick={!isPasswordConfirmed ? confirmCurrentPassword : confirmNewEmail}>
-          {!isPasswordConfirmed ? 'Next' : 'Confirm'}
+          {loading ? (
+            <Loader color='dark:fill-gray-300' />
+          ) : !isPasswordConfirmed ? (
+            'Next'
+          ) : (
+            'Confirm'
+          )}
         </button>
 
         <button

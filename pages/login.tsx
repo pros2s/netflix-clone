@@ -1,10 +1,12 @@
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import Loader from '../components/Loader';
+
 import useAuth from '../hooks/useAuth';
+import Loader from '../components/Loader';
 
 interface Inputs {
   email: string;
@@ -15,10 +17,12 @@ interface Inputs {
 const login: NextPage = () => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
   const [isEqualPasswords, setIsEqualPasswords] = useState<boolean>(true);
-  const [doesEmailAlreadyExist, setIDoesEmailAlreadyExist] = useState<boolean>(false);
-  const [doesUserExist, setDoesUserExist] = useState<boolean>(false);
   const [isWrongPassword, setIsWrongPassword] = useState<boolean>(false);
+  
+  const [doesEmailAlreadyExist, setIDoesEmailAlreadyExist] = useState<boolean>(false);
+  const [isExistUser, setIsExistUser] = useState<boolean>(true);
 
   const { signIn, signUp, loading } = useAuth();
   const {
@@ -31,7 +35,7 @@ const login: NextPage = () => {
     isSignIn &&
       (await signIn(data.email, data.password).catch((error) => {
         if (error.message.match(/user-not-found/gi)) {
-          setDoesUserExist(true);
+          setIsExistUser(false);
         } else if (error.message.match(/wrong-password/gi)) {
           setIsWrongPassword(true);
         } else {
@@ -89,6 +93,10 @@ const login: NextPage = () => {
                 required: true,
                 pattern:
                   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                onChange: () => {
+                  setIDoesEmailAlreadyExist(false);
+                  setIsExistUser(true);
+                },
               })}
             />
             {errors.email && (
@@ -101,7 +109,7 @@ const login: NextPage = () => {
                 Email already exists. Please enter a correct email.
               </p>
             )}
-            {doesUserExist && isSignIn && (
+            {!isExistUser && isSignIn && (
               <p className='p-1 text-[13px] font-light text-orange-500'>
                 Email does not exist. Please enter a correct email.
               </p>
@@ -112,7 +120,12 @@ const login: NextPage = () => {
               type='password'
               placeholder='Password'
               className='input'
-              {...register('password', { min: 6, max: 60, required: true })}
+              {...register('password', {
+                min: 6,
+                max: 60,
+                required: true,
+                onChange: () => setIsWrongPassword(false),
+              })}
             />
             {errors.password && (
               <p className='p-1 text-[13px] font-light  text-orange-500'>
@@ -131,7 +144,10 @@ const login: NextPage = () => {
                 type='password'
                 placeholder='Repeat password'
                 className='input'
-                {...register('equalPassword', { required: true })}
+                {...register('equalPassword', {
+                  required: true,
+                  onChange: () => setIsEqualPasswords(true),
+                })}
               />
               {errors.equalPassword && (
                 <p className='p-1 text-[13px] font-light  text-orange-500'>
