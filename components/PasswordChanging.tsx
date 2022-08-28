@@ -50,7 +50,10 @@ const PasswordChanging: FC = () => {
   };
 
   const onSubmit: SubmitHandler<Passwords> = async (data) => {
-    !isPasswordConfirmed && confirmCurrentPassword();
+    if (!isPasswordConfirmed) {
+      confirmCurrentPassword();
+      return;
+    }
 
     if (newPasswordValue === data.repeatNewPassword) {
       await setNewPassword(newPasswordValue).catch((error) => alert(error.message));
