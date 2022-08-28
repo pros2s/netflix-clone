@@ -30,15 +30,21 @@ const login: NextPage = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     isSignIn &&
       (await signIn(data.email, data.password).catch((error) => {
-        error.message.match(/user-not-found/gi) && setDoesUserExist(true);
-        error.message.match(/wrong-password/gi) && setIsWrongPassword(true);
+        if (error.message.match(/user-not-found/gi)) {
+          setDoesUserExist(true);
+        } else if (error.message.match(/wrong-password/gi)) {
+          setIsWrongPassword(true);
+        } else {
+          alert(error.message);
+        }
       }));
 
     if (isSignUp) {
       if (data.password === data.equalPassword) {
-        await signUp(data.email, data.password).catch(
-          (error) =>
-            error.message.match(/email-already-in-use/gi) && setIDoesEmailAlreadyExist(true),
+        await signUp(data.email, data.password).catch((error) =>
+          error.message.match(/email-already-in-use/gi)
+            ? setIDoesEmailAlreadyExist(true)
+            : alert(error.message),
         );
         setIsEqualPasswords(true);
       } else {

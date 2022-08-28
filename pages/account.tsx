@@ -7,13 +7,13 @@ import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import useAuth from '../hooks/useAuth';
 
-import LoginChanging from '../components/LoginChanging';
+import PasswordChanging from '../components/PasswordChanging';
+import EmailChanging from '../components/EmailChanging';
 import Membership from '../components/Membership';
 import Plans from '../components/Plans';
 
 import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
-import PasswordChanging from '../components/PasswordChanging';
 
 const account: FC = () => {
   const { logout } = useAuth();
@@ -26,7 +26,7 @@ const account: FC = () => {
     formatDate = dateFormat(startDate);
   }
 
-  if (isLoginChanging) return <LoginChanging />;
+  if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;
   if (isChangingPlan) return <Plans />;
 
