@@ -1,29 +1,40 @@
 import { FC, useEffect, useState } from 'react';
+import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc } from 'firebase/firestore';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+
+import { RiCloseCircleLine } from 'react-icons/ri';
+import { FaPlay } from 'react-icons/fa';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
+
 import { closeModal, modalSelector, toggleMuteVideo } from '../store/slices/modal';
 import { movieSelector } from '../store/slices/movie';
-import { Element, Genre } from '../types';
+import { Element, Genre, Movie } from '../types';
+import { db } from '../firebase';
+import useAuth from '../hooks/useAuth';
 
+import MuiModal from '@mui/material/Modal';
 import {
+  CheckIcon,
   PlusIcon,
   ThumbUpIcon,
   VolumeOffIcon,
   VolumeUpIcon,
   XIcon,
 } from '@heroicons/react/outline';
-import MuiModal from '@mui/material/Modal';
-import { FaPlay } from 'react-icons/fa';
 
 const Modal: FC = () => {
   const dispatch = useTypedDispatch();
   const { isOpenedModal, isMutedVideo } = useTypedSelector(modalSelector);
   const { movie } = useTypedSelector(movieSelector);
+  const { user } = useAuth();
 
   const [trailer, setTrailer] = useState<string>('');
+  const [isMovieAdded, setIsMovieAdded] = useState<boolean>(false);
+  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
 
   useEffect(() => {
@@ -51,12 +62,60 @@ const Modal: FC = () => {
     fetchData();
   }, [movie]);
 
+  useEffect(() => {
+    if (user) {
+      return onSnapshot(collection(db, 'users', user.uid, 'myList'), (snapshot) =>
+        setMovies(snapshot.docs),
+      );
+    }
+  }, [db, movie?.id]);
+
+  useEffect(
+    () => setIsMovieAdded(movies.findIndex((elem) => elem.data().id === movie?.id) !== -1),
+    [movies],
+  );
+
+  const handleList = async () => {
+    if (isMovieAdded) {
+      await deleteDoc(
+        doc(db, 'users', user!.uid, 'myList', (movie?.title || movie?.original_name)!),
+      );
+    } else {
+      await setDoc(doc(db, 'users', user!.uid, 'myList', (movie?.title || movie?.original_name)!), {
+        ...movie,
+      });
+    }
+
+    toast(
+      (t) => (
+        <div className='flex space-x-3 items-center'>
+          <p className='bg-white text-black font-semibold'>
+            <span className='font-bold'>{movie?.title || movie?.original_name}</span> has been{' '}
+            <span className='underline'>{isMovieAdded ? 'removed' : 'added'}</span>{' '}
+            {isMovieAdded ? 'from' : 'to'} your list
+          </p>
+          <button onClick={() => toast.dismiss(t.id)}>
+            <RiCloseCircleLine className='w-7 h-7 cursor-pointer transition duration-200 hover:rotate-90 hover:scale-125' />
+          </button>
+        </div>
+      ),
+      {
+        duration: 2000,
+        style: {
+          borderRadius: '30px',
+          minWidth: isMovieAdded ? '480px' : '450px',
+        },
+      },
+    );
+  };
+
   return (
     <MuiModal
       className='fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide'
       open={isOpenedModal}
       onClose={() => dispatch(closeModal())}>
       <>
+        <Toaster position='bottom-center' />
         <button
           className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:bg-[#181818]'
           onClick={() => dispatch(closeModal())}>
@@ -70,10 +129,10 @@ const Modal: FC = () => {
             height='100%'
             style={{ position: 'absolute', top: '0', left: '0' }}
             playing
-            volume={.25}
+            volume={0.25}
             config={{
               youtube: {
-                playerVars: { showinfo: 1 }
+                playerVars: { showinfo: 1 },
               },
             }}
             muted={isMutedVideo}
@@ -84,8 +143,12 @@ const Modal: FC = () => {
                 <FaPlay className='h-7 w-7 text-black' />
                 Play
               </button>
-              <button className='modalButton'>
-                <PlusIcon className='h-7 w-7' />
+              <button className='modalButton' onClick={handleList}>
+                {isMovieAdded ? (
+                  <CheckIcon className='h-7 w-7' />
+                ) : (
+                  <PlusIcon className='h-7 w-7' />
+                )}
               </button>
               <button className='modalButton'>
                 <ThumbUpIcon className='h-6 w-6' />

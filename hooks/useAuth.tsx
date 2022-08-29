@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   EmailAuthProvider,
@@ -15,6 +15,7 @@ import {
 
 import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
 import { useTypedDispatch } from './useTypedDispatch';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 interface IAuth {
   user: User | null;
@@ -71,6 +72,15 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user);
+
+        const usersCol = collection(db, 'users');
+        const userUid = auth.currentUser?.uid;
+
+        setDoc(doc(usersCol, userUid), {
+          email,
+          password,
+        });
+
         router.push('/');
         setLoading(false);
       })
