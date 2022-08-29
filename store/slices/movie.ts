@@ -15,7 +15,7 @@ const movieSlice = createSlice({
   name: 'movie',
   initialState,
   reducers: {
-    setCurrentMovie(state, { payload }: PayloadAction<Movie>) {
+    setCurrentMovie(state, { payload }: PayloadAction<Movie | DocumentData>) {
       state.movie = payload;
     },
     resetMovie(state) {

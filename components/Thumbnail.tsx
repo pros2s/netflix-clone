@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { DocumentData } from 'firebase/firestore';
 import Image from 'next/image';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
@@ -7,7 +8,7 @@ import { setCurrentMovie } from '../store/slices/movie';
 import { Movie } from '../types';
 
 interface ThumbnailProps {
-  movie: Movie;
+  movie: Movie | DocumentData;
 }
 
 const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {

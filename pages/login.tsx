@@ -7,6 +7,8 @@ import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
 import Loader from '../components/Loader';
+import { userUnsubscribed } from '../store/slices/sutbscription';
+import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 interface Inputs {
   email: string;
@@ -15,6 +17,7 @@ interface Inputs {
 }
 
 const login: NextPage = () => {
+  const dispatch = useTypedDispatch();
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
@@ -90,6 +93,8 @@ const login: NextPage = () => {
       } else {
         setIsEqualPasswords(false);
       }
+
+      dispatch(userUnsubscribed());
     }
   };
 

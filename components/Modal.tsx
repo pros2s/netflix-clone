@@ -117,7 +117,7 @@ const Modal: FC = () => {
       <>
         <Toaster position='bottom-center' />
         <button
-          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:bg-[#181818]'
+          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-0 bg-[#181818] hover:rotate-90 hover:bg-[#181818] hover:border-2'
           onClick={() => dispatch(closeModal())}>
           <XIcon className='h-6 w-6' />
         </button>
