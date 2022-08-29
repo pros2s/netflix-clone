@@ -13,6 +13,7 @@ import { Movie } from '../types';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { modalSelector } from '../store/slices/modal';
 import useAuth from '../hooks/useAuth';
+import { useMyList } from '../hooks/useMyList';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -37,7 +38,8 @@ const Home: NextPage<NextPageProps> = ({
 }) => {
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
+  const myList = useMyList(user?.uid);
 
   if (loading) return null;
   if (!isSubscription) return <Plans />;
@@ -58,8 +60,10 @@ const Home: NextPage<NextPageProps> = ({
         <section className='md:space-y-20'>
           <Row title='Trending Now' movies={trendingNow} />
           <Row title='Top Rated' movies={topRated} />
+
+          {myList.length > 0 && <Row title='My List' movies={myList} />}
+
           <Row title='Action Thrillers' movies={actionMovies} />
-          {/* My List */}
           <Row title='Comedies' movies={comedyMovies} />
           <Row title='Scary Movies' movies={horrorMovies} />
           <Row title='Romance Movies' movies={romanceMovies} />

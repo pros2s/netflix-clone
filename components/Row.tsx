@@ -1,4 +1,5 @@
 import { FC, useRef, useState } from 'react';
+import { DocumentData } from 'firebase/firestore';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 import { Movie } from '../types';
@@ -6,7 +7,7 @@ import Thumbnail from './Thumbnail';
 
 interface RowProps {
   title: string;
-  movies: Movie[];
+  movies: DocumentData[] | Movie[];
 }
 
 const Row: FC<RowProps> = ({ movies, title }) => {
