@@ -63,7 +63,7 @@ const Home: NextPage<NextPageProps> = ({
           <Row title='Trending Now' movies={trendingNow} />
           <Row title='Top Rated' movies={topRated} />
 
-          {myList.length > 0 && <Row title='My List' movies={myList} />}
+          <Row title='My List' movies={myList} />
 
           <Row title='Action Thrillers' movies={actionMovies} />
           <Row title='Comedies' movies={comedyMovies} />

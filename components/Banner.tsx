@@ -42,7 +42,7 @@ const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
       <div className='flex space-x-3'>
         <button className='bannerButton bg-white text-black'>
           <FaPlay className='h-4 w-4 text-black md:h-7 md:w-7' />{' '}
-          <p className='defaultText'>Play</p>
+          <p className='defaultText line-through'>Play</p>
         </button>
         <button
           className='bannerButton bg-[gray]/70'

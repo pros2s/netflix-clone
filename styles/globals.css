@@ -72,4 +72,33 @@
   .menu .MuiMenuItem-root {
     @apply !block !w-72 !py-3.5 !text-center !text-sm !font-light !text-[#b3b3b3] !transition !duration-200 first:cursor-default first:!font-normal first:!text-white hover:!bg-[#11100F];
   }
+
+  /* Buttons */
+  .muteButton {
+    @apply absolute bottom-1.5 right-2.5 border-[1px] rounded-full p-[2px] opacity-30 hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-8 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-2 hover:before:left-1.5 hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .playButton {
+    @apply flex items-center h-6 w-6 p-[6px] rounded-full bg-white text-xl font-bold text-black transition hover:bg-[#e6e6e6] hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-8 hover:after:-left-3 hover:after:line-through hover:after:text-black/95 hover:after:py-0.5 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-2 hover:before:left-2 hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .myListButton {
+    @apply relative h-6 w-6 border-[1px] p-[2.5px] hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[32px] hover:after:-left-16 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[9px] hover:before:left-[6.5px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .moreInfoButton {
+    @apply relative h-9 w-9 p-1 opacity-70 hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[25.5px] hover:after:-left-[28px] hover:after:w-24 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[3px] hover:before:left-[13px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .dropDownButton {
+    @apply relative h-6 w-6 border-[1px] rounded-full p-[1px] opacity-70 hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[32px] hover:after:-left-[87px] hover:after:w-52 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[9px] hover:before:left-[7px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .likeButton {
+    @apply relative h-6 w-6 border-[1px] transition duration-200 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[32px] hover:after:-left-4 hover:after:w-14 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[9.5px] hover:before:left-[7px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .disLikeButton {
+    @apply relative opacity-30 h-6 w-6 border-[1px] transition duration-200 hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[32px] hover:after:-left-11 hover:after:w-28 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/100 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[9px] hover:before:left-[7px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
 }

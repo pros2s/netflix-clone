@@ -11,14 +11,6 @@ export const handleList = async (
   isMovieAdded: boolean,
   movie: Movie | DocumentData | null,
 ) => {
-  if (isMovieAdded) {
-    await deleteDoc(doc(db, 'users', user!.uid, 'myList', (movie?.title || movie?.original_name)!));
-  } else {
-    await setDoc(doc(db, 'users', user!.uid, 'myList', (movie?.title || movie?.original_name)!), {
-      ...movie,
-    });
-  }
-
   toast(
     (t) => (
       <div className='flex space-x-3 items-center'>
@@ -37,7 +29,16 @@ export const handleList = async (
       style: {
         borderRadius: '30px',
         boxShadow: 'none',
+        minWidth: '400px',
       },
     },
   );
+
+  if (isMovieAdded) {
+    await deleteDoc(doc(db, 'users', user!.uid, 'myList', (movie?.title || movie?.original_name)!));
+  } else {
+    await setDoc(doc(db, 'users', user!.uid, 'myList', (movie?.title || movie?.original_name)!), {
+      ...movie,
+    });
+  }
 };
