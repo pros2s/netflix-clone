@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
 import Loader from '../components/Loader';
-import { userUnsubscribed } from '../store/slices/sutbscription';
+import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 interface Inputs {
@@ -67,8 +67,8 @@ const login: NextPage = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    isSignIn &&
-      (await signIn(data.email, data.password).catch((error) => {
+    if (isSignIn) {
+      await signIn(data.email, data.password).catch((error) => {
         if (error.message.match(/user-not-found/gi)) {
           setIsExistUser(false);
         } else if (error.message.match(/wrong-password/gi)) {
@@ -76,7 +76,10 @@ const login: NextPage = () => {
         } else {
           alert(error.message);
         }
-      }));
+      });
+
+      dispatch(userSubscribed());
+    }
 
     if (isSignUp) {
       if (data.password === data.equalPassword) {
