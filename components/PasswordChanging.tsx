@@ -15,7 +15,7 @@ interface Passwords {
 
 const PasswordChanging: FC = () => {
   const dispatch = useTypedDispatch();
-  const { reAuth, setNewPassword, loading } = useAuth();
+  const { reAuth, setNewPassword, loading, user } = useAuth();
 
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [newPasswordValue, setNewPasswordValue] = useState<string>('');
@@ -70,7 +70,7 @@ const PasswordChanging: FC = () => {
         return;
       }
 
-      await setNewPassword(newPasswordValue);
+      await setNewPassword(newPasswordValue, user?.email!);
       setIsEqualNewPasswords(true);
       !isWeakPassword && dispatch(passwordIsNotChanging());
     } else if (newPasswordValue) {

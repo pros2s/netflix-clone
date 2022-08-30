@@ -44,7 +44,7 @@ const EmailChanging: FC = () => {
       return;
     }
     dispatch(loginIsNotChanging());
-    await setNewEmail(emailValue);
+    await setNewEmail(emailValue, passwordValue);
   };
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {

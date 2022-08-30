@@ -15,14 +15,14 @@ import {
 
 import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
 import { useTypedDispatch } from './useTypedDispatch';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
 
 interface IAuth {
   user: User | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  setNewEmail: (newEmail: string) => Promise<void>;
-  setNewPassword: (newPassword: string) => Promise<void>;
+  setNewEmail: (newEmail: string, password: string) => Promise<void>;
+  setNewPassword: (newPassword: string, email: string) => Promise<void>;
   reAuth: (oldPassword: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
@@ -119,10 +119,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     );
   };
 
-  const setNewEmail = async (newEmail: string) => {
+  const setNewEmail = async (newEmail: string, password: string) => {
     setLoading(true);
 
     await updateEmail(auth.currentUser!, newEmail)
+      .then(() => {
+        setDoc(doc(collection(db, 'users'), auth.currentUser?.uid), {
+          email: newEmail,
+          password,
+        });
+      })
       .catch((error) => {
         dispatch(loginIsChanging());
         alert(error.message);
@@ -130,10 +136,17 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .finally(() => setLoading(false));
   };
 
-  const setNewPassword = async (newPassword: string) => {
+  const setNewPassword = async (newPassword: string, email: string) => {
     setLoading(true);
 
-    await updatePassword(auth.currentUser!, newPassword).finally(() => setLoading(false));
+    await updatePassword(auth.currentUser!, newPassword)
+      .then(() => {
+        setDoc(doc(collection(db, 'users'), auth.currentUser?.uid), {
+          email,
+          password: newPassword,
+        });
+      })
+      .finally(() => setLoading(false));
   };
 
   const memoedValue = useMemo(
