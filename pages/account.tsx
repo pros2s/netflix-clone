@@ -22,10 +22,7 @@ const account: FC = () => {
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
 
-  let formatDate;
-  if (startDate) {
-    formatDate = dateFormat(startDate);
-  }
+  const formatDate = dateFormat(startDate!);
 
   if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;

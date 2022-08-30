@@ -27,9 +27,7 @@ const Membership: FC = () => {
 
   const copyDate = startDate;
   let endDate;
-  if (copyDate) {
-    endDate = dateFormat(new Date(copyDate).setMonth(new Date(copyDate).getMonth() + 1));
-  }
+  endDate = dateFormat(new Date(copyDate!).setMonth(new Date(copyDate!).getMonth() + 1));
 
   const cancelMembership = () => {
     router.push('/');

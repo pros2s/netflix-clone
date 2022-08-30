@@ -78,12 +78,20 @@
     @apply absolute bottom-1.5 right-2.5 border-[1px] rounded-full p-[2px] opacity-30 hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-8 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-2 hover:before:left-1.5 hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
   }
 
+  .muteModal {
+    @apply muteButton modalButton bottom-0 right-6 hover:after:text-xl hover:after:py-2 hover:after:-top-16 hover:after:-left-8 hover:before:border-t-[10px] hover:before:border-r-[9px]  hover:before:border-l-[9px] hover:before:-top-5 hover:before:left-3;
+  }
+
   .playButton {
     @apply flex items-center h-6 w-6 p-[6px] rounded-full bg-white text-xl font-bold text-black transition hover:bg-[#e6e6e6] hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-8 hover:after:-left-3 hover:after:line-through hover:after:text-black/95 hover:after:py-0.5 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-2 hover:before:left-2 hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
   }
 
   .myListButton {
     @apply relative h-6 w-6 border-[1px] p-[2.5px] hover:opacity-100 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[32px] hover:after:-left-16 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[9px] hover:before:left-[6.5px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .myListModal {
+    @apply myListButton modalButton h-11 w-11 hover:after:w-56 hover:after:text-xl hover:after:py-2 hover:after:-top-16 hover:before:border-t-[10px] hover:before:border-r-[9px]  hover:before:border-l-[9px] hover:before:-top-5 hover:before:left-3;
   }
 
   .moreInfoButton {
@@ -96,6 +104,14 @@
 
   .likeButton {
     @apply relative h-6 w-6 border-[1px] transition duration-200 hover:after:content-[attr(data-text)] hover:after:absolute hover:after:-top-[32px] hover:after:-left-4 hover:after:w-14 hover:after:text-black/95 hover:after:font-bold hover:after:text-sm hover:after:bg-white/95 hover:after:py-0.5 hover:after:px-3 hover:after:rounded-md hover:before:absolute hover:before:-top-[9.5px] hover:before:left-[7px] hover:before:border-l-4 hover:before:border-l-transparent hover:before:border-t-4 hover:before:border-t-white/95 hover:before:border-r-4 hover:before:border-r-transparent;
+  }
+
+  .dislikeModal {
+    @apply modalButton disLikeButton h-11 w-11 hover:after:text-xl hover:after:py-2 hover:after:-top-16 hover:before:border-t-[10px] hover:before:border-r-[9px]  hover:before:border-l-[9px] hover:before:-top-5 hover:before:left-3;
+  }
+
+  .likeModal {
+    @apply modalButton likeButton h-11 w-11 hover:after:w-52 hover:after:text-xl hover:after:py-2 hover:after:-top-16 hover:after:-left-[70px] hover:before:border-t-[10px] hover:before:border-r-[9px]  hover:before:border-l-[9px] hover:before:-top-5 hover:before:left-3;
   }
 
   .disLikeButton {

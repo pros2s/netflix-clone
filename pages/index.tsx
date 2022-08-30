@@ -12,7 +12,7 @@ import { modalSelector } from '../store/slices/modal';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import useAuth from '../hooks/useAuth';
-import { useMyList } from '../hooks/useMyList';
+import { useMovieList } from '../hooks/useMovieList';
 
 import requests from '../utils/requests';
 import { Movie } from '../types';
@@ -41,7 +41,9 @@ const Home: NextPage<NextPageProps> = ({
   const { loading, user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
-  const myList = useMyList(user?.uid);
+  const myList = useMovieList(user?.uid, 'myList');
+  const liked = useMovieList(user?.uid, 'Liked');
+  const disliked = useMovieList(user?.uid, 'Disliked');
 
   if (loading) return null;
   if (!isSubscription) return <Plans />;
@@ -63,13 +65,16 @@ const Home: NextPage<NextPageProps> = ({
           <Row title='Trending Now' movies={trendingNow} />
           <Row title='Top Rated' movies={topRated} />
 
-          <Row title='My List' movies={myList} />
+          <Row title='My list' movies={myList} />
+          <Row title='Liked' movies={liked} />
 
           <Row title='Action Thrillers' movies={actionMovies} />
           <Row title='Comedies' movies={comedyMovies} />
           <Row title='Scary Movies' movies={horrorMovies} />
           <Row title='Romance Movies' movies={romanceMovies} />
           <Row title='Documentaries' movies={documentaries} />
+
+          <Row title='Disliked' movies={disliked} />
         </section>
 
         {isOpenedModal && <Modal />}

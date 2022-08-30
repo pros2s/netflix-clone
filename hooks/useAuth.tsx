@@ -113,39 +113,27 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const reAuth = async (oldPassword: string) => {
     setLoading(true);
 
-    if (auth.currentUser?.email) {
-      const credential = EmailAuthProvider.credential(auth.currentUser.email, oldPassword);
-      await reauthenticateWithCredential(auth.currentUser, credential).finally(() =>
-        setLoading(false),
-      );
-    } else {
-      setLoading(false);
-    }
+    const credential = EmailAuthProvider.credential(auth.currentUser?.email!, oldPassword);
+    await reauthenticateWithCredential(auth.currentUser!, credential).finally(() =>
+      setLoading(false),
+    );
   };
 
   const setNewEmail = async (newEmail: string) => {
     setLoading(true);
 
-    if (auth.currentUser) {
-      await updateEmail(auth.currentUser, newEmail)
-        .catch((error) => {
-          dispatch(loginIsChanging());
-          alert(error.message);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    await updateEmail(auth.currentUser!, newEmail)
+      .catch((error) => {
+        dispatch(loginIsChanging());
+        alert(error.message);
+      })
+      .finally(() => setLoading(false));
   };
 
   const setNewPassword = async (newPassword: string) => {
     setLoading(true);
 
-    if (auth.currentUser) {
-      await updatePassword(auth.currentUser, newPassword).finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    await updatePassword(auth.currentUser!, newPassword).finally(() => setLoading(false));
   };
 
   const memoedValue = useMemo(

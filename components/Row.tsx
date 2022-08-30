@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { DocumentData } from 'firebase/firestore';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
@@ -13,17 +13,16 @@ interface RowProps {
 const Row: FC<RowProps> = ({ movies, title }) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState<boolean>(false);
+  const [isLineSingle, setIsLineSingle] = useState<boolean>(false);
 
   const handleClick = (direction: string) => {
     setIsMoved(true);
 
-    if (rowRef.current) {
-      const { scrollLeft, clientWidth } = rowRef.current;
+    const { scrollLeft, clientWidth } = rowRef.current!;
 
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+    const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
 
-      rowRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
+    rowRef.current?.scrollTo({ left: scrollTo, behavior: 'smooth' });
   };
 
   return (
@@ -38,7 +37,8 @@ const Row: FC<RowProps> = ({ movies, title }) => {
             <button
               className={`chevronButton -left-16 hover:bg-gradient-to-r from-gray-900 ${
                 !isMoved && 'hidden'
-              }`}
+              }
+              ${isLineSingle && 'hidden hover:hidden'}`}
               onClick={() => handleClick('left')}>
               <ChevronLeftIcon />
             </button>
@@ -52,7 +52,8 @@ const Row: FC<RowProps> = ({ movies, title }) => {
             </div>
 
             <button
-              className='chevronButton -right-16 hover:bg-gradient-to-l from-gray-900'
+              className={`chevronButton -right-16 hover:bg-gradient-to-l from-gray-900
+              ${isLineSingle && 'hidden hover:hidden'}`}
               onClick={() => handleClick('right')}>
               <ChevronRightIcon />
             </button>

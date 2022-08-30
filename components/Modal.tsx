@@ -1,39 +1,37 @@
 import { FC, useEffect, useState } from 'react';
-import { collection, DocumentData, onSnapshot } from 'firebase/firestore';
 import ReactPlayer from 'react-player';
 import { Toaster } from 'react-hot-toast';
 
+import { CheckIcon, PlusIcon, VolumeOffIcon, VolumeUpIcon, XIcon } from '@heroicons/react/outline';
 import {
-  CheckIcon,
-  PlusIcon,
-  ThumbUpIcon,
-  VolumeOffIcon,
-  VolumeUpIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+  MdOutlineThumbDownOffAlt,
+  MdOutlineThumbUpOffAlt,
+  MdThumbDownAlt,
+  MdThumbUpAlt,
+} from 'react-icons/md';
 import { FaPlay } from 'react-icons/fa';
 import MuiModal from '@mui/material/Modal';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useFetch } from '../hooks/useFetch';
+import { useMovieButtons } from '../hooks/useMovieButtons';
 import useAuth from '../hooks/useAuth';
 
 import { closeModal, modalSelector, toggleMuteVideo } from '../store/slices/modal';
 import { movieSelector } from '../store/slices/movie';
-import { Genre, Movie } from '../types';
-import { db } from '../firebase';
-import { handleList } from '../utils/toast';
+import { Genre } from '../types';
+import { handleMovieList } from '../utils/toast';
 
 const Modal: FC = () => {
   const dispatch = useTypedDispatch();
   const { isOpenedModal, isMutedVideo } = useTypedSelector(modalSelector);
   const { movie } = useTypedSelector(movieSelector);
-  const { user } = useAuth();
 
-  const [isMovieAdded, setIsMovieAdded] = useState<boolean>(false);
+  const { user } = useAuth();
+  const { isLiked, isDisliked, isMovieAdded } = useMovieButtons(user, movie);
+
   const [trailer, setTrailer] = useState<string>('');
-  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
 
   useEffect(() => {
@@ -45,19 +43,6 @@ const Modal: FC = () => {
 
     fetchData();
   }, [movie]);
-
-  useEffect(() => {
-    if (user) {
-      return onSnapshot(collection(db, 'users', user.uid, 'myList'), (snapshot) =>
-        setMovies(snapshot.docs),
-      );
-    }
-  }, [db, movie?.id]);
-
-  useEffect(
-    () => setIsMovieAdded(movies.findIndex((elem) => elem.data().id === movie?.id) !== -1),
-    [movies],
-  );
 
   return (
     <MuiModal
@@ -92,7 +77,7 @@ const Modal: FC = () => {
           <div className='absolute bottom-10 flex w-full items-center justify-between px-10'>
             <ul className='flex space-x-2'>
               <li>
-                <button className='flex items-center gap-x-2 rounded bg-white py-2 px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]'>
+                <button className='flex items-center gap-x-2 rounded bg-white py-2 px-8 text-xl font-bold text-black line-through transition hover:bg-[#e6e6e6]'>
                   <FaPlay className='h-7 w-7 text-black' />
                   Play
                 </button>
@@ -100,8 +85,13 @@ const Modal: FC = () => {
 
               <li>
                 <button
-                  className='modalButton'
-                  onClick={() => handleList(user, isMovieAdded, movie)}>
+                  data-text={`${isMovieAdded ? 'Remove from my list' : 'Add to my list'}`}
+                  className={`myListModal ${
+                    !isMovieAdded
+                      ? 'hover:after:w-[150px] hover:after:-left-14'
+                      : 'hover:after:-left-[82px]'
+                  }`}
+                  onClick={() => handleMovieList(user, isMovieAdded, movie, 'myList', 'list')}>
                   {isMovieAdded ? (
                     <CheckIcon className='h-7 w-7' />
                   ) : (
@@ -111,13 +101,44 @@ const Modal: FC = () => {
               </li>
 
               <li>
-                <button className='modalButton'>
-                  <ThumbUpIcon className='h-6 w-6' />
+                <button
+                  data-text={`${isLiked ? 'Remove from Liked' : 'Like'}`}
+                  className={`likeModal ${
+                    !isLiked && 'hover:after:w-20 hover:after:-left-4'
+                  }`}
+                  onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}>
+                  {isLiked ? (
+                    <MdThumbUpAlt className='h-6 w-6 text-white hover:text-white/80' />
+                  ) : (
+                    <MdOutlineThumbUpOffAlt className='h-6 w-6 text-white/80 hover:text-white' />
+                  )}
+                </button>
+              </li>
+
+              <li>
+                <button
+                  data-text={`${isDisliked ? 'Remove from Disliked' : 'Not for me'}`}
+                  className={`dislikeModal ${
+                    isDisliked
+                      ? 'opacity-60 hover:after:w-60 hover:after:-left-[86px]'
+                      : 'hover:after:w-32 hover:after:-left-[40px]'
+                  }`}
+                  onClick={() => handleMovieList(user, isDisliked, movie, 'Disliked', 'disliked')}>
+                  {isDisliked ? (
+                    <MdThumbDownAlt className='h-6 w-6' />
+                  ) : (
+                    <MdOutlineThumbDownOffAlt className='h-6 w-6' />
+                  )}
                 </button>
               </li>
             </ul>
 
-            <button className='modalButton' onClick={() => dispatch(toggleMuteVideo())}>
+            <button
+              data-text={`${isMutedVideo ? 'Unmute' : 'Mute'}`}
+              className={`muteModal ${
+                isMutedVideo ? 'hover:after:w-24' : 'hover:after:w-18 hover:after:-left-[17px]'
+              }`}
+              onClick={() => dispatch(toggleMuteVideo())}>
               {isMutedVideo ? (
                 <VolumeOffIcon className='h-6 w-6' />
               ) : (
