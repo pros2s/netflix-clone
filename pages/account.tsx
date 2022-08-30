@@ -16,8 +16,9 @@ import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbsc
 import { privateSettingsSelector } from '../store/slices/privateSettings';
 
 const account: FC = () => {
-  const { logout } = useAuth();
   const dispatch = useTypedDispatch();
+  const { logout } = useAuth();
+
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
 
@@ -36,7 +37,8 @@ const account: FC = () => {
         <title>Account Settings - Netflix</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <header className={`bg-[#141414]`}>
+
+      <header className='bg-[#141414]'>
         <Link href='/'>
           <img
             src='https://rb.gy/ulxxee'
@@ -45,10 +47,12 @@ const account: FC = () => {
             className='cursor-pointer object-contain'
           />
         </Link>
+
         <Link href='/account'>
           <img src='https://rb.gy/g1pwyx' alt='' className='cursor-pointer rounded' />
         </Link>
       </header>
+
       <main className='mx-auto max-w-6xl px-5 pt-24 pb-12 transition-all md:px-10'>
         <div className='flex flex-col gap-x-4 md:flex-row md:items-center'>
           <h1 className='text-3xl md:text-4xl'>Account</h1>
@@ -72,7 +76,9 @@ const account: FC = () => {
 
         <div className='mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0'>
           <h4 className='text-lg text-[gray]'>Settings</h4>
-          <button className='text-start col-span-3 cursor-pointer text-blue-500 hover:underline' onClick={logout}>
+          <button
+            className='text-start col-span-3 cursor-pointer text-blue-500 hover:underline'
+            onClick={logout}>
             Sign out of all devices
           </button>
         </div>

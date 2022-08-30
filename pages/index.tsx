@@ -8,12 +8,14 @@ import Modal from '../components/Modal';
 import Row from '../components/Row';
 
 import { subscriptionSelector } from '../store/slices/sutbscription';
-import requests from '../utils/requests';
-import { Movie } from '../types';
-import { useTypedSelector } from '../hooks/useTypedSelector';
 import { modalSelector } from '../store/slices/modal';
+
+import { useTypedSelector } from '../hooks/useTypedSelector';
 import useAuth from '../hooks/useAuth';
 import { useMyList } from '../hooks/useMyList';
+
+import requests from '../utils/requests';
+import { Movie } from '../types';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -36,9 +38,9 @@ const Home: NextPage<NextPageProps> = ({
   topRated,
   trendingNow,
 }) => {
+  const { loading, user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
-  const { loading, user } = useAuth();
   const myList = useMyList(user?.uid);
 
   if (loading) return null;
@@ -55,9 +57,9 @@ const Home: NextPage<NextPageProps> = ({
       </Head>
 
       <Header />
-      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16'>
+      <main className='relative overflow-hidden px-4 pb-24 lg:space-y-24 lg:px-16'>
         <Banner netflixOriginals={netflixOriginals} />
-        <section className='md:space-y-20'>
+        <section className='md:space-y-32'>
           <Row title='Trending Now' movies={trendingNow} />
           <Row title='Top Rated' movies={topRated} />
 
