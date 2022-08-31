@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 interface LoaderProps {
   color: string;
 }
 
-const Loader: FC<LoaderProps> = ({ color }) => {
+const Loader: FC<LoaderProps> = memo(({ color }) => {
   return (
     <svg
       role='status'
@@ -22,6 +22,6 @@ const Loader: FC<LoaderProps> = ({ color }) => {
       />
     </svg>
   );
-};
+});
 
 export default Loader;

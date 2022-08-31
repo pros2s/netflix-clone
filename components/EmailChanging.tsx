@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, MouseEvent, useState } from 'react';
+import { ChangeEvent, FC, MouseEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -6,7 +6,8 @@ import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 import { loginIsNotChanging } from '../store/slices/privateSettings';
-import Loader from './Loader';
+import Loader from './UI/Loader';
+import ErrorMessage from './UI/ErrorMessage';
 
 const EmailChanging: FC = () => {
   const dispatch = useTypedDispatch();
@@ -20,32 +21,40 @@ const EmailChanging: FC = () => {
   const [isPasswordConfirmed, setIsPasswordConfirmed] = useState<boolean>(false);
   const [isEmailCorrect, setIsEmailCorrect] = useState<boolean>(true);
 
-  const confirmCurrentPassword = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsPasswordConfirmed(true);
-    setIsPasswordCorrect(true);
+  const confirmCurrentPassword = useCallback(
+    async (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setIsPasswordConfirmed(true);
+      setIsPasswordCorrect(true);
 
-    if (!passwordValue) {
-      setIsPasswordConfirmed(false);
-      setIsWeakPassword(true);
-      return;
-    }
+      if (!passwordValue) {
+        setIsPasswordConfirmed(false);
+        setIsWeakPassword(true);
+        return;
+      }
 
-    await reAuth(passwordValue).catch((error) => {
-      setIsPasswordConfirmed(false);
-      error.message.match(/wrong-password/gi) ? setIsPasswordCorrect(false) : alert(error.message);
-    });
-  };
+      await reAuth(passwordValue).catch((error) => {
+        setIsPasswordConfirmed(false);
+        error.message.match(/wrong-password/gi)
+          ? setIsPasswordCorrect(false)
+          : alert(error.message);
+      });
+    },
+    [passwordValue],
+  );
 
-  const confirmNewEmail = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (!emailValue || !emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi)) {
-      setIsEmailCorrect(false);
-      return;
-    }
-    dispatch(loginIsNotChanging());
-    await setNewEmail(emailValue, passwordValue);
-  };
+  const confirmNewEmail = useCallback(
+    async (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      if (!emailValue || !emailValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi)) {
+        setIsEmailCorrect(false);
+        return;
+      }
+      dispatch(loginIsNotChanging());
+      await setNewEmail(emailValue, passwordValue);
+    },
+    [emailValue],
+  );
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!isPasswordConfirmed) {
@@ -94,19 +103,15 @@ const EmailChanging: FC = () => {
                 placeholder={!isPasswordConfirmed ? 'Your password' : 'New Email'}
                 className='input'
               />
-              {!isPasswordCorrect && (
-                <p className='absolute text-sm text-red-600 pl-2 '>Wrong password. Try again</p>
-              )}
-              {!isEmailCorrect && (
-                <p className='absolute text-sm text-red-600 pl-2 '>
-                  Email address is not correct. Try again
-                </p>
-              )}
-              {isWeakPassword && (
-                <p className='absolute text-sm text-red-600 pl-2 '>
-                  Password should be at least 6 characters
-                </p>
-              )}
+              <ErrorMessage isCheck={!isPasswordCorrect} message='Wrong password. Try again.' />
+              <ErrorMessage
+                isCheck={!isEmailCorrect}
+                message='Email address is not correct. Try again.'
+              />
+              <ErrorMessage
+                isCheck={isWeakPassword}
+                message='Password should be at least 6 characters.'
+              />
             </div>
           </label>
         </div>

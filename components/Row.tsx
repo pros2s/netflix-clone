@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { DocumentData } from 'firebase/firestore';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
@@ -14,7 +14,7 @@ const Row: FC<RowProps> = ({ movies, title }) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState<boolean>(false);
 
-  const handleClick = (direction: string) => {
+  const handleClick = useCallback((direction: string) => {
     setIsMoved(true);
 
     const { scrollLeft, clientWidth } = rowRef.current!;
@@ -22,7 +22,7 @@ const Row: FC<RowProps> = ({ movies, title }) => {
     const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
 
     rowRef.current?.scrollTo({ left: scrollTo, behavior: 'smooth' });
-  };
+  }, [isMoved]);
 
   return (
     <>

@@ -9,12 +9,12 @@ import { subscriptionSelector, userUnsubscribed } from '../store/slices/sutbscri
 import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
 
 const Membership: FC = () => {
-  const { user } = useAuth();
-  const router = useRouter();
-
   const dispatch = useTypedDispatch();
   const { isSubscription } = useTypedSelector(subscriptionSelector);
   const { startDate } = useTypedSelector(subscriptionSelector);
+  const { user } = useAuth();
+  const router = useRouter();
+
   const [isPaymentInformation, setIsPaymentInformation] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,9 +25,7 @@ const Membership: FC = () => {
     return () => clearTimeout(timeout);
   }, [isPaymentInformation]);
 
-  const copyDate = startDate;
-  let endDate;
-  endDate = dateFormat(new Date(copyDate!).setMonth(new Date(copyDate!).getMonth() + 1));
+  const endDate = dateFormat(new Date(startDate!).setMonth(new Date(startDate!).getMonth() + 1));
 
   const cancelMembership = () => {
     router.push('/');

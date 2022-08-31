@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
 import { BellIcon, SearchIcon } from '@heroicons/react/solid';
-import BasicMenu from './BasicMenu';
+import BasicMenu from './UI/BasicMenu';
 
 import netflix from '../assets/netflix.png';
 import account from '../assets/account.png';

@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import type { NextPage } from 'next';
@@ -6,11 +6,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
-import Loader from '../components/Loader';
+import Loader from '../components/UI/Loader';
 import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 import netflix from '../assets/netflix.png';
+import ErrorMessage from '../components/UI/ErrorMessage';
 
 interface Inputs {
   email: string;
@@ -27,7 +28,7 @@ const login: NextPage = () => {
   const [isWrongPassword, setIsWrongPassword] = useState<boolean>(false);
   const [isWeakPassword, setIsWeakPassword] = useState<boolean>(false);
 
-  const [doesEmailAlreadyExist, setIDoesEmailAlreadyExist] = useState<boolean>(false);
+  const [isExistEmail, setIsExistEmail] = useState<boolean>(false);
   const [isExistUser, setIsExistUser] = useState<boolean>(true);
 
   const { signIn, signUp, loading } = useAuth();
@@ -42,7 +43,7 @@ const login: NextPage = () => {
     pattern:
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     onChange: () => {
-      setIDoesEmailAlreadyExist(false);
+      setIsExistEmail(false);
       setIsExistUser(true);
     },
   };
@@ -57,51 +58,57 @@ const login: NextPage = () => {
     },
   };
 
-  const buttonClickHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    if (isSignIn) {
-      e.preventDefault();
-      setIsSignIn(false);
-      setIsSignUp(true);
-    } else {
-      setIsSignIn(true);
-      setIsSignUp(false);
-    }
-  };
+  const buttonClickHandler = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      if (isSignIn) {
+        e.preventDefault();
+        setIsSignIn(false);
+        setIsSignUp(true);
+      } else {
+        setIsSignIn(true);
+        setIsSignUp(false);
+      }
+    },
+    [isSignIn],
+  );
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (isSignIn) {
-      await signIn(data.email, data.password).catch((error) => {
-        if (error.message.match(/user-not-found/gi)) {
-          setIsExistUser(false);
-        } else if (error.message.match(/wrong-password/gi)) {
-          setIsWrongPassword(true);
-        } else {
-          alert(error.message);
-        }
-      });
-
-      dispatch(userSubscribed());
-    }
-
-    if (isSignUp) {
-      if (data.password === data.equalPassword) {
-        await signUp(data.email, data.password).catch((error) => {
-          if (error.message.match(/email-already-in-use/gi)) {
-            setIDoesEmailAlreadyExist(true);
-          } else if (error.message.match(/weak-password/gi)) {
-            setIsWeakPassword(true);
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    async (data) => {
+      if (isSignIn) {
+        await signIn(data.email, data.password).catch((error) => {
+          if (error.message.match(/user-not-found/gi)) {
+            setIsExistUser(false);
+          } else if (error.message.match(/wrong-password/gi)) {
+            setIsWrongPassword(true);
           } else {
             alert(error.message);
           }
         });
-        setIsEqualPasswords(true);
-      } else {
-        setIsEqualPasswords(false);
+
+        dispatch(userSubscribed());
       }
 
-      dispatch(userUnsubscribed());
-    }
-  };
+      if (isSignUp) {
+        if (data.password === data.equalPassword) {
+          await signUp(data.email, data.password).catch((error) => {
+            if (error.message.match(/email-already-in-use/gi)) {
+              setIsExistEmail(true);
+            } else if (error.message.match(/weak-password/gi)) {
+              setIsWeakPassword(true);
+            } else {
+              alert(error.message);
+            }
+          });
+          setIsEqualPasswords(true);
+        } else {
+          setIsEqualPasswords(false);
+        }
+
+        dispatch(userUnsubscribed());
+      }
+    },
+    [isSignIn, isSignUp],
+  );
 
   return (
     <div className='relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
@@ -134,21 +141,15 @@ const login: NextPage = () => {
               className='input'
               {...register('email', emailValidation)}
             />
-            {errors.email && (
-              <p className='p-1 text-[13px] font-light text-orange-500'>
-                Please enter a valid email.
-              </p>
-            )}
-            {doesEmailAlreadyExist && isSignUp && (
-              <p className='p-1 text-[13px] font-light text-orange-500'>
-                Email already exists. Please enter a correct email.
-              </p>
-            )}
-            {!isExistUser && isSignIn && (
-              <p className='p-1 text-[13px] font-light text-orange-500'>
-                Email does not exist. Please enter a correct email.
-              </p>
-            )}
+            <ErrorMessage isCheck={!!errors.email} message='Please enter a valid email.' />
+            <ErrorMessage
+              isCheck={isExistEmail && isSignUp}
+              message='Email already exists. Please enter a correct email.'
+            />
+            <ErrorMessage
+              isCheck={!isExistUser && isSignIn}
+              message='Email does not exist. Please enter a correct email.'
+            />
           </label>
           <label className='inline-block w-full'>
             <input
@@ -157,21 +158,18 @@ const login: NextPage = () => {
               className='input'
               {...register('password', passwordValidation)}
             />
-            {errors.password && (
-              <p className='p-1 text-[13px] font-light  text-orange-500'>
-                Your password must contain between 6 and 60 characters.
-              </p>
-            )}
-            {isSignIn && isWrongPassword && (
-              <p className='p-1 text-[13px] font-light  text-orange-500'>
-                Wrong password. Please enter a correct password.
-              </p>
-            )}
-            {isSignUp && isWeakPassword && (
-              <p className='p-1 text-[13px] font-light  text-orange-500'>
-                Password should be at least 6 characters
-              </p>
-            )}
+            <ErrorMessage
+              isCheck={!!errors.password}
+              message='Your password must contain between 6 and 60 characters.'
+            />
+            <ErrorMessage
+              isCheck={isSignIn && isWrongPassword}
+              message='Wrong password. Please enter a correct password.'
+            />
+            <ErrorMessage
+              isCheck={isSignUp && isWeakPassword}
+              message='Password should be at least 6 characters'
+            />
           </label>
           {isSignUp && (
             <label className='inline-block w-full'>
@@ -184,16 +182,11 @@ const login: NextPage = () => {
                   onChange: () => setIsEqualPasswords(true),
                 })}
               />
-              {errors.equalPassword && (
-                <p className='p-1 text-[13px] font-light text-orange-500'>
-                  Your password must contain between 6 and 60 characters.
-                </p>
-              )}
-              {!isEqualPasswords && (
-                <p className='p-1 text-[13px] font-light text-orange-500'>
-                  Passwords is not equal.
-                </p>
-              )}
+              <ErrorMessage
+                isCheck={!!errors.equalPassword}
+                message='Your password must contain between 6 and 60 characters.'
+              />
+              <ErrorMessage isCheck={!isEqualPasswords} message='Passwords is not equal.' />
             </label>
           )}
         </div>

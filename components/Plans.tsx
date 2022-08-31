@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { CheckIcon } from '@heroicons/react/outline';
@@ -21,9 +21,10 @@ const Plans: FC = () => {
   const dispatch = useTypedDispatch();
   const { isChangingPlan } = useTypedSelector(subscriptionSelector);
   const { logout, user } = useAuth();
+
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
 
-  const subscribeToPlan = () => {
+  const subscribeToPlan = useCallback(() => {
     if (!user) return;
 
     isChangingPlan && dispatch(userIsNotChangingPlan());
@@ -31,7 +32,7 @@ const Plans: FC = () => {
     selectedPlan && dispatch(userCurrentPlan(selectedPlan));
     dispatch(userPlanStartDate(new Date().toString()));
     dispatch(userSubscribed());
-  };
+  }, [selectedPlan, isChangingPlan]);
 
   return (
     <div className='selection:bg-red-600 selection:text-white'>

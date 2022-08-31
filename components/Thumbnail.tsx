@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { FaPlay } from 'react-icons/fa';
 import {
@@ -38,7 +38,7 @@ interface ThumbnailProps {
   rowLength: number;
 }
 
-const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
+const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
   const dispatch = useTypedDispatch();
   const { isMutedVideo } = useTypedSelector(modalSelector);
   const { user } = useAuth();
@@ -62,7 +62,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
   }, [movie]);
 
   let isPlayTimeout: ReturnType<typeof setTimeout>;
-  const onHover = () => {
+  const onHover = useCallback(() => {
     !hover && window.innerWidth > 1023 && setHover(true);
 
     if (isPlay) return;
@@ -72,14 +72,14 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
         setIsPlay(true);
       }, 2000);
     }
-  };
+  }, [hover]);
 
-  const onLeave = () => {
+  const onLeave = useCallback(() => {
     clearTimeout(isPlayTimeout);
     setHover(false);
     setIsPlay(false);
     setIsShowInfo(false);
-  };
+  }, [hover]);
 
   const handleModal = () => {
     dispatch(openModal());
@@ -142,7 +142,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
                 className={`absolute ${
                   isShowInfo ? 'h-[20%]' : 'h-[48%]'
                 } top-1.5 flex w-full items-center justify-between`}>
-                <ul className='flex gap-x-2'>
+                <ul className='flex space-x-2'>
                   <li>
                     <button
                       data-text='Play'
@@ -242,7 +242,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
 
                 {!isPlay && (
                   <p className='leading-3 text-white/70 text-[9px] font-light'>
-                    keep md:hovering to play
+                    keep hovering to play
                   </p>
                 )}
               </ul>
@@ -272,6 +272,6 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
       )}
     </div>
   );
-};
+});
 
 export default Thumbnail;

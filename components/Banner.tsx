@@ -1,7 +1,7 @@
-import { InformationCircleIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
+import { InformationCircleIcon } from '@heroicons/react/solid';
 
 import { baseUrl } from '../constants/movie';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
@@ -13,7 +13,7 @@ interface BannerProps {
   netflixOriginals: Movie[];
 }
 
-const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
+const Banner: FC<BannerProps> = memo(({ netflixOriginals }) => {
   const dispatch = useTypedDispatch();
   const [movie, setMovie] = useState<Movie | null>(null);
 
@@ -56,6 +56,6 @@ const Banner: FC<BannerProps> = ({ netflixOriginals }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Banner;

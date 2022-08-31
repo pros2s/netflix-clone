@@ -7,7 +7,8 @@ import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 import { passwordIsChanging, passwordIsNotChanging } from '../store/slices/privateSettings';
-import Loader from './Loader';
+import Loader from './UI/Loader';
+import ErrorMessage from './UI/ErrorMessage';
 
 interface Passwords {
   repeatNewPassword: string;
@@ -75,6 +76,7 @@ const PasswordChanging: FC = () => {
       !isWeakPassword && dispatch(passwordIsNotChanging());
     } else if (newPasswordValue) {
       setIsEqualNewPasswords(false);
+      setIsWeakPassword(false);
     }
   };
 
@@ -114,14 +116,11 @@ const PasswordChanging: FC = () => {
               placeholder={!isPasswordConfirmed ? 'Your password' : 'New Password'}
               className='input'
             />
-            {!isPasswordCorrect && (
-              <p className='absolute text-sm text-red-600 pl-2 '>Wrong password. Try again</p>
-            )}
-            {(isWeakPassword) && (
-              <p className='absolute text-sm text-red-600 pl-2 '>
-                Password should be at least 6 characters
-              </p>
-            )}
+            <ErrorMessage isCheck={!isPasswordCorrect} message='Wrong password. Try again.' />
+            <ErrorMessage
+              isCheck={isWeakPassword}
+              message='Password should be at least 6 characters.'
+            />
           </label>
 
           {isPasswordConfirmed && (
@@ -135,16 +134,11 @@ const PasswordChanging: FC = () => {
                   onChange: () => setIsEqualNewPasswords(true),
                 })}
               />
-              {errors.repeatNewPassword && (
-                <p className='p-1 text-[13px] font-light  text-orange-500'>
-                  Your password must contain between 6 and 60 characters.
-                </p>
-              )}
-              {!isEqualNewPasswords && (
-                <p className='p-1 text-[13px] font-light  text-orange-500'>
-                  Passwords are not equal.
-                </p>
-              )}
+              <ErrorMessage
+                isCheck={!!errors.repeatNewPassword}
+                message='Your password must contain between 6 and 60 characters.'
+              />
+              <ErrorMessage isCheck={!isEqualNewPasswords} message='Passwords are not equal.' />
             </label>
           )}
         </div>
