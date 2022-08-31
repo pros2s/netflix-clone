@@ -15,6 +15,10 @@ import Plans from '../components/Plans';
 import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
 
+import netflix from '../assets/netflix.png';
+import accountIcon from '../assets/account.png';
+import Image from 'next/image';
+
 const account: FC = () => {
   const dispatch = useTypedDispatch();
   const { logout } = useAuth();
@@ -37,16 +41,27 @@ const account: FC = () => {
 
       <header className='bg-[#141414]'>
         <Link href='/'>
-          <img
-            src='https://rb.gy/ulxxee'
-            width={120}
-            height={120}
-            className='cursor-pointer object-contain'
-          />
+          <a>
+            <Image
+              src={netflix}
+              width={120}
+              height={46}
+              className='cursor-pointer object-contain'
+              alt='logo'
+            />
+          </a>
         </Link>
 
         <Link href='/account'>
-          <img src='https://rb.gy/g1pwyx' alt='' className='cursor-pointer rounded' />
+          <a>
+            <Image
+              src={accountIcon}
+              width={32}
+              height={32}
+              alt='account'
+              className='cursor-pointer rounded'
+            />
+          </a>
         </Link>
       </header>
 
@@ -65,7 +80,7 @@ const account: FC = () => {
           <h4 className='text-lg text-[gray]'>Plan Details</h4>
           <p className='col-span-2 font-medium'>{plan?.name}</p>
           <button
-            className='cursor-pointer text-blue-500 hover:underline md:text-right'
+            className='cursor-pointer text-blue-500 md:hover:underline md:text-right'
             onClick={() => dispatch(userIsChangingPlan())}>
             Change plan
           </button>
@@ -74,7 +89,7 @@ const account: FC = () => {
         <div className='mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0'>
           <h4 className='text-lg text-[gray]'>Settings</h4>
           <button
-            className='text-start col-span-3 cursor-pointer text-blue-500 hover:underline'
+            className='text-start col-span-3 cursor-pointer text-blue-500 md:hover:underline'
             onClick={logout}>
             Sign out of all devices
           </button>

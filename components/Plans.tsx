@@ -49,7 +49,7 @@ const Plans: FC = () => {
             className='cursor-pointer object-contain'
           />
         </Link>
-        <button className='text-lg font-medium hover:underline' onClick={logout}>
+        <button className='text-lg font-medium md:hover:underline' onClick={logout}>
           Sign Out
         </button>
       </header>
@@ -80,8 +80,8 @@ const Plans: FC = () => {
 
           <button
             disabled={!selectedPlan}
-            className={`mx-auto w-11/12 cursor-pointer rounded bg-[#E50914] py-4 text-xl shadow hover:bg-[#f6121d] md:w-[420px] ${
-              !selectedPlan && 'opacity-60 cursor-default hover:bg-[#E50914]'
+            className={`mx-auto w-11/12 cursor-pointer rounded bg-[#E50914] py-4 text-xl shadow md:hover:bg-[#f6121d] md:w-[420px] ${
+              !selectedPlan && 'opacity-60 cursor-default md:hover:bg-[#E50914]'
             }`}
             onClick={subscribeToPlan}>
             {isChangingPlan ? 'Change plan' : 'Subscribe'}

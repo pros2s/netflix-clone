@@ -44,12 +44,14 @@ const Header: FC = () => {
         </ul>
       </div>
 
-      <div className='flex items-center space-x-4 font-light text-sm'>
+      <div className='flex items-center space-x-4 font-light text-sm lg:mr-12'>
         <SearchIcon className='hidden w-6 h-6 sm:inline' />
         <p className='hidden lg:inline'>Kids</p>
-        <BellIcon className='h-6 w-6 !mr-4' />
+        <BellIcon className='h-6 w-6 !mr-1' />
         <Link href='/account'>
-          <Image src={account} alt='accounts' className='cursor-pointer rounded' />
+          <a>
+            <Image src={account} alt='accounts' className='cursor-pointer rounded' />
+          </a>
         </Link>
       </div>
     </header>

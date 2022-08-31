@@ -40,7 +40,7 @@ const Membership: FC = () => {
         <h4 className='text-lg text-[gray]'>Membership & Billing</h4>
         <button
           disabled={!isSubscription}
-          className='h-10 w-3/5 cursor-pointer whitespace-nowrap bg-gray-300 py-2 text-sm font-medium text-black shadow-md hover:bg-gray-200 md:w-4/5'
+          className='h-10 w-3/5 cursor-pointer whitespace-nowrap bg-gray-300 py-2 text-sm font-medium text-black shadow-md md:hover:bg-gray-200 md:w-4/5'
           onClick={cancelMembership}>
           Cancel Membership
         </button>
@@ -67,7 +67,9 @@ const Membership: FC = () => {
             <p>Your next billing date is {endDate}</p>
             {isPaymentInformation && <p className='text-red-600'>Payment has not integrated yet</p>}
           </div>
-          <div className='flex flex-col items-end md:text-right' onClick={() => setIsPaymentInformation(true)}>
+          <div
+            className='flex flex-col items-end md:text-right'
+            onClick={() => setIsPaymentInformation(true)}>
             <button className='membershipLink'>Manage payment info</button>
             <button className='membershipLink'>Add backup payment method</button>
             <button className='membershipLink'>Billing Details</button>

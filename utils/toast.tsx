@@ -16,23 +16,22 @@ export const handleMovieList = async (
 ) => {
   toast(
     (t) => (
-      <div className='flex space-x-3 items-center'>
+      <div className='flex space-x-3 items-center min-w-[300px] md:min-w-[400px]'>
         <p className='bg-white text-black font-semibold'>
           <span className='font-bold'>{movie?.title || movie?.original_name}</span> has been{' '}
           <span className='underline'>{isMovieAdded ? 'removed' : 'added'}</span>{' '}
           {isMovieAdded ? 'from' : 'to'} your {movieList}
         </p>
         <button onClick={() => toast.dismiss(t.id)}>
-          <RiCloseCircleLine className='w-7 h-7 cursor-pointer transition duration-200 hover:rotate-90 hover:scale-125' />
+          <RiCloseCircleLine className='w-7 h-7 cursor-pointer transition duration-200md:hover:rotate-90md:hover:scale-125' />
         </button>
       </div>
     ),
     {
       duration: 4000,
       style: {
-        borderRadius: '30px',
+        borderRadius: '8px',
         boxShadow: 'none',
-        minWidth: '400px',
       },
     },
   );

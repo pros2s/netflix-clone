@@ -63,7 +63,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
 
   let isPlayTimeout: ReturnType<typeof setTimeout>;
   const onHover = () => {
-    !hover && setHover(true);
+    !hover && window.innerWidth > 1023 && setHover(true);
 
     if (isPlay) return;
 
@@ -81,17 +81,22 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
     setIsShowInfo(false);
   };
 
+  const handleModal = () => {
+    dispatch(openModal());
+    movie && dispatch(setCurrentMovie(movie));
+  };
+
   return (
     <div
-      className={`relative ${index === 0 && 'ml-[60px]'} ${
-        index === rowLength - 1 && '!mr-[60px]'
-      } -top-12 h-28 min-w-[180px] md:cursor-pointer md:min-w-[260px] md:h-36`}
+      className={`relative ${index === 0 && 'md:ml-[60px]'} ${
+        index === rowLength - 1 && 'md:!mr-[60px]'
+      } h-28 min-w-[180px] md:cursor-pointer md:min-w-[260px] md:h-36 md:-top-12`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}>
       <Toaster position='bottom-center' />
       {hover ? (
         <div
-          className={`relative h-28 min-w-[180px] cursor-pointer transition duration-300 ease-out md:min-w-[260px] md:h-36 md:hover:h-[270px] md:hover:scale-[1.5] md:hover:absolute md:hover:z-[100]`}>
+          className={`relative h-28 min-w-[180px] cursor-pointer transition duration-300 ease-out md:min-w-[260px] md:h-36  md:hover:h-[270px]  md:hover:scale-[1.5]  md:hover:absolute  md:hover:z-[100]`}>
           <div className='relative h-[55%]'>
             {isPlay ? (
               <ReactPlayer
@@ -142,7 +147,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
                     <button
                       data-text='Play'
                       className={`playButton ${index === 0 && 'hover:after:-left-2'}`}>
-                      <FaPlay className='text-black' />
+                      <FaPlay className='text-black pl-0.5 h-4 w-4' />
                     </button>
                   </li>
 
@@ -165,19 +170,19 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
                     <button
                       data-text={`${isLiked ? 'Remove from Liked' : 'Like'}`}
                       className={`modalButton likeButton ${
-                        isLiked && 'hover:after:w-40 hover:after:-left-16'
+                        isLiked && 'hover:after:w-40 md:hover:after:-left-16'
                       } ${isShowInfo && !isLiked && 'scale-110 border-white/80'} ${
                         isLiked && 'border-white'
                       }`}
                       onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}>
                       {isLiked ? (
-                        <MdThumbUpAlt className='text-white hover:text-white/80' />
+                        <MdThumbUpAlt className='text-white md:hover:text-white/80' />
                       ) : (
                         <>
                           {isShowInfo ? (
-                            <MdThumbUpAlt className='text-white/80 hover:text-white' />
+                            <MdThumbUpAlt className='text-white/80 md:hover:text-white' />
                           ) : (
-                            <MdOutlineThumbUpOffAlt className='text-white/80 hover:text-white' />
+                            <MdOutlineThumbUpOffAlt className='text-white/80 md:hover:text-white' />
                           )}
                         </>
                       )}
@@ -188,7 +193,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
                     <button
                       data-text={`${isDisliked ? 'Remove from Disliked' : 'Not for me'}`}
                       className={`modalButton disLikeButton ${
-                        isDisliked && 'opacity-60 hover:after:w-44 hover:after:-left-[70px]'
+                        isDisliked && 'opacity-60 md:hover:after:w-44 md:hover:after:-left-[70px]'
                       }`}
                       onClick={() =>
                         handleMovieList(user, isDisliked, movie, 'Disliked', 'disliked')
@@ -199,13 +204,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
                 </ul>
 
                 <div className='flex items-center justify-center mr-5'>
-                  <button
-                    data-text='More info'
-                    className='moreInfoButton'
-                    onClick={() => {
-                      dispatch(openModal());
-                      movie && dispatch(setCurrentMovie(movie));
-                    }}>
+                  <button data-text='More info' className='moreInfoButton' onClick={handleModal}>
                     <InformationCircleIcon />
                   </button>
 
@@ -243,7 +242,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
 
                 {!isPlay && (
                   <p className='leading-3 text-white/70 text-[9px] font-light'>
-                    keep hovering to play
+                    keep md:hovering to play
                   </p>
                 )}
               </ul>
@@ -251,7 +250,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
               {isShowInfo && (
                 <ul className='absolute top-[50px] flex items-center text-[9px] text-[#c5c5c5] font-extralight transition duration-300'>
                   {genres.map((genre, i) => (
-                    <li className='mr-1.5'>
+                    <li key={genre.id} className='mr-1.5'>
                       {genre.name}
                       {i !== genres.length - 1 && <span className='ml-1.5'>•</span>}
                     </li>
@@ -268,6 +267,7 @@ const Thumbnail: FC<ThumbnailProps> = ({ movie, index, rowLength }) => {
           layout='fill'
           priority
           alt={movie?.title || movie?.original_name}
+          onClick={handleModal}
         />
       )}
     </div>

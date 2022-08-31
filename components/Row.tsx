@@ -13,7 +13,6 @@ interface RowProps {
 const Row: FC<RowProps> = ({ movies, title }) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState<boolean>(false);
-  const [isLineSingle, setIsLineSingle] = useState<boolean>(false);
 
   const handleClick = (direction: string) => {
     setIsMoved(true);
@@ -28,32 +27,30 @@ const Row: FC<RowProps> = ({ movies, title }) => {
   return (
     <>
       {movies.length > 0 && (
-        <div className='relative h-24 md:space-y-2'>
-          <h2 className='absolute top-0 w-56 font-semibold text-sm cursor-pointer text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl'>
+        <div className='relative h-44 md:h-24 md:space-y-2'>
+          <h2 className='font-semibold text-lg mb-2 cursor-pointer transition duration-200 md:text-2xl md:absolute md:top-0 md:w-56'>
             {title}
           </h2>
 
           <div className='group relative'>
             <button
-              className={`chevronButton -left-16 hover:bg-gradient-to-r from-gray-900 ${
+              className={`chevronButton -left-16  md:hover:bg-gradient-to-r from-gray-900 ${
                 !isMoved && 'hidden'
-              }
-              ${isLineSingle && 'hidden hover:hidden'}`}
+              }`}
               onClick={() => handleClick('left')}>
               <ChevronLeftIcon />
             </button>
 
             <div
               ref={rowRef}
-              className='flex -mx-[60px] overflow-y-hidden h-80 items-center space-x-0.5 overflow-x-scroll scrollbar-hide md:space-x-5'>
+              className='flex overflow-y-hidden items-center space-x-3 overflow-x-scroll scrollbar-hide md:h-80 md:-mx-[60px] md:space-x-5'>
               {movies.map((movie, i) => (
                 <Thumbnail key={movie.id} movie={movie} index={i} rowLength={movies.length} />
               ))}
             </div>
 
             <button
-              className={`chevronButton -right-16 hover:bg-gradient-to-l from-gray-900
-              ${isLineSingle && 'hidden hover:hidden'}`}
+              className={`chevronButton -right-16  md:hover:bg-gradient-to-l from-gray-900`}
               onClick={() => handleClick('right')}>
               <ChevronRightIcon />
             </button>

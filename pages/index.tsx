@@ -59,7 +59,7 @@ const Home: NextPage<NextPageProps> = ({
       </Head>
 
       <Header />
-      <main className='relative overflow-hidden px-4 pb-24 lg:space-y-24 lg:px-16'>
+      <main className='relative overflow-hidden pl-4 pb-24 lg:space-y-24 lg:px-16'>
         <Banner netflixOriginals={netflixOriginals} />
         <section className='md:space-y-32'>
           <Row title='Trending Now' movies={trendingNow} />

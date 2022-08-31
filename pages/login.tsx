@@ -10,6 +10,8 @@ import Loader from '../components/Loader';
 import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
+import netflix from '../assets/netflix.png';
+
 interface Inputs {
   email: string;
   password: string;
@@ -115,13 +117,9 @@ const login: NextPage = () => {
         alt='wallpaper'
       />
 
-      <img
-        src='https://rb.gy/ulxxee'
-        alt='icon'
-        width={150}
-        height={150}
-        className='absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6'
-      />
+      <div className='absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6'>
+        <Image src={netflix} alt='icon' width={150} height={50} />
+      </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -207,7 +205,7 @@ const login: NextPage = () => {
         <div className='text-[gray]'>
           {isSignIn ? 'New to Netflix? ' : 'Already have account? '}
           <button
-            className='cursor-pointer text-white hover:underline'
+            className='cursor-pointer text-white md:hover:underline'
             type='button'
             onClick={(e) => buttonClickHandler(e)}>
             {isSignIn ? 'Sign up now' : 'Sign in'}

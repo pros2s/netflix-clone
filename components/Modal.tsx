@@ -46,14 +46,14 @@ const Modal: FC = () => {
 
   return (
     <MuiModal
-      className='fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide'
+      className='fixed left-0 right-0 px-3 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-2xl scrollbar-hide md:!top-7'
       open={isOpenedModal}
       onClose={() => dispatch(closeModal())}>
       <>
         <Toaster position='bottom-center' />
 
         <button
-          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-0 bg-[#181818] hover:rotate-90 hover:bg-[#181818] hover:border-2'
+          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-0 bg-[#181818] md:hover:rotate-90 md:hover:bg-[#181818] md:hover:border-2'
           onClick={() => dispatch(closeModal())}>
           <XIcon className='h-6 w-6' />
         </button>
@@ -74,11 +74,11 @@ const Modal: FC = () => {
             muted={isMutedVideo}
           />
 
-          <div className='absolute bottom-10 flex w-full items-center justify-between px-10'>
+          <div className='absolute bottom-3 md:bottom-10 flex w-full items-center justify-between px-10'>
             <ul className='flex space-x-2'>
               <li>
-                <button className='flex items-center gap-x-2 rounded bg-white py-2 px-8 text-xl font-bold text-black line-through transition hover:bg-[#e6e6e6]'>
-                  <FaPlay className='h-7 w-7 text-black' />
+                <button className='flex items-center gap-x-2 py-1 px-5 rounded bg-white font-bold text-black line-through transition md:py-2 md:px-8 md:text-xl md:hover:bg-[#e6e6e6]'>
+                  <FaPlay className='h-5 w-5 text-black md:h-7 md:w-7' />
                   Play
                 </button>
               </li>
@@ -88,7 +88,7 @@ const Modal: FC = () => {
                   data-text={`${isMovieAdded ? 'Remove from my list' : 'Add to my list'}`}
                   className={`myListModal ${
                     !isMovieAdded
-                      ? 'hover:after:w-[150px] hover:after:-left-14'
+                      ? 'hover:after:w-[150px] md:hover:after:-left-14'
                       : 'hover:after:-left-[82px]'
                   }`}
                   onClick={() => handleMovieList(user, isMovieAdded, movie, 'myList', 'list')}>
@@ -103,14 +103,12 @@ const Modal: FC = () => {
               <li>
                 <button
                   data-text={`${isLiked ? 'Remove from Liked' : 'Like'}`}
-                  className={`likeModal ${
-                    !isLiked && 'hover:after:w-20 hover:after:-left-4'
-                  }`}
+                  className={`likeModal ${!isLiked && 'hover:after:w-20 md:hover:after:-left-4'}`}
                   onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}>
                   {isLiked ? (
-                    <MdThumbUpAlt className='h-6 w-6 text-white hover:text-white/80' />
+                    <MdThumbUpAlt className='h-6 w-6 text-white md:hover:text-white/80' />
                   ) : (
-                    <MdOutlineThumbUpOffAlt className='h-6 w-6 text-white/80 hover:text-white' />
+                    <MdOutlineThumbUpOffAlt className='h-6 w-6 text-white/80 md:hover:text-white' />
                   )}
                 </button>
               </li>
@@ -120,8 +118,8 @@ const Modal: FC = () => {
                   data-text={`${isDisliked ? 'Remove from Disliked' : 'Not for me'}`}
                   className={`dislikeModal ${
                     isDisliked
-                      ? 'opacity-60 hover:after:w-60 hover:after:-left-[86px]'
-                      : 'hover:after:w-32 hover:after:-left-[40px]'
+                      ? 'opacity-60 md:hover:after:w-60 md:hover:after:-left-[86px]'
+                      : 'hover:after:w-32 md:hover:after:-left-[40px]'
                   }`}
                   onClick={() => handleMovieList(user, isDisliked, movie, 'Disliked', 'disliked')}>
                   {isDisliked ? (
@@ -136,7 +134,7 @@ const Modal: FC = () => {
             <button
               data-text={`${isMutedVideo ? 'Unmute' : 'Mute'}`}
               className={`muteModal ${
-                isMutedVideo ? 'hover:after:w-24' : 'hover:after:w-18 hover:after:-left-[17px]'
+                isMutedVideo ? 'hover:after:w-24' : 'hover:after:w-18 md:hover:after:-left-[17px]'
               }`}
               onClick={() => dispatch(toggleMuteVideo())}>
               {isMutedVideo ? (
@@ -160,7 +158,7 @@ const Modal: FC = () => {
               </li>
             </ul>
 
-            <div className='flex flex-col gap-x-10 gap-y-4 font-light md:flex-row'>
+            <div className='flex flex-col gap-x-10 gap-y-4 font-light text-lg md:text-xl md:flex-row'>
               <p className='w-5/6'>{movie?.overview}</p>
 
               <ul className='flex flex-col space-y-3 text-sm'>
