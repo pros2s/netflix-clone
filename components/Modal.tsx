@@ -46,14 +46,14 @@ const Modal: FC = () => {
 
   return (
     <MuiModal
-      className='fixed left-0 right-0 px-3 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-2xl scrollbar-hide md:!top-7'
+      className='fixed left-0 right-0 selection:bg-red-600 selection:text-white px-3 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-2xl scrollbar-hide md:!top-7'
       open={isOpenedModal}
       onClose={() => dispatch(closeModal())}>
       <>
         <Toaster position='bottom-center' />
 
         <button
-          className='modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-0 bg-[#181818] md:hover:rotate-90 md:hover:bg-[#181818] md:hover:border-2'
+          className='modalButton absolute right-10 top-5 !z-40 h-9 w-9 border-0 bg-[#181818] md:hover:rotate-90 md:hover:bg-[#181818] md:hover:border-2'
           onClick={() => dispatch(closeModal())}>
           <XIcon className='h-6 w-6' />
         </button>
@@ -74,7 +74,7 @@ const Modal: FC = () => {
             muted={isMutedVideo}
           />
 
-          <div className='absolute bottom-3 md:bottom-10 flex w-full items-center justify-between px-10'>
+          <div className='absolute bottom-3 md:bottom-10 flex w-full items-center justify-between px-4 md:px-10'>
             <ul className='flex space-x-2'>
               <li>
                 <button className='flex items-center gap-x-2 py-1 px-5 rounded bg-white font-bold text-black line-through transition md:py-2 md:px-8 md:text-xl md:hover:bg-[#e6e6e6]'>
@@ -146,7 +146,7 @@ const Modal: FC = () => {
           </div>
         </div>
 
-        <div className='flex space-x-16 rounded-b-md bg-[#181818] px-10 py-8'>
+        <div className='flex space-x-16 rounded-b-md bg-[#181818] p-4 md:px-10 md:py-8'>
           <div className='space-y-6 text-lg'>
             <ul className='flex items-center space-x-2 text-sm'>
               <li className='font-semibold text-green-400'>

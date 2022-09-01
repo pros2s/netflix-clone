@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Link from 'next/link';
 
 const BasicMenu: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -32,11 +33,12 @@ const BasicMenu: FC = () => {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}>
-        <MenuItem onClick={handleClose}>Home</MenuItem>
-        <MenuItem onClick={handleClose}>TV Shows</MenuItem>
-        <MenuItem onClick={handleClose}>Movies</MenuItem>
-        <MenuItem onClick={handleClose}>New & Popular</MenuItem>
-        <MenuItem onClick={handleClose}>My List</MenuItem>
+        <Link href='/'>
+          <MenuItem>Home</MenuItem>
+        </Link>
+        <Link href='/myList'>
+          <MenuItem>My List</MenuItem>
+        </Link>
       </Menu>
     </div>
   );

@@ -76,19 +76,19 @@
 
   /* Movie Service buttons */
   .muteButton {
-    @apply absolute bottom-1.5 right-2.5 border-[1px] rounded-full p-[2px] opacity-30  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-8  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-2  md:hover:before:left-1.5  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply absolute bottom-1.5 md:right-2.5 border-[1px] rounded-full p-[2px] opacity-30  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-8  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[8px]  md:hover:before:left-1.5  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px] md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 
   .muteModal {
-    @apply muteButton modalButton bottom-0 right-6  md:hover:after:text-xl  md:hover:after:py-2  md:hover:after:-top-16  md:hover:after:-left-8  md:hover:before:border-t-[10px]  md:hover:before:border-r-[9px]   md:hover:before:border-l-[9px]  md:hover:before:-top-5  md:hover:before:left-3;
+    @apply muteButton modalButton bottom-0 right-1 md:right-6  md:hover:after:text-xl  md:hover:after:py-2  md:hover:after:-top-16  md:hover:after:-left-8  md:hover:before:border-t-[10px]  md:hover:before:border-r-[9px] md:hover:before:border-l-[9px] md:hover:before:-top-5  md:hover:before:left-3;
   }
 
   .playButton {
-    @apply flex justify-center items-center h-6 w-6 p-[6px] rounded-full bg-white text-xl font-bold text-black transition  md:hover:bg-[#e6e6e6]  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-8  md:hover:after:-left-3  md:hover:after:line-through  md:hover:after:text-black/95  md:hover:after:py-0.5  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-2  md:hover:before:left-2  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply flex justify-center items-center h-6 w-6 p-[6px] rounded-full bg-white text-xl font-bold text-black transition  md:hover:bg-[#e6e6e6]  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-8  md:hover:after:-left-3  md:hover:after:line-through  md:hover:after:text-black/95  md:hover:after:py-0.5  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[8px]  md:hover:before:left-2  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 
   .myListButton {
-    @apply relative h-6 w-6 border-[1px] p-[2.5px]  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[32px]  md:hover:after:-left-16  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[6.5px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply relative h-6 w-6 border-[1px] p-[2.5px]  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[31px]  md:hover:after:-left-16  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[6.5px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 
   .myListModal {
@@ -96,19 +96,19 @@
   }
 
   .moreInfoButton {
-    @apply relative h-9 w-9 p-1 opacity-70  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[25.5px]  md:hover:after:-left-[28px]  md:hover:after:w-24  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[3px]  md:hover:before:left-[13px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply relative h-9 w-9 p-1 opacity-70  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[24px]  md:hover:after:-left-[28px]  md:hover:after:w-24  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[2px]  md:hover:before:left-[13px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 
   .dropDownButton {
-    @apply relative h-6 w-6 border-[1px] rounded-full p-[1px] opacity-70  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[32px]  md:hover:after:-left-[87px]  md:hover:after:w-52  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply relative h-6 w-6 border-[1px] rounded-full p-[1px] opacity-70  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[31px]  md:hover:after:-left-[87px]  md:hover:after:w-52  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 
   .likeButton {
-    @apply relative h-6 w-6 border-[1px] transition duration-200  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[32px]  md:hover:after:-left-4  md:hover:after:w-14  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9.5px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply relative h-6 w-6 border-[1px] transition duration-200  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[31px]  md:hover:after:-left-4  md:hover:after:w-14  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/95  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 
   .dislikeModal {
-    @apply modalButton disLikeButton h-8 w-8 md:h-11 md:w-11  md:hover:after:text-xl  md:hover:after:py-2  md:hover:after:-top-16  md:hover:before:border-t-[10px]  md:hover:before:border-r-[9px]   md:hover:before:border-l-[9px]  md:hover:before:-top-5  md:hover:before:left-3;
+    @apply modalButton disLikeButton md:hover:transition h-8 w-8 md:h-11 md:w-11  md:hover:after:text-xl  md:hover:after:py-2  md:hover:after:-top-16  md:hover:before:border-t-[10px]  md:hover:before:border-r-[9px]   md:hover:before:border-l-[9px]  md:hover:before:-top-5  md:hover:before:left-3;
   }
 
   .likeModal {
@@ -116,6 +116,6 @@
   }
 
   .disLikeButton {
-    @apply relative opacity-30 h-6 w-6 border-[1px] transition duration-200  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[32px]  md:hover:after:-left-11  md:hover:after:w-28  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/100  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-4  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+    @apply relative opacity-30 h-6 w-6 border-[1px] transition duration-200  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[31px]  md:hover:after:-left-11  md:hover:after:w-28  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/100  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
 }

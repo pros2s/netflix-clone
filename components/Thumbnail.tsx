@@ -34,8 +34,8 @@ import { useMovieButtons } from '../hooks/useMovieButtons';
 
 interface ThumbnailProps {
   movie: Movie | DocumentData;
-  index: number;
-  rowLength: number;
+  index?: number;
+  rowLength?: number;
 }
 
 const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
@@ -89,15 +89,15 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
   return (
     <div
       className={`relative ${index === 0 && 'md:ml-[60px]'} ${
-        index === rowLength - 1 && 'md:!mr-[60px]'
+        index === rowLength! - 1 && 'md:!mr-[60px]'
       } h-28 min-w-[180px] md:cursor-pointer md:min-w-[260px] md:h-36 md:-top-12`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}>
       <Toaster position='bottom-center' />
       {hover ? (
         <div
-          className={`relative h-28 min-w-[180px] cursor-pointer transition duration-300 ease-out md:min-w-[260px] md:h-36  md:hover:h-[270px]  md:hover:scale-[1.5]  md:hover:absolute  md:hover:z-[100]`}>
-          <div className='relative h-[55%]'>
+          className={`relative min-w-[180px] cursor-pointer transition duration-300 ease-out  md:min-w-[260px] md:h-36 md:hover:h-52 md:hover:scale-[1.5] md:hover:absolute md:hover:z-[100]`}>
+          <div className={`relative h-[66%]`}>
             {isPlay ? (
               <ReactPlayer
                 url={`https://www.youtube.com/watch?v=${trailer}`}
@@ -136,11 +136,11 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
             </button>
           </div>
 
-          <div className={`relative bg-[#242424] ${!isShowInfo ? 'h-[19%]' : 'h-[45%]'}`}>
+          <div className={`relative bg-[#242424] ${!isShowInfo ? 'h-[25%]' : 'h-[34%]'}`}>
             <div className='pl-3'>
               <div
                 className={`absolute ${
-                  isShowInfo ? 'h-[20%]' : 'h-[48%]'
+                  isShowInfo ? 'h-[33%]' : 'h-[45%]'
                 } top-1.5 flex w-full items-center justify-between`}>
                 <ul className='flex space-x-2'>
                   <li>
@@ -236,7 +236,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                   </li>
                 )}
 
-                <li className='flex h-3 items-center justify-center rounded border border-white/40 px-1.5 leading-3 text-[9px] font-light'>
+                <li className='flex mt-0 h-3 items-center justify-center rounded border border-white/40 px-1.5 leading-3 text-[9px] font-light'>
                   HD
                 </li>
 
@@ -265,6 +265,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
           src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
           className='object-cover md:rounded'
           layout='fill'
+          width={180}
           priority
           alt={movie?.title || movie?.original_name}
           onClick={handleModal}

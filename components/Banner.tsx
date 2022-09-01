@@ -3,7 +3,7 @@ import { FC, memo, useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
 import { InformationCircleIcon } from '@heroicons/react/solid';
 
-import { baseUrl } from '../constants/movie';
+import { baseUrl } from '../utils/constants/movie';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { openModal } from '../store/slices/modal';
 import { setCurrentMovie } from '../store/slices/movie';

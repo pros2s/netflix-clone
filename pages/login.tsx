@@ -170,6 +170,7 @@ const login: NextPage = () => {
               isCheck={isSignUp && isWeakPassword}
               message='Password should be at least 6 characters'
             />
+            
           </label>
           {isSignUp && (
             <label className='inline-block w-full'>

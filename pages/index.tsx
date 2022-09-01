@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import Plans from '../components/Plans';
-import Header from '../components/Header';
+import Header from '../components/UI/Header';
 import Banner from '../components/Banner';
 import Modal from '../components/Modal';
 import Row from '../components/Row';
@@ -41,7 +41,7 @@ const Home: NextPage<NextPageProps> = ({
   const { loading, user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
-  
+
   const myList = useMovieList(user?.uid, 'myList');
   const liked = useMovieList(user?.uid, 'Liked');
   const disliked = useMovieList(user?.uid, 'Disliked');

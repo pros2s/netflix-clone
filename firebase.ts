@@ -7,8 +7,8 @@ const firebaseConfig = {
   authDomain: 'netflix-clone-fdc19.firebaseapp.com',
   projectId: 'netflix-clone-fdc19',
   storageBucket: 'netflix-clone-fdc19.appspot.com',
-  messagingSenderId: '221169037821',
-  appId: '1:221169037821:web:d847c91508804b771f2994',
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

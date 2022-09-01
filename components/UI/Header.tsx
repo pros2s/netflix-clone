@@ -2,10 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
 import { BellIcon, SearchIcon } from '@heroicons/react/solid';
-import BasicMenu from './UI/BasicMenu';
+import BasicMenu from './BasicMenu';
 
-import netflix from '../assets/netflix.png';
-import account from '../assets/account.png';
+import netflix from '../../assets/netflix.png';
+import account from '../../assets/account.png';
 
 const Header: FC = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const Header: FC = () => {
   }, []);
 
   return (
-    <header className={`h-16 ${isScrolled && 'bg-[#141414]'}`}>
+    <header className={`selection:bg-red-600 selection:text-white h-16 ${isScrolled && 'bg-[#141414]'}`}>
       <div className='flex items-center space-x-2 lg:ml-[49px] md:space-x-10'>
         <Image
           src={netflix}
@@ -36,11 +36,12 @@ const Header: FC = () => {
         <BasicMenu />
 
         <ul className='hidden gap-x-4 md:flex'>
-          <li className='headerLink'>Home</li>
-          <li className='headerLink'>TV Shows</li>
-          <li className='headerLink'>Movies</li>
-          <li className='headerLink'>New & Popular</li>
-          <li className='headerLink'>My List</li>
+          <li className='headerLink'>
+            <Link href='/'>Home</Link>
+          </li>
+          <li className='headerLink'>
+            <Link href='/myList'>My List</Link>
+          </li>
         </ul>
       </div>
 
