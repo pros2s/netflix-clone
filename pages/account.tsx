@@ -20,6 +20,8 @@ import accountIcon from '../assets/account.png';
 import Image from 'next/image';
 import Footer from '../components/UI/Footer';
 
+import membersince from '../assets/membersince.png';
+
 const account: FC = () => {
   const dispatch = useTypedDispatch();
   const { logout } = useAuth();
@@ -71,7 +73,7 @@ const account: FC = () => {
           <div className='flex flex-col gap-x-4 md:flex-row md:items-center'>
             <h1 className='text-3xl md:text-4xl'>Account</h1>
             <div className='-ml-0.5 flex items-center gap-x-1.5'>
-              <img src='https://rb.gy/4vfk4r' alt='' className='h-7 w-7' />
+              <Image src={membersince} alt='membersince' width={28} height={28} />
               <p className='text-xs font-semibold text-[#555]'>Member since {formatDate}</p>
             </div>
           </div>

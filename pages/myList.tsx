@@ -8,6 +8,7 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 import { modalSelector } from '../store/slices/modal';
 import Link from 'next/link';
 import Footer from '../components/UI/Footer';
+import Head from 'next/head';
 
 const myList: FC = () => {
   const { isOpenedModal } = useTypedSelector(modalSelector);
@@ -18,6 +19,10 @@ const myList: FC = () => {
 
   return (
     <div className='relative'>
+      <Head>
+        <title>My List</title>
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
       <Header />
       <main className='flex flex-col items-center selection:bg-red-600 selection:text-white overflow-x-hidden md:pr-8 pt-20 min-h-screen md:pl-4 lg:pl-20 lg:pr-36'>
         <h1 className='text-3xl font-semibold lg:ml-14 mb-5 md:mb-14 lg:mb-16'>
