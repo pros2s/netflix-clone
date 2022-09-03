@@ -46,10 +46,10 @@ const account: FC = () => {
         <Link href='/'>
           <a>
             <Image
+              className='md:cursor-pointer'
               src={netflix}
               width={120}
-              height={46}
-              className='cursor-pointer object-contain'
+              height={35}
               alt='logo'
             />
           </a>

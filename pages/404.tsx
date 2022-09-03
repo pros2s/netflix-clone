@@ -8,7 +8,7 @@ const NotFound: FC = () => {
   return (
     <div className='flex h-screen w-screen flex-col bg-black items-center justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <div className='absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6'>
-        <Image src={netflix} alt='icon' width={150} height={50} />
+        <Image className='md:cursor-pointer' src={netflix} alt='icon' width={150} height={50} />
       </div>
 
       <div className='flex flex-col md:flex-row'>

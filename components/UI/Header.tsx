@@ -30,11 +30,11 @@ const Header: FC = () => {
       className={`selection:bg-red-600 selection:text-white h-16 ${isScrolled && 'bg-[#141414]'}`}>
       <div className='flex items-center space-x-2 lg:ml-[49px] md:space-x-10'>
         <Image
+          className='md:cursor-pointer'
           src={netflix}
           alt='logo'
-          width={100}
-          height={100}
-          className='cursor-pointer object-contain'
+          width={120}
+          height={35}
         />
 
         {loading && <Loader color='dark:fill-red-600' />}

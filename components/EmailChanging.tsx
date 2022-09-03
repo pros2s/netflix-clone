@@ -1,13 +1,17 @@
 import { ChangeEvent, FC, MouseEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 import { loginIsNotChanging } from '../store/slices/privateSettings';
+
 import Loader from './UI/Loader';
 import ErrorMessage from './UI/ErrorMessage';
+
+import netflix from '../assets/netflix.png';
 
 const EmailChanging: FC = () => {
   const dispatch = useTypedDispatch();
@@ -75,13 +79,7 @@ const EmailChanging: FC = () => {
 
       <header className='border-b border-white/10 bg-[#141414]'>
         <Link href='/'>
-          <img
-            src='https://rb.gy/ulxxee'
-            alt='Netflix'
-            width={150}
-            height={90}
-            className='cursor-pointer object-contain'
-          />
+          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={33} />
         </Link>
       </header>
 

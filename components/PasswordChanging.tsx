@@ -1,14 +1,19 @@
 import { ChangeEvent, FC, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
 import Head from 'next/head';
 import Link from 'next/link';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
-import { passwordIsChanging, passwordIsNotChanging } from '../store/slices/privateSettings';
+import { passwordIsNotChanging } from '../store/slices/privateSettings';
+
 import Loader from './UI/Loader';
 import ErrorMessage from './UI/ErrorMessage';
+
+import netflix from '../assets/netflix.png';
 
 interface Passwords {
   repeatNewPassword: string;
@@ -89,13 +94,7 @@ const PasswordChanging: FC = () => {
 
       <header className='border-b border-white/10 bg-[#141414]'>
         <Link href='/'>
-          <img
-            src='https://rb.gy/ulxxee'
-            alt='Netflix'
-            width={150}
-            height={90}
-            className='cursor-pointer object-contain'
-          />
+          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={33} />
         </Link>
       </header>
 

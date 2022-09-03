@@ -6,17 +6,17 @@ import Header from '../components/UI/Header';
 import Banner from '../components/Banner';
 import Modal from '../components/Modal';
 import Row from '../components/Row';
+import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector } from '../store/slices/sutbscription';
 import { modalSelector } from '../store/slices/modal';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import useAuth from '../hooks/useAuth';
 import { useMovieList } from '../hooks/useMovieList';
+import useAuth from '../hooks/useAuth';
 
 import requests from '../utils/requests';
 import { Movie } from '../types';
-import Footer from '../components/UI/Footer';
 
 interface NextPageProps {
   netflixOriginals: Movie[];

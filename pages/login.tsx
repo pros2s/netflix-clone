@@ -5,14 +5,16 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import useAuth from '../hooks/useAuth';
 import Loader from '../components/UI/Loader';
-import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
-
-import netflix from '../assets/netflix.png';
 import ErrorMessage from '../components/UI/ErrorMessage';
 import Footer from '../components/UI/Footer';
+
+import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
+
+import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import useAuth from '../hooks/useAuth';
+
+import netflix from '../assets/netflix.png';
 
 interface Inputs {
   email: string;
@@ -121,12 +123,12 @@ const login: NextPage = () => {
         src='https://rb.gy/p2hphi'
         layout='fill'
         objectFit='cover'
-        className='-z-10 !hidden opacity-60 sm:!inline'
+        className='-z-10 !hidden opacity-60 sm:!inline md:cursor-pointer'
         alt='wallpaper'
       />
 
       <div className='absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6'>
-        <Image src={netflix} alt='icon' width={150} height={50} />
+        <Image className='md:cursor-pointer' src={netflix} alt='icon' width={150} height={35} />
       </div>
 
       <form

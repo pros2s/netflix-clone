@@ -1,13 +1,14 @@
 import { FC, useCallback, useState } from 'react';
+import { CheckIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
 import Link from 'next/link';
-import { CheckIcon } from '@heroicons/react/outline';
+
 import PlanTable from './PlanTable';
 
-import { Plan } from '../types';
-import { subsBenefits, subsPlans } from '../utils/subscription';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import { useTypedSelector } from '../hooks/useTypedSelector';
 import useAuth from '../hooks/useAuth';
+
 import {
   subscriptionSelector,
   userCurrentPlan,
@@ -15,7 +16,12 @@ import {
   userPlanStartDate,
   userSubscribed,
 } from '../store/slices/sutbscription';
-import { useTypedSelector } from '../hooks/useTypedSelector';
+
+import { Plan } from '../types';
+import { subsBenefits, subsPlans } from '../utils/subscription';
+
+import netflix from '../assets/netflix.png';
+import Image from 'next/image';
 
 const Plans: FC = () => {
   const dispatch = useTypedDispatch();
@@ -42,13 +48,7 @@ const Plans: FC = () => {
       </Head>
       <header className='border-b border-white/10 bg-[#141414]'>
         <Link href='/'>
-          <img
-            src='https://rb.gy/ulxxee'
-            alt='Netflix'
-            width={150}
-            height={90}
-            className='cursor-pointer object-contain'
-          />
+          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={33} />
         </Link>
         <button className='text-lg font-medium md:hover:underline' onClick={logout}>
           Sign Out
