@@ -14,15 +14,18 @@ const Row: FC<RowProps> = ({ movies, title }) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState<boolean>(false);
 
-  const handleClick = useCallback((direction: string) => {
-    setIsMoved(true);
+  const handleClick = useCallback(
+    (direction: string) => {
+      setIsMoved(true);
 
-    const { scrollLeft, clientWidth } = rowRef.current!;
+      const { scrollLeft, clientWidth } = rowRef.current!;
 
-    const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
 
-    rowRef.current?.scrollTo({ left: scrollTo, behavior: 'smooth' });
-  }, [isMoved]);
+      rowRef.current?.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    },
+    [isMoved],
+  );
 
   return (
     <>
@@ -43,7 +46,7 @@ const Row: FC<RowProps> = ({ movies, title }) => {
 
             <div
               ref={rowRef}
-              className='flex overflow-y-hidden items-center space-x-3 overflow-x-scroll scrollbar-hide md:h-80 md:-mx-[60px] md:space-x-5'>
+              className='flex overflow-y-hidden items-center space-x-0.5 overflow-x-scroll scrollbar-hide md:h-80 md:-mx-[60px]'>
               {movies.map((movie, i) => (
                 <Thumbnail key={movie.id} movie={movie} index={i} rowLength={movies.length} />
               ))}

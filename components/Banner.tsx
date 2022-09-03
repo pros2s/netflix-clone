@@ -27,6 +27,7 @@ const Banner: FC<BannerProps> = memo(({ netflixOriginals }) => {
         <Image
           src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
           layout='fill'
+          priority
           objectFit='cover'
         />
       </div>

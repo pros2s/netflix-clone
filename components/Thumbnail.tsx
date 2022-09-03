@@ -267,7 +267,6 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
           src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
           className='object-cover md:rounded'
           layout='fill'
-          width={180}
           priority
           alt={movie?.title || movie?.original_name}
           onClick={handleModal}
