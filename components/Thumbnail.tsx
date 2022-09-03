@@ -212,7 +212,9 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                     data-text={`${
                       isShowInfo ? 'Hide release date & genres' : 'Show release date & genres'
                     }`}
-                    className='dropDownButton'
+                    className={`dropDownButton ${
+                      index === rowLength! - 1 && 'md:hover:after:-left-[170px]'
+                    }`}
                     onClick={() => setIsShowInfo((state) => !state)}>
                     <ChevronLeftIcon
                       className={`transition duration-200 ${
