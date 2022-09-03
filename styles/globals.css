@@ -118,4 +118,9 @@
   .disLikeButton {
     @apply relative opacity-30 h-6 w-6 border-[1px] transition duration-200  md:hover:opacity-100  md:hover:after:content-[attr(data-text)]  md:hover:after:absolute  md:hover:after:-top-[31px]  md:hover:after:-left-11  md:hover:after:w-28  md:hover:after:text-black/95  md:hover:after:font-bold  md:hover:after:text-sm  md:hover:after:bg-white/100  md:hover:after:py-0.5  md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[7px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[5px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
   }
+
+  /* Footer */
+  .footerIcon {
+    @apply relative  text-[#cacaca] md:hover:text-white transition duration-200 md:hover:after:content-[attr(data-text)] md:hover:after:absolute md:hover:after:-top-[35px] md:hover:after:-left-11 md:hover:after:w-28  md:hover:after:text-black/95 md:hover:after:font-bold md:hover:after:text-sm md:hover:after:bg-white/100 md:hover:after:py-1 md:hover:after:px-3  md:hover:after:rounded-md  md:hover:before:absolute  md:hover:before:-top-[9px]  md:hover:before:left-[5px]  md:hover:before:border-l-4  md:hover:before:border-l-transparent  md:hover:before:border-t-[7px]  md:hover:before:border-t-white/95  md:hover:before:border-r-4  md:hover:before:border-r-transparent;
+  }
 }

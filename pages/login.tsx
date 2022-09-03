@@ -12,6 +12,7 @@ import { useTypedDispatch } from '../hooks/useTypedDispatch';
 
 import netflix from '../assets/netflix.png';
 import ErrorMessage from '../components/UI/ErrorMessage';
+import Footer from '../components/UI/Footer';
 
 interface Inputs {
   email: string;
@@ -170,7 +171,6 @@ const login: NextPage = () => {
               isCheck={isSignUp && isWeakPassword}
               message='Password should be at least 6 characters'
             />
-            
           </label>
           {isSignUp && (
             <label className='inline-block w-full'>
@@ -206,6 +206,7 @@ const login: NextPage = () => {
           </button>
         </div>
       </form>
+      <Footer isAbsolute={true} />
     </div>
   );
 };

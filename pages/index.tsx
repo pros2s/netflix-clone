@@ -16,6 +16,7 @@ import { useMovieList } from '../hooks/useMovieList';
 
 import requests from '../utils/requests';
 import { Movie } from '../types';
+import Footer from '../components/UI/Footer';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -60,7 +61,7 @@ const Home: NextPage<NextPageProps> = ({
       </Head>
 
       <Header />
-      <main className='relative overflow-hidden pl-4 pb-24 lg:space-y-24 lg:px-16'>
+      <main className='relative overflow-hidden pl-4 md:space-y-24 lg:px-16'>
         <Banner netflixOriginals={netflixOriginals} />
         <section className='md:space-y-32'>
           <Row title='Trending Now' movies={trendingNow} />
@@ -79,6 +80,7 @@ const Home: NextPage<NextPageProps> = ({
         </section>
 
         {isOpenedModal && <Modal />}
+        <Footer />
       </main>
     </div>
   );
