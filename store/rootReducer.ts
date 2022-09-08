@@ -6,6 +6,7 @@ import modalReducer from './slices/modal';
 import movieReducer from './slices/movie';
 import subscriptionReducer from './slices/sutbscription';
 import privateSettingsReducer from './slices/privateSettings';
+import searchReducer from './slices/search';
 
 const persistConfig = {
   key: 'root',
@@ -18,6 +19,7 @@ export const rootReducer = combineReducers({
   movie: movieReducer,
   subscription: subscriptionReducer,
   privateSettings: privateSettingsReducer,
+  search: searchReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

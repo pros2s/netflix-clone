@@ -92,11 +92,13 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
         index === rowLength! - 1 && 'md:!mr-[60px]'
       } h-28 min-w-[180px] md:cursor-pointer md:min-w-[260px] md:h-36 md:-top-12`}
       onMouseEnter={onHover}
-      onMouseLeave={onLeave}>
+      onMouseLeave={onLeave}
+    >
       <Toaster position='bottom-center' />
       {hover ? (
         <div
-          className={`relative min-w-[180px] cursor-pointer transition duration-300 ease-out  md:min-w-[260px] md:h-36 md:hover:h-52 md:hover:scale-[1.5] md:hover:absolute md:hover:z-[100]`}>
+          className={`relative min-w-[180px] cursor-pointer transition duration-300 ease-out  md:min-w-[260px] md:h-36 md:hover:h-52 md:hover:scale-[1.5] md:hover:absolute md:hover:z-[100]`}
+        >
           <div className={`relative h-[70%]`}>
             {isPlay ? (
               <ReactPlayer
@@ -127,7 +129,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
               className={`muteButton ${
                 isMutedVideo ? 'hover:after:-left-7' : 'hover:after:-left-5'
               }`}
-              onClick={() => dispatch(toggleMuteVideo())}>
+              onClick={() => dispatch(toggleMuteVideo())}
+            >
               {isMutedVideo ? (
                 <VolumeOffIcon className='h-4 w-4' />
               ) : (
@@ -141,12 +144,14 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
               <div
                 className={`absolute ${
                   isShowInfo ? 'h-[35%]' : 'h-[41%]'
-                } top-1.5 flex w-full items-center justify-between`}>
+                } top-1.5 flex w-full items-center justify-between`}
+              >
                 <ul className='flex space-x-2'>
                   <li>
                     <button
                       data-text='Play'
-                      className={`playButton ${index === 0 && 'hover:after:-left-2'}`}>
+                      className={`playButton ${index === 0 && 'hover:after:-left-2'}`}
+                    >
                       <FaPlay className='text-black pl-0.5 h-4 w-4' />
                     </button>
                   </li>
@@ -161,7 +166,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                               index === 0 ? 'hover:after:-left-10' : 'hover:after:-left-12'
                             }`
                       }`}
-                      onClick={() => handleMovieList(user, isMovieAdded, movie, 'myList', 'list')}>
+                      onClick={() => handleMovieList(user, isMovieAdded, movie, 'myList', 'list')}
+                    >
                       {isMovieAdded ? <CheckIcon /> : <PlusIcon />}
                     </button>
                   </li>
@@ -174,7 +180,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                       } ${isShowInfo && !isLiked && 'scale-110 border-white/80'} ${
                         isLiked && 'border-white'
                       }`}
-                      onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}>
+                      onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}
+                    >
                       {isLiked ? (
                         <MdThumbUpAlt className='text-white md:hover:text-white/80' />
                       ) : (
@@ -197,7 +204,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                       }`}
                       onClick={() =>
                         handleMovieList(user, isDisliked, movie, 'Disliked', 'disliked')
-                      }>
+                      }
+                    >
                       {isDisliked ? <MdThumbDownAlt /> : <MdOutlineThumbDownOffAlt />}
                     </button>
                   </li>
@@ -215,7 +223,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                     className={`dropDownButton ${
                       index === rowLength! - 1 && 'md:hover:after:-left-[170px]'
                     }`}
-                    onClick={() => setIsShowInfo((state) => !state)}>
+                    onClick={() => setIsShowInfo((state) => !state)}
+                  >
                     <ChevronLeftIcon
                       className={`transition duration-200 ${
                         isShowInfo ? 'rotate-90' : '-rotate-90'
