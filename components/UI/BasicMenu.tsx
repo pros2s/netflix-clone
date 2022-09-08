@@ -39,6 +39,12 @@ const BasicMenu: FC = () => {
         <Link href='/myList'>
           <MenuItem>My List</MenuItem>
         </Link>
+        <Link href='/liked'>
+          <MenuItem>Liked</MenuItem>
+        </Link>
+        <Link href='/disliked'>
+          <MenuItem>Disliked</MenuItem>
+        </Link>
       </Menu>
     </div>
   );

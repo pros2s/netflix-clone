@@ -29,13 +29,7 @@ const Header: FC = () => {
     <header
       className={`selection:bg-red-600 selection:text-white h-16 ${isScrolled && 'bg-[#141414]'}`}>
       <div className='flex items-center space-x-2 lg:ml-[49px] md:space-x-10'>
-        <Image
-          className='md:cursor-pointer'
-          src={netflix}
-          alt='logo'
-          width={120}
-          height={35}
-        />
+        <Image className='md:cursor-pointer' src={netflix} alt='logo' width={120} height={35} />
 
         {loading && <Loader color='dark:fill-red-600' />}
         <BasicMenu />
@@ -46,6 +40,12 @@ const Header: FC = () => {
           </li>
           <li className='headerLink'>
             <Link href='/myList'>My List</Link>
+          </li>
+          <li className='headerLink'>
+            <Link href='/liked'>Liked</Link>
+          </li>
+          <li className='headerLink'>
+            <Link href='/disliked'>Disliked</Link>
           </li>
         </ul>
       </div>
