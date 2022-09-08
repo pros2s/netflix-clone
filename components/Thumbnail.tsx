@@ -97,7 +97,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
       {hover ? (
         <div
           className={`relative min-w-[180px] cursor-pointer transition duration-300 ease-out  md:min-w-[260px] md:h-36 md:hover:h-52 md:hover:scale-[1.5] md:hover:absolute md:hover:z-[100]`}>
-          <div className={`relative h-[66%]`}>
+          <div className={`relative h-[70%]`}>
             {isPlay ? (
               <ReactPlayer
                 url={`https://www.youtube.com/watch?v=${trailer}`}
@@ -136,11 +136,11 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
             </button>
           </div>
 
-          <div className={`relative bg-[#242424] ${!isShowInfo ? 'h-[25%]' : 'h-[34%]'}`}>
+          <div className={`relative bg-[#242424] ${!isShowInfo ? 'h-[25%]' : 'h-[30%]'}`}>
             <div className='pl-3'>
               <div
                 className={`absolute ${
-                  isShowInfo ? 'h-[33%]' : 'h-[45%]'
+                  isShowInfo ? 'h-[35%]' : 'h-[41%]'
                 } top-1.5 flex w-full items-center justify-between`}>
                 <ul className='flex space-x-2'>
                   <li>
@@ -156,7 +156,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                       data-text={`${isMovieAdded ? 'Remove from my list' : 'Add to my list'}`}
                       className={`modalButton myListButton ${
                         isMovieAdded
-                          ? `hover:after:w-[152px] ${index === 0 && 'hover:after:-left-10'}`
+                          ? `hover:after:w-44 ${index === 0 && 'hover:after:-left-10'}`
                           : `hover:after:w-32  ${
                               index === 0 ? 'hover:after:-left-10' : 'hover:after:-left-12'
                             }`
@@ -225,7 +225,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                 </div>
               </div>
 
-              <ul className='absolute top-9 flex items-center space-x-2 text-[10px]'>
+              <ul className='absolute top-[31px] flex items-center space-x-2 text-[10px]'>
                 {isShowInfo && (
                   <li className='font-semibold text-green-400 transition duration-300'>
                     {(movie!.vote_average * 10).toFixed(2)}% Match
@@ -250,7 +250,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
               </ul>
 
               {isShowInfo && (
-                <ul className='absolute top-[50px] flex items-center text-[9px] text-[#c5c5c5] font-extralight transition duration-300'>
+                <ul className='absolute top-[48px] flex items-center text-[9px] text-[#c5c5c5] font-extralight transition duration-300'>
                   {genres.map((genre, i) => (
                     <li key={genre.id} className='mr-1.5'>
                       {genre.name}
