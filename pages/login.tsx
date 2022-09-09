@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { MouseEvent, useCallback, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import type { NextPage } from 'next';
@@ -26,8 +26,13 @@ const login: NextPage = () => {
   const dispatch = useTypedDispatch();
   const { signIn, signUp, loading } = useAuth();
 
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const eqPasswordRef = useRef<HTMLInputElement>(null);
+
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showEqPassword, setShowEqPassword] = useState<boolean>(false);
 
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [isPassword, setIsPassword] = useState<boolean>(false);
@@ -161,8 +166,8 @@ const login: NextPage = () => {
       >
         <h1 className='text-4xl font-semibold'>{isSignIn ? 'Sign In' : 'Sign Up'}</h1>
         <div className='space-y-4'>
-          <label className='inline-block w-full group'>
-            <div className='relative'>
+          <label className='inline-block w-full'>
+            <div className='relative group'>
               <input
                 type='email'
                 id='emailInput'
@@ -176,6 +181,7 @@ const login: NextPage = () => {
                 Email
               </label>
             </div>
+
             <ErrorMessage isCheck={!!errors.email} message='Please enter a valid email.' />
             <ErrorMessage
               isCheck={isExistEmail && isSignUp}
@@ -186,10 +192,11 @@ const login: NextPage = () => {
               message='Email does not exist. Please enter a correct email.'
             />
           </label>
-          <label className='inline-block w-full group'>
-            <div className='relative'>
+
+          <label className='inline-block w-full'>
+            <div ref={passwordRef} className='relative group'>
               <input
-                type='password'
+                type={showPassword ? 'text' : 'password'}
                 id='passwordInput'
                 className='input'
                 {...register('password', passwordValidation)}
@@ -200,7 +207,19 @@ const login: NextPage = () => {
               >
                 Password
               </label>
+
+              <button
+                type='button'
+                className='opacity-0 pointer-events-none transition-opacity absolute top-3 right-3 text-[darkgray] uppercase group-focus-within:opacity-100 group-focus-within:pointer-events-auto'
+                onClick={() => {
+                  passwordRef.current?.click();
+                  setShowPassword((state) => !state);
+                }}
+              >
+                {showPassword ? 'hide' : 'show'}
+              </button>
             </div>
+
             <ErrorMessage
               isCheck={!!errors.password}
               message='Your password must contain between 6 and 60 characters.'
@@ -215,10 +234,10 @@ const login: NextPage = () => {
             />
           </label>
           {isSignUp && (
-            <label className='inline-block w-full group'>
-              <div className='relative'>
+            <label className='inline-block w-full'>
+              <div ref={eqPasswordRef} className='relative group'>
                 <input
-                  type='password'
+                  type={showEqPassword ? 'text' : 'password'}
                   id='equalpassword'
                   className='input'
                   {...register('equalPassword', equalPasswordValidation)}
@@ -230,7 +249,19 @@ const login: NextPage = () => {
                 >
                   Repeat password
                 </label>
+
+                <button
+                  type='button'
+                  className='opacity-0 pointer-events-none absolute top-3 right-3 transition-opacity text-[darkgray] uppercase group-focus-within:opacity-100 group-focus-within:pointer-events-auto'
+                  onClick={() => {
+                    eqPasswordRef.current?.click();
+                    setShowEqPassword((state) => !state);
+                  }}
+                >
+                  {showEqPassword ? 'hide' : 'show'}
+                </button>
               </div>
+
               <ErrorMessage
                 isCheck={!!errors.equalPassword}
                 message='Your password must contain between 6 and 60 characters.'
