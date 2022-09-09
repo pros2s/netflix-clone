@@ -16,7 +16,7 @@ import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbsc
 import { privateSettingsSelector } from '../store/slices/privateSettings';
 
 import netflix from '../assets/netflix.png';
-import accountIcon from '../assets/account.png';
+import accountIcon from '../assets/icons/yellow.png';
 import Image from 'next/image';
 import Footer from '../components/UI/Footer';
 
@@ -45,13 +45,7 @@ const account: FC = () => {
       <header className='bg-[#141414]'>
         <Link href='/'>
           <a>
-            <Image
-              className='md:cursor-pointer'
-              src={netflix}
-              width={120}
-              height={35}
-              alt='logo'
-            />
+            <Image className='md:cursor-pointer' src={netflix} width={120} height={35} alt='logo' />
           </a>
         </Link>
 
@@ -85,7 +79,8 @@ const account: FC = () => {
             <p className='col-span-2 font-medium'>{plan?.name}</p>
             <button
               className='cursor-pointer text-blue-500 md:hover:underline md:text-right'
-              onClick={() => dispatch(userIsChangingPlan())}>
+              onClick={() => dispatch(userIsChangingPlan())}
+            >
               Change plan
             </button>
           </div>
@@ -94,7 +89,8 @@ const account: FC = () => {
             <h4 className='text-lg text-[gray]'>Settings</h4>
             <button
               className='text-start col-span-3 cursor-pointer text-blue-500 md:hover:underline'
-              onClick={logout}>
+              onClick={logout}
+            >
               Sign out of all devices
             </button>
           </div>

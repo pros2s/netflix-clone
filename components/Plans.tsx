@@ -71,7 +71,8 @@ const Plans: FC = () => {
               <div
                 className={`planBox ${selectedPlan?.id === plan.id ? 'opacity-100' : 'opacity-60'}`}
                 key={plan.id}
-                onClick={() => setSelectedPlan(plan)}>
+                onClick={() => setSelectedPlan(plan)}
+              >
                 {plan.name}
               </div>
             ))}
@@ -84,7 +85,8 @@ const Plans: FC = () => {
             className={`mx-auto w-11/12 cursor-pointer rounded bg-[#E50914] py-4 text-xl shadow md:hover:bg-[#f6121d] md:w-[420px] ${
               !selectedPlan && 'opacity-60 cursor-default md:hover:bg-[#E50914]'
             }`}
-            onClick={subscribeToPlan}>
+            onClick={subscribeToPlan}
+          >
             {isChangingPlan ? 'Change plan' : 'Subscribe'}
           </button>
           {isChangingPlan && (

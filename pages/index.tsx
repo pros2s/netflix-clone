@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
+import ChoosingIcon from '../components/ChosingIcon';
 import Plans from '../components/Plans';
 import Header from '../components/UI/Header';
 import Banner from '../components/Banner';
@@ -10,6 +11,7 @@ import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector } from '../store/slices/sutbscription';
 import { modalSelector } from '../store/slices/modal';
+import { profilesSelector } from '../store/slices/profiles';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useMovieList } from '../hooks/useMovieList';
@@ -42,19 +44,22 @@ const Home: NextPage<NextPageProps> = ({
   const { loading, user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
+  const { choosing } = useTypedSelector(profilesSelector);
 
   const myList = useMovieList(user?.uid, 'myList');
   const liked = useMovieList(user?.uid, 'Liked');
   const disliked = useMovieList(user?.uid, 'Disliked');
 
   if (loading) return null;
+  if (choosing) return <ChoosingIcon />;
   if (!isSubscription) return <Plans />;
 
   return (
     <div
       className={`relative h-screen bg-gradient-to-b lg:h-[140vh] selection:bg-red-600 selection:text-white ${
         isOpenedModal && 'overflow-hidden h-screen'
-      }`}>
+      }`}
+    >
       <Head>
         <title>Home - Netflix</title>
         <link rel='icon' href='/favicon.ico' />

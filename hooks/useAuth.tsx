@@ -13,9 +13,9 @@ import {
   User,
 } from 'firebase/auth';
 
-import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
+import { loginIsChanging } from '../store/slices/privateSettings';
 import { useTypedDispatch } from './useTypedDispatch';
-import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 interface IAuth {
   user: User | null;

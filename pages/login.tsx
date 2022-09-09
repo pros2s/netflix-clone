@@ -10,6 +10,7 @@ import ErrorMessage from '../components/UI/ErrorMessage';
 import Footer from '../components/UI/Footer';
 
 import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
+import { addNewProfile, choosingIcon, setCurrentProfile } from '../store/slices/profiles';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import useAuth from '../hooks/useAuth';
@@ -20,6 +21,7 @@ interface Inputs {
   email: string;
   password: string;
   equalPassword: string;
+  username: string;
 }
 
 const login: NextPage = () => {
@@ -31,12 +33,14 @@ const login: NextPage = () => {
 
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showEqPassword, setShowEqPassword] = useState<boolean>(false);
 
-  const [isEmail, setIsEmail] = useState<boolean>(false);
-  const [isPassword, setIsPassword] = useState<boolean>(false);
-  const [isEqPasswords, setIsEqPasswords] = useState<boolean>(false);
+  const [usernameValue, setUsernameValue] = useState<string>('');
+  const [emailValue, setEmailValue] = useState<string>('');
+  const [passwordValue, setPasswordValue] = useState<string>('');
+  const [equalPasswordValue, setEqualPasswordValue] = useState<string>('');
 
   const [isEqualPasswords, setIsEqualPasswords] = useState<boolean>(true);
   const [isWrongPassword, setIsWrongPassword] = useState<boolean>(false);
@@ -52,17 +56,21 @@ const login: NextPage = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  let emailValue = getValues('email');
-  let passwordValue = getValues('password');
-  let equalPasswordValue = getValues('equalPassword');
+  const usernameValidation = {
+    min: 2,
+    max: 20,
+    required: true,
+    onChange: () => {
+      setUsernameValue(getValues('username'));
+    },
+  };
 
   const emailValidation = {
     required: true,
     pattern:
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     onChange: () => {
-      emailValue = getValues('email');
-      emailValue ? setIsEmail(true) : setIsEmail(false);
+      setEmailValue(getValues('email'));
       setIsExistEmail(false);
       setIsExistUser(true);
     },
@@ -73,8 +81,7 @@ const login: NextPage = () => {
     max: 60,
     required: true,
     onChange: () => {
-      passwordValue = getValues('password');
-      passwordValue ? setIsPassword(true) : setIsPassword(false);
+      setPasswordValue(getValues('password'));
       setIsWrongPassword(false);
       setIsWeakPassword(false);
     },
@@ -83,8 +90,7 @@ const login: NextPage = () => {
   const equalPasswordValidation = {
     required: true,
     onChange: () => {
-      equalPasswordValue = getValues('equalPassword');
-      equalPasswordValue ? setIsEqPasswords(true) : setIsEqPasswords(false);
+      setEqualPasswordValue(getValues('equalPassword'));
       setIsEqualPasswords(true);
     },
   };
@@ -131,11 +137,14 @@ const login: NextPage = () => {
             }
           });
           setIsEqualPasswords(true);
+          dispatch(addNewProfile(data.username));
+          dispatch(setCurrentProfile(data.username.toLocaleLowerCase()));
         } else {
           setIsEqualPasswords(false);
         }
 
         dispatch(userUnsubscribed());
+        dispatch(choosingIcon());
       }
     },
     [isSignIn, isSignUp],
@@ -162,10 +171,35 @@ const login: NextPage = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className='relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14'
+        className='relative mt-24 space-y-5 rounded bg-black/75 py-8 px-6 md:mt-0 md:max-w-md md:px-14'
       >
         <h1 className='text-4xl font-semibold'>{isSignIn ? 'Sign In' : 'Sign Up'}</h1>
         <div className='space-y-4'>
+          {isSignUp && (
+            <label className='inline-block w-full'>
+              <div ref={eqPasswordRef} className='relative group'>
+                <input
+                  type='text'
+                  id='username'
+                  className='input'
+                  {...register('username', usernameValidation)}
+                />
+
+                <label
+                  htmlFor='username'
+                  className={`placeholder ${usernameValue ? 'placeholderIn' : 'placeholderOut'}`}
+                >
+                  Your name
+                </label>
+              </div>
+
+              <ErrorMessage
+                isCheck={!!errors.username}
+                message='Your name must contain between 2 and 20 characters.'
+              />
+            </label>
+          )}
+
           <label className='inline-block w-full'>
             <div className='relative group'>
               <input
@@ -176,7 +210,7 @@ const login: NextPage = () => {
               />
               <label
                 htmlFor='emailInput'
-                className={`placeholder ${isEmail ? 'placeholderIn' : 'placeholderOut'}`}
+                className={`placeholder ${emailValue ? 'placeholderIn' : 'placeholderOut'}`}
               >
                 Email
               </label>
@@ -189,7 +223,7 @@ const login: NextPage = () => {
             />
             <ErrorMessage
               isCheck={!isExistUser && isSignIn}
-              message='Email does not exist. Please enter a correct email.'
+              message='Email does not exist. Please enter a correct email or create a new account.'
             />
           </label>
 
@@ -203,7 +237,7 @@ const login: NextPage = () => {
               />
               <label
                 htmlFor='passwordInput'
-                className={`placeholder ${isPassword ? 'placeholderIn' : 'placeholderOut'}`}
+                className={`placeholder ${passwordValue ? 'placeholderIn' : 'placeholderOut'}`}
               >
                 Password
               </label>
@@ -245,7 +279,9 @@ const login: NextPage = () => {
 
                 <label
                   htmlFor='equalpassword'
-                  className={`placeholder ${isEqPasswords ? 'placeholderIn' : 'placeholderOut'}`}
+                  className={`placeholder ${
+                    equalPasswordValue ? 'placeholderIn' : 'placeholderOut'
+                  }`}
                 >
                   Repeat password
                 </label>
