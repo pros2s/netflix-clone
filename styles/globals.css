@@ -18,7 +18,19 @@
   }
 
   .input {
-    @apply w-full rounded bg-[#333] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#454545];
+    @apply w-full rounded bg-[#333] px-2.5 pt-[22px] pb-1.5 outline-none focus:bg-[#454545];
+  }
+
+  .placeholder {
+    @apply absolute text-[gray] transition-all pointer-events-none;
+  }
+
+  .placeholderIn {
+    @apply top-1 left-2 text-[darkgray] text-sm;
+  }
+
+  .placeholderOut {
+    @apply left-4 top-3.5 group-focus-within:text-sm group-focus-within:text-[darkgray] group-focus-within:left-2 group-focus-within:top-1;
   }
 
   .bannerButton {

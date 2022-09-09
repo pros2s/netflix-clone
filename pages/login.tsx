@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import type { NextPage } from 'next';
@@ -24,8 +24,14 @@ interface Inputs {
 
 const login: NextPage = () => {
   const dispatch = useTypedDispatch();
+  const { signIn, signUp, loading } = useAuth();
+
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
+  const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [isPassword, setIsPassword] = useState<boolean>(false);
+  const [isEqPasswords, setIsEqPasswords] = useState<boolean>(false);
 
   const [isEqualPasswords, setIsEqualPasswords] = useState<boolean>(true);
   const [isWrongPassword, setIsWrongPassword] = useState<boolean>(false);
@@ -34,18 +40,24 @@ const login: NextPage = () => {
   const [isExistEmail, setIsExistEmail] = useState<boolean>(false);
   const [isExistUser, setIsExistUser] = useState<boolean>(true);
 
-  const { signIn, signUp, loading } = useAuth();
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>();
+
+  let emailValue = getValues('email');
+  let passwordValue = getValues('password');
+  let equalPasswordValue = getValues('equalPassword');
 
   const emailValidation = {
     required: true,
     pattern:
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     onChange: () => {
+      emailValue = getValues('email');
+      emailValue ? setIsEmail(true) : setIsEmail(false);
       setIsExistEmail(false);
       setIsExistUser(true);
     },
@@ -56,8 +68,19 @@ const login: NextPage = () => {
     max: 60,
     required: true,
     onChange: () => {
+      passwordValue = getValues('password');
+      passwordValue ? setIsPassword(true) : setIsPassword(false);
       setIsWrongPassword(false);
       setIsWeakPassword(false);
+    },
+  };
+
+  const equalPasswordValidation = {
+    required: true,
+    onChange: () => {
+      equalPasswordValue = getValues('equalPassword');
+      equalPasswordValue ? setIsEqPasswords(true) : setIsEqPasswords(false);
+      setIsEqualPasswords(true);
     },
   };
 
@@ -134,16 +157,25 @@ const login: NextPage = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className='relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14'>
+        className='relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14'
+      >
         <h1 className='text-4xl font-semibold'>{isSignIn ? 'Sign In' : 'Sign Up'}</h1>
         <div className='space-y-4'>
-          <label className='inline-block w-full'>
-            <input
-              type='email'
-              placeholder='Email'
-              className='input'
-              {...register('email', emailValidation)}
-            />
+          <label className='inline-block w-full group'>
+            <div className='relative'>
+              <input
+                type='email'
+                id='emailInput'
+                className='input'
+                {...register('email', emailValidation)}
+              />
+              <label
+                htmlFor='emailInput'
+                className={`placeholder ${isEmail ? 'placeholderIn' : 'placeholderOut'}`}
+              >
+                Email
+              </label>
+            </div>
             <ErrorMessage isCheck={!!errors.email} message='Please enter a valid email.' />
             <ErrorMessage
               isCheck={isExistEmail && isSignUp}
@@ -154,13 +186,21 @@ const login: NextPage = () => {
               message='Email does not exist. Please enter a correct email.'
             />
           </label>
-          <label className='inline-block w-full'>
-            <input
-              type='password'
-              placeholder='Password'
-              className='input'
-              {...register('password', passwordValidation)}
-            />
+          <label className='inline-block w-full group'>
+            <div className='relative'>
+              <input
+                type='password'
+                id='passwordInput'
+                className='input'
+                {...register('password', passwordValidation)}
+              />
+              <label
+                htmlFor='passwordInput'
+                className={`placeholder ${isPassword ? 'placeholderIn' : 'placeholderOut'}`}
+              >
+                Password
+              </label>
+            </div>
             <ErrorMessage
               isCheck={!!errors.password}
               message='Your password must contain between 6 and 60 characters.'
@@ -175,16 +215,22 @@ const login: NextPage = () => {
             />
           </label>
           {isSignUp && (
-            <label className='inline-block w-full'>
-              <input
-                type='password'
-                placeholder='Repeat password'
-                className='input'
-                {...register('equalPassword', {
-                  required: true,
-                  onChange: () => setIsEqualPasswords(true),
-                })}
-              />
+            <label className='inline-block w-full group'>
+              <div className='relative'>
+                <input
+                  type='password'
+                  id='equalpassword'
+                  className='input'
+                  {...register('equalPassword', equalPasswordValidation)}
+                />
+
+                <label
+                  htmlFor='equalpassword'
+                  className={`placeholder ${isEqPasswords ? 'placeholderIn' : 'placeholderOut'}`}
+                >
+                  Repeat password
+                </label>
+              </div>
               <ErrorMessage
                 isCheck={!!errors.equalPassword}
                 message='Your password must contain between 6 and 60 characters.'
@@ -203,7 +249,8 @@ const login: NextPage = () => {
           <button
             className='cursor-pointer text-white md:hover:underline'
             type='button'
-            onClick={(e) => buttonClickHandler(e)}>
+            onClick={(e) => buttonClickHandler(e)}
+          >
             {isSignIn ? 'Sign up now' : 'Sign in'}
           </button>
         </div>
