@@ -1,11 +1,11 @@
-import doggy from '../assets/icons/doggy.png';
-import batman from '../assets/icons/batman.png';
-import greendefault from '../assets/icons/greendefault.png';
-import orange from '../assets/icons/orange.png';
-import reddefault from '../assets/icons/reddefault.png';
-import yellow from '../assets/icons/yellow.png';
-import yellowdefault from '../assets/icons/yellowdefault.jpg';
-import angryorange from '../assets/icons/angryorange.jpg';
+const doggy = '/icons/doggy.png';
+const batman = '/icons/batman.png';
+const greendefault = '/icons/greendefault.png';
+const orange = '/icons/orange.png';
+const reddefault = '/icons/reddefault.png';
+const yellow = '/icons/yellow.png';
+const yellowdefault = '/icons/yellowdefault.jpg';
+const angryorange = '/icons/angryorange.jpg';
 
 export { greendefault, reddefault, yellowdefault, batman, doggy, angryorange, orange, yellow };
 

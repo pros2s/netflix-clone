@@ -35,11 +35,12 @@ const Membership: FC = () => {
   return (
     <div className='mt-6 grid grid-cols-1 gap-x-4 border px-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0'>
       <div className='space-y-2 py-4'>
-        <h4 className='text-lg text-[gray]'>Membership & Billing</h4>
+        <h4 className='uppercase text-lg text-[gray]'>Membership & Billing</h4>
         <button
           disabled={!isSubscription}
           className='h-10 w-3/5 cursor-pointer whitespace-nowrap bg-gray-300 py-2 text-sm font-medium text-black shadow-md md:hover:bg-gray-200 md:w-4/5'
-          onClick={cancelMembership}>
+          onClick={cancelMembership}
+        >
           Cancel Membership
         </button>
       </div>
@@ -67,7 +68,8 @@ const Membership: FC = () => {
           </div>
           <div
             className='flex flex-col items-end md:text-right'
-            onClick={() => setIsPaymentInformation(true)}>
+            onClick={() => setIsPaymentInformation(true)}
+          >
             <button className='membershipLink'>Manage payment info</button>
             <button className='membershipLink'>Add backup payment method</button>
             <button className='membershipLink'>Billing Details</button>

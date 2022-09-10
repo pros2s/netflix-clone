@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+
 import { FC, useEffect, useState, useRef } from 'react';
 import { BellIcon, SearchIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
@@ -7,28 +8,27 @@ import { XIcon } from '@heroicons/react/outline';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import useAuth from '../../hooks/useAuth';
+
 import { searchSelector, setSearchValue } from '../../store/slices/search';
+import { profilesSelector } from '../../store/slices/profiles';
 
 import BasicMenu from './BasicMenu';
 import Loader from './Loader';
 
 import netflix from '../../assets/netflix.png';
-import { db } from '../../firebase';
-import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { profilesSelector } from '../../store/slices/profiles';
+import { useProfileIcon } from '../../hooks/useProfileIcon';
 
 const Header: FC = () => {
   const dispatch = useTypedDispatch();
   const { searchValue } = useTypedSelector(searchSelector);
   const { currentProfile } = useTypedSelector(profilesSelector);
 
-  const { user, loading } = useAuth();
+  const { loading, user } = useAuth();
+  const profileIcon = useProfileIcon(user?.uid);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
-
-  const [profileIcon, setProfileIcon] = useState<string>('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,12 +41,6 @@ const Header: FC = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    return onSnapshot(doc(db, 'users', user?.uid!, 'profiles', currentProfile), (snapshot) =>
-      setProfileIcon(snapshot.data()?.profileIcon),
-    );
-  }, [db, user?.uid]);
 
   const searchClickHandler = () => {
     inputRef.current?.focus();
@@ -113,7 +107,13 @@ const Header: FC = () => {
         <BellIcon className='h-6 w-6 !mr-1' />
         <Link href='/account'>
           <a>
-            <Image src={profileIcon} height={50} width={50} alt='profile' className='cursor-pointer rounded' />
+            <Image
+              src={profileIcon || '/icons/yellow'}
+              height={35}
+              width={35}
+              alt={currentProfile}
+              className='cursor-pointer rounded'
+            />
           </a>
         </Link>
       </div>

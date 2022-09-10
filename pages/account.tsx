@@ -16,18 +16,23 @@ import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbsc
 import { privateSettingsSelector } from '../store/slices/privateSettings';
 
 import netflix from '../assets/netflix.png';
-import accountIcon from '../assets/icons/yellow.png';
 import Image from 'next/image';
 import Footer from '../components/UI/Footer';
 
 import membersince from '../assets/membersince.png';
+import { profilesSelector } from '../store/slices/profiles';
+import { useProfiles } from '../hooks/useProfiles';
+import { useProfileIcon } from '../hooks/useProfileIcon';
 
 const account: FC = () => {
   const dispatch = useTypedDispatch();
-  const { logout } = useAuth();
-
-  const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
+  const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
+  const { currentProfile } = useTypedSelector(profilesSelector);
+
+  const { logout, user } = useAuth();
+  const profiles = useProfiles(user?.uid);
+  const profileIcon = useProfileIcon(user?.uid);
 
   const formatDate = dateFormat(startDate!);
 
@@ -49,17 +54,13 @@ const account: FC = () => {
           </a>
         </Link>
 
-        <Link href='/account'>
-          <a>
-            <Image
-              src={accountIcon}
-              width={32}
-              height={32}
-              alt='account'
-              className='cursor-pointer rounded'
-            />
-          </a>
-        </Link>
+        <Image
+          src={profileIcon}
+          width={35}
+          height={35}
+          alt={currentProfile}
+          className='cursor-pointer rounded'
+        />
       </header>
 
       <div className='flex flex-col justify-between min-h-screen'>
@@ -74,8 +75,8 @@ const account: FC = () => {
 
           <Membership />
 
-          <div className='mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0 md:pb-0'>
-            <h4 className='text-lg text-[gray]'>Plan Details</h4>
+          <div className='accountRow'>
+            <h4 className='uppercase text-lg text-[gray]'>Plan Details</h4>
             <p className='col-span-2 font-medium'>{plan?.name}</p>
             <button
               className='cursor-pointer text-blue-500 md:hover:underline md:text-right'
@@ -85,14 +86,30 @@ const account: FC = () => {
             </button>
           </div>
 
-          <div className='mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0'>
-            <h4 className='text-lg text-[gray]'>Settings</h4>
+          <div className='accountRow'>
+            <h4 className='uppercase text-lg text-[gray]'>Settings</h4>
             <button
               className='text-start col-span-3 cursor-pointer text-blue-500 md:hover:underline'
               onClick={logout}
             >
               Sign out of all devices
             </button>
+          </div>
+
+          <div className='accountRow'>
+            <h4 className='uppercase text-lg text-[gray]'>Profiles</h4>
+            {profiles.map((profile) => (
+              <div key={profile.name} className='flex items-center text-lg gap-x-4'>
+                <Image
+                  src={'/icons/' + profile.profileIcon}
+                  alt={profile.name}
+                  width={40}
+                  height={40}
+                  className='rounded-md'
+                />
+                <p>{profile.name}</p>
+              </div>
+            ))}
           </div>
         </main>
         <Footer />

@@ -5,12 +5,14 @@ interface IProfilesState {
   profiles: string[];
   currentProfile: string;
   choosing: boolean;
+  profileIcon: string;
 }
 
 const initialState: IProfilesState = {
   profiles: [],
   currentProfile: '',
   choosing: false,
+  profileIcon: '',
 };
 
 const profilesSlice = createSlice({
@@ -32,8 +34,9 @@ const profilesSlice = createSlice({
     choosingIcon(state) {
       state.choosing = true;
     },
-    choosedIcon(state) {
+    choosedIcon(state, { payload }: PayloadAction<string>) {
       state.choosing = false;
+      state.profileIcon = payload;
     },
   },
 });

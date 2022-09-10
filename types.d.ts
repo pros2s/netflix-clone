@@ -30,6 +30,11 @@ export interface Plan {
   id: number;
 }
 
+export interface Profile {
+  name: string;
+  profileIcon: string;
+}
+
 export interface Element {
   type: 'Bloopers' | 'Featurette' | 'Behind the Scenes' | 'Clip' | 'Trailer' | 'Teaser';
 }

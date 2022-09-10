@@ -3,7 +3,6 @@ import Image, { StaticImageData } from 'next/image';
 import Head from 'next/head';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
-
 import netflix from '../assets/netflix.png';
 import { icons } from '../utils/icons';
 import { doc, setDoc } from 'firebase/firestore';
@@ -18,21 +17,21 @@ const ChosingIcon: FC = () => {
   const { profiles } = useTypedSelector(profilesSelector);
   const { user } = useAuth();
 
-  const [selectedIcon, setSelectedIcon] = useState<StaticImageData>();
+  const [selectedIcon, setSelectedIcon] = useState<string>('');
 
-  const selectIcon = (icon: StaticImageData) => {
+  const selectIcon = (icon: string) => {
     setSelectedIcon(icon);
   };
 
   const createProfile = async () => {
     const storage = getStorage();
-    const iconRef = storageRef(storage, selectedIcon?.src);
+    const iconRef = storageRef(storage, selectedIcon);
 
     await setDoc(doc(db, 'users', user?.uid!, 'profiles', profiles[0]), {
       profileIcon: iconRef.name,
     });
 
-    dispatch(choosedIcon());
+    dispatch(choosedIcon(selectedIcon));
   };
 
   return (
@@ -55,9 +54,9 @@ const ChosingIcon: FC = () => {
             <button
               key={Math.random()}
               onClick={() => selectIcon(icon)}
-              className='h-16 w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 transition focus:scale-[1.15]'
+              className='h-16 w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 transition focus:scale-[1.15] focus:border-2'
             >
-              <Image src={icon} />
+              <Image src={icon} width={128} height={128} />
             </button>
           ))}
         </div>
