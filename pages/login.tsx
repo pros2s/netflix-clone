@@ -4,13 +4,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import Loader from '../components/UI/Loader';
 import ErrorMessage from '../components/UI/ErrorMessage';
 import Footer from '../components/UI/Footer';
 
 import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
-import { addNewProfile, choosingIcon, setCurrentProfile } from '../store/slices/profiles';
+import { choosingIcon, setCurrentProfile } from '../store/slices/profiles';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import useAuth from '../hooks/useAuth';
@@ -25,9 +26,11 @@ interface Inputs {
 }
 
 const login: NextPage = () => {
-  const dispatch = useTypedDispatch();
-  const { signIn, signUp, loading } = useAuth();
+  const { signIn, signUp, loading, user } = useAuth();
+  const router = useRouter();
+  if (user) router.push('/');
 
+  const dispatch = useTypedDispatch();
   const passwordRef = useRef<HTMLInputElement>(null);
   const eqPasswordRef = useRef<HTMLInputElement>(null);
 
@@ -137,7 +140,6 @@ const login: NextPage = () => {
             }
           });
           setIsEqualPasswords(true);
-          dispatch(addNewProfile(data.username));
           dispatch(setCurrentProfile(data.username.toLocaleLowerCase()));
         } else {
           setIsEqualPasswords(false);

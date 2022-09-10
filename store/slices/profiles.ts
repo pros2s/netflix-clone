@@ -1,54 +1,63 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DocumentData } from 'firebase/firestore';
+import { Profile } from '../../types';
 import { RootState } from '../store';
 
 interface IProfilesState {
-  profiles: string[];
   currentProfile: string;
   choosing: boolean;
   profileIcon: string;
+  editingProfile: DocumentData | Profile;
+  isEditingProfile: boolean;
+  editingIcon: string;
 }
 
 const initialState: IProfilesState = {
-  profiles: [],
   currentProfile: '',
   choosing: false,
   profileIcon: '',
+  editingProfile: {
+    name: '',
+    profileIcon: '',
+  },
+  isEditingProfile: false,
+  editingIcon: '',
 };
 
 const profilesSlice = createSlice({
   name: 'profiles',
   initialState,
   reducers: {
-    addNewProfile(state, { payload }: PayloadAction<string>) {
-      state.profiles = [...state.profiles, payload];
-    },
-    removeProfile(state, { payload }: PayloadAction<string>) {
-      state.profiles = state.profiles.filter((profile) => profile !== payload);
-    },
-    removeAllProfiles(state) {
-      state.profiles = [];
-    },
     setCurrentProfile(state, { payload }: PayloadAction<string>) {
       state.currentProfile = payload;
     },
     choosingIcon(state) {
       state.choosing = true;
     },
-    choosedIcon(state, { payload }: PayloadAction<string>) {
+    isNotchoosingIcon(state) {
       state.choosing = false;
-      state.profileIcon = payload;
+    },
+    editingProfile(state, { payload }: PayloadAction<DocumentData | Profile>) {
+      state.isEditingProfile = true;
+      state.editingProfile = payload;
+    },
+    setEditingIcon(state, {payload}: PayloadAction<string>) {
+      state.editingIcon = payload;
+    },
+    notEditingProfile(state) {
+      state.isEditingProfile = false;
     },
   },
 });
 
 export const profilesSelector = (state: RootState) => state.profiles;
 export const {
-  addNewProfile,
-  removeProfile,
-  choosedIcon,
+  isNotchoosingIcon,
   choosingIcon,
-  removeAllProfiles,
   setCurrentProfile,
+  setEditingIcon,
+  editingProfile,
+  notEditingProfile
 } = profilesSlice.actions;
 
 export default profilesSlice.reducer;

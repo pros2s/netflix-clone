@@ -1,34 +1,34 @@
 import { FC } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import dateFormat from 'dateformat';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useProfiles } from '../hooks/useProfiles';
+import { useProfileIcon } from '../hooks/useProfileIcon';
 import useAuth from '../hooks/useAuth';
 
 import PasswordChanging from '../components/PasswordChanging';
 import EmailChanging from '../components/EmailChanging';
 import Membership from '../components/Membership';
 import Plans from '../components/Plans';
+import EditProfile from '../components/EditProfile';
+import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
+import { editingProfile, profilesSelector } from '../store/slices/profiles';
 
 import netflix from '../assets/netflix.png';
-import Image from 'next/image';
-import Footer from '../components/UI/Footer';
-
 import membersince from '../assets/membersince.png';
-import { profilesSelector } from '../store/slices/profiles';
-import { useProfiles } from '../hooks/useProfiles';
-import { useProfileIcon } from '../hooks/useProfileIcon';
 
 const account: FC = () => {
   const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { currentProfile } = useTypedSelector(profilesSelector);
+  const { currentProfile, isEditingProfile } = useTypedSelector(profilesSelector);
 
   const { logout, user } = useAuth();
   const profiles = useProfiles(user?.uid);
@@ -39,6 +39,7 @@ const account: FC = () => {
   if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;
   if (isChangingPlan) return <Plans />;
+  if (isEditingProfile) return <EditProfile />
 
   return (
     <div className='selection:bg-red-600 selection:text-white'>
@@ -55,7 +56,7 @@ const account: FC = () => {
         </Link>
 
         <Image
-          src={profileIcon}
+          src={profileIcon || '/icons/yellow'}
           width={35}
           height={35}
           alt={currentProfile}
@@ -99,15 +100,23 @@ const account: FC = () => {
           <div className='accountRow'>
             <h4 className='uppercase text-lg text-[gray]'>Profiles</h4>
             {profiles.map((profile) => (
-              <div key={profile.name} className='flex items-center text-lg gap-x-4'>
-                <Image
-                  src={'/icons/' + profile.profileIcon}
-                  alt={profile.name}
-                  width={40}
-                  height={40}
-                  className='rounded-md'
-                />
-                <p>{profile.name}</p>
+              <div key={profile.name} className='col-span-3 flex justify-between text-lg'>
+                <div className='flex items-center gap-x-4'>
+                  <Image
+                    src={'/icons/' + profile.profileIcon}
+                    alt={profile.name}
+                    width={40}
+                    height={40}
+                    className='rounded-md'
+                  />
+                  <p>{profile.name}</p>
+                </div>
+                <button
+                  className='cursor-pointer text-blue-500 md:hover:underline md:text-right'
+                  onClick={() => dispatch(editingProfile(profile))}
+                >
+                  Edit
+                </button>
               </div>
             ))}
           </div>

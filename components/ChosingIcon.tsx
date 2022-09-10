@@ -1,37 +1,47 @@
-import { FC, useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
+import { FC, useState, useRef } from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import netflix from '../assets/netflix.png';
-import { icons } from '../utils/icons';
 import { doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref as storageRef } from 'firebase/storage';
 import { db } from '../firebase';
-import useAuth from '../hooks/useAuth';
-import { useTypedSelector } from '../hooks/useTypedSelector';
-import { choosedIcon, profilesSelector } from '../store/slices/profiles';
 
-const ChosingIcon: FC = () => {
+import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import useAuth from '../hooks/useAuth';
+
+import { isNotchoosingIcon, profilesSelector, setEditingIcon } from '../store/slices/profiles';
+import { icons } from '../utils/icons';
+import netflix from '../assets/netflix.png';
+
+interface ChosingIconProps {
+  isEditing: boolean;
+}
+
+const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
   const dispatch = useTypedDispatch();
-  const { profiles } = useTypedSelector(profilesSelector);
+  const { currentProfile } = useTypedSelector(profilesSelector);
   const { user } = useAuth();
+  const choseIconRef = useRef<HTMLButtonElement>(null);
 
   const [selectedIcon, setSelectedIcon] = useState<string>('');
 
-  const selectIcon = (icon: string) => {
+  const onClickIcon = (icon: string) => {
+    choseIconRef.current?.focus();
     setSelectedIcon(icon);
   };
 
-  const createProfile = async () => {
+  const chooseIcon = async () => {
     const storage = getStorage();
     const iconRef = storageRef(storage, selectedIcon);
 
-    await setDoc(doc(db, 'users', user?.uid!, 'profiles', profiles[0]), {
-      profileIcon: iconRef.name,
-    });
+    isEditing
+      ? dispatch(setEditingIcon(selectedIcon))
+      : await setDoc(doc(db, 'users', user?.uid!, 'profiles', currentProfile), {
+          profileIcon: iconRef.name,
+        });
 
-    dispatch(choosedIcon(selectedIcon));
+    dispatch(isNotchoosingIcon());
   };
 
   return (
@@ -53,8 +63,8 @@ const ChosingIcon: FC = () => {
           {icons.map((icon) => (
             <button
               key={Math.random()}
-              onClick={() => selectIcon(icon)}
-              className='h-16 w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 transition focus:scale-[1.15] focus:border-2'
+              onClick={() => onClickIcon(icon)}
+              className='h-16 w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 transition hover:scale-[1.15] focus:scale-[1.15]'
             >
               <Image src={icon} width={128} height={128} />
             </button>
@@ -62,11 +72,12 @@ const ChosingIcon: FC = () => {
         </div>
 
         <button
+          ref={choseIconRef}
           disabled={!selectedIcon}
           className={`cursor-pointer rounded bg-[#E50914] py-3 text-xl shadow w-64 md:hover:bg-[#f6121d] ${
             !selectedIcon && 'opacity-60 cursor-default md:hover:bg-[#E50914]'
           }`}
-          onClick={createProfile}
+          onClick={chooseIcon}
         >
           This icon is awesome!
         </button>

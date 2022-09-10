@@ -15,7 +15,7 @@ export const useProfileIcon = (userId: string | undefined) => {
     return onSnapshot(doc(db, 'users', userId, 'profiles', currentProfile), (snapshot) =>
       setProfileIcon('/icons/' + snapshot.data()?.profileIcon),
     );
-  }, [db, userId]);
+  }, [db, userId, currentProfile]);
 
   return profileIcon;
 };

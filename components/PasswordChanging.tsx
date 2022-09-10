@@ -94,7 +94,7 @@ const PasswordChanging: FC = () => {
 
       <header className='border-b border-white/10 bg-[#141414]'>
         <Link href='/'>
-          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={33} />
+          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
         </Link>
       </header>
 

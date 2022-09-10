@@ -52,6 +52,14 @@
     @apply mt-4 grid grid-cols-1 gap-x-4 border px-4 pt-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0;
   }
 
+  .editButton {
+    @apply px-[19px] py-2 border rounded-md border-white/30 text-white/30 font-semibold transition;
+  }
+
+  .deleteProfileButton {
+    @apply relative md:hover:text-white md:hover:bg-red-600 md:hover:border-red-600 disabled:md:hover:text-white/30 disabled:md:hover:font-semibold disabled:md:hover:border-white/30 disabled:md:hover:bg-transparent disabled:md:hover:after:absolute disabled:md:hover:after:-top-[75px] disabled:md:hover:after:-left-28 disabled:md:hover:after:content-[attr(data-text)] disabled:md:hover:after:w-96 disabled:md:hover:after:bg-white disabled:md:hover:after:text-black disabled:md:hover:after:leading-5 disabled:md:hover:after:rounded-lg disabled:md:hover:after:py-2 disabled:md:hover:before:absolute disabled:md:hover:before:-top-5 disabled:md:hover:before:left-16 disabled:md:hover:before:border-t-8 disabled:md:hover:before:border-t-white disabled:md:hover:before:border-r-[6px] disabled:md:hover:before:border-r-transparent disabled:md:hover:before:border-l-[6px] disabled:md:hover:before:border-l-transparent;
+  }
+
   .planBox {
     @apply relative mx-1.5 flex h-20 w-[calc(100%/3)] cursor-pointer items-center justify-center rounded-sm bg-[#e50914] font-semibold shadow after:absolute after:top-full after:left-1/2 after:block after:-translate-x-1/2 after:border-8 after:border-b-0 after:border-transparent after:border-t-[#e50914] after:content-[""] md:h-32 lg:mx-8;
   }

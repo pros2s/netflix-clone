@@ -7,6 +7,7 @@ import { XIcon } from '@heroicons/react/outline';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useProfileIcon } from '../../hooks/useProfileIcon';
 import useAuth from '../../hooks/useAuth';
 
 import { searchSelector, setSearchValue } from '../../store/slices/search';
@@ -16,7 +17,6 @@ import BasicMenu from './BasicMenu';
 import Loader from './Loader';
 
 import netflix from '../../assets/netflix.png';
-import { useProfileIcon } from '../../hooks/useProfileIcon';
 
 const Header: FC = () => {
   const dispatch = useTypedDispatch();
