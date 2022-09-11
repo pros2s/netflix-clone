@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { FC, useEffect, useState, useRef } from 'react';
-import { BellIcon, SearchIcon } from '@heroicons/react/solid';
+import { SearchIcon } from '@heroicons/react/solid';
 import { XIcon } from '@heroicons/react/outline';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -55,7 +55,9 @@ const Header: FC = () => {
 
   return (
     <header
-      className={`selection:bg-red-600 selection:text-white h-16 ${isScrolled && 'bg-[#141414]'}`}
+      className={`selection:bg-red-600 selection:text-white h-16 ${
+        isScrolled ? 'bg-[#141414]' : 'bg-[#141414]/50'
+      }`}
     >
       <div className='flex items-center space-x-2 lg:ml-[49px] md:space-x-10'>
         <Image className='md:cursor-pointer' src={netflix} alt='logo' width={120} height={35} />
@@ -101,8 +103,7 @@ const Header: FC = () => {
             )}
           </div>
         </div>
-        <p className='hidden lg:inline'>Kids</p>
-        <BellIcon className='h-6 w-6 !mr-1' />
+
         <Link href='/account'>
           <a className='h-[35px]'>
             <Image

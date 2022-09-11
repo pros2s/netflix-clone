@@ -32,7 +32,7 @@ const Banner: FC<BannerProps> = memo(({ netflixOriginals }) => {
         />
       </div>
 
-      <h1 className='text-2xl font-bold md:text-4xl lg:text-7xl'>
+      <h1 className='text-2xl font-bold md:text-4xl lg:text-5xl'>
         {movie?.title || movie?.name || movie?.original_name}
       </h1>
 

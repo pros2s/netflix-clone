@@ -122,7 +122,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
               />
             )}
 
-            <h4 className='absolute max-w-[80px] bottom-2 left-2 leading-[1] text-shadow-xl font-medium'>
+            <h4 className='absolute bottom-2 left-2 max-w-[80px] leading-[1] text-shadow-xl font-medium text-sm'>
               {movie?.title || movie?.original_name}
             </h4>
 
@@ -285,14 +285,22 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
           </div>
         </div>
       ) : (
-        <Image
-          src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
-          className='object-cover md:rounded'
-          layout='fill'
-          priority
-          alt={movie?.title || movie?.original_name}
-          onClick={handleModal}
-        />
+        <div>
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
+            className='object-cover md:rounded'
+            layout='fill'
+            priority
+            alt={movie?.title || movie?.original_name}
+            onClick={handleModal}
+          />
+
+          <div className='absolute w-full bottom-0 left-0 py-1 px-3 bg-gradient-to-t from-[#141414]/70'>
+            <h4 className='leading-[1] text-shadow-xl font-medium text-lg'>
+              {movie?.title || movie?.original_name}
+            </h4>
+          </div>
+        </div>
       )}
     </div>
   );
