@@ -1,6 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth, db } from '../firebase';
+import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   deleteUser,
@@ -14,9 +15,16 @@ import {
   User,
 } from 'firebase/auth';
 
-import { loginIsChanging } from '../store/slices/privateSettings';
 import { useTypedDispatch } from './useTypedDispatch';
-import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+
+import {
+  loginIsChanging,
+  loginIsNotChanging,
+  passwordIsNotChanging,
+} from '../store/slices/privateSettings';
+import { isNotchoosingIcon, notEditingProfile } from '../store/slices/profiles';
+import { userIsNotChangingPlan } from '../store/slices/sutbscription';
+
 import { useProfiles } from './useProfiles';
 
 interface IAuth {
@@ -112,6 +120,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await signOut(auth)
       .then(() => {
         setUser(null);
+
+        dispatch(passwordIsNotChanging());
+        dispatch(loginIsNotChanging());
+        dispatch(notEditingProfile());
+        dispatch(userIsNotChangingPlan());
+        dispatch(isNotchoosingIcon());
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
@@ -165,7 +179,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     );
     await deleteDoc(doc(db, 'users', auth.currentUser?.uid!));
     await deleteUser(auth.currentUser!);
-    
+
     setLoading(false);
   };
 

@@ -2,10 +2,15 @@ import { FC, useState, useEffect } from 'react';
 import { PencilIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
+
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { getStorage, ref as storageRef } from 'firebase/storage';
+import { db } from '../firebase';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import { useProfiles } from '../hooks/useProfiles';
+import useAuth from '../hooks/useAuth';
 
 import {
   choosingIcon,
@@ -15,15 +20,10 @@ import {
   setEditingIcon,
 } from '../store/slices/profiles';
 
-import netflix from '../assets/netflix.png';
 import Footer from './UI/Footer';
-import ChosingIcon from './ChosingIcon';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { db } from '../firebase';
-import { getStorage, ref as storageRef } from 'firebase/storage';
-import useAuth from '../hooks/useAuth';
-import { useProfiles } from '../hooks/useProfiles';
 import ErrorMessage from './UI/ErrorMessage';
+import MiniHeader from './UI/MiniHeader';
+import ChosingIcon from './ChosingIcon';
 
 const EditProfile: FC = () => {
   const { editingProfile, currentProfile, editingIcon, choosing } =
@@ -81,13 +81,8 @@ const EditProfile: FC = () => {
         <title>Edit profile</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <header className='border-b border-white/10 bg-[#141414]'>
-        <Link href='/'>
-          <a>
-            <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
-          </a>
-        </Link>
-      </header>
+
+      <MiniHeader isSignOut={true} />
 
       <main className='flex flex-col space-y-4 items-center m-auto mb-2.5 pt-20 max-w-xs'>
         <h1 className='text-3xl pb-3 border-b border-white/10 md:text-5xl'>Edit Profile</h1>

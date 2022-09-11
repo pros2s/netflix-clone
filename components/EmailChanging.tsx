@@ -1,7 +1,5 @@
 import { ChangeEvent, FC, MouseEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
@@ -11,8 +9,7 @@ import { loginIsNotChanging } from '../store/slices/privateSettings';
 import Loader from './UI/Loader';
 import Input from './UI/Input';
 import ErrorMessage from './UI/ErrorMessage';
-
-import netflix from '../assets/netflix.png';
+import MiniHeader from './UI/MiniHeader';
 
 const EmailChanging: FC = () => {
   const dispatch = useTypedDispatch();
@@ -79,11 +76,7 @@ const EmailChanging: FC = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <header className='border-b border-white/10 bg-[#141414]'>
-        <Link href='/'>
-          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
-        </Link>
-      </header>
+      <MiniHeader isSignOut={true} />
 
       <form
         noValidate

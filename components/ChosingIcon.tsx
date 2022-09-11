@@ -6,13 +6,15 @@ import { doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref as storageRef } from 'firebase/storage';
 import { db } from '../firebase';
 
+import Footer from './UI/Footer';
+import MiniHeader from './UI/MiniHeader';
+
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import useAuth from '../hooks/useAuth';
 
 import { isNotchoosingIcon, profilesSelector, setEditingIcon } from '../store/slices/profiles';
 import { icons } from '../utils/icons';
-import netflix from '../assets/netflix.png';
 
 interface ChosingIconProps {
   isEditing: boolean;
@@ -45,16 +47,15 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
   };
 
   return (
-    <div>
+    <div className=''>
       <Head>
         <title>Netflix</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <header className='border-b border-white/10 bg-[#141414]'>
-        <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={33} />
-      </header>
 
-      <div className='flex flex-col items-center px-6'>
+      <MiniHeader isSignOut={true} />
+
+      <main className='relative h-screen flex flex-col items-center px-6'>
         <h1 className='pt-24 text-2xl font-semibold md:text-3xl lg:text-4xl'>
           Chose your profile icon
         </h1>
@@ -81,7 +82,8 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
         >
           This icon is awesome!
         </button>
-      </div>
+        <Footer isAbsolute={true} />
+      </main>
     </div>
   );
 };

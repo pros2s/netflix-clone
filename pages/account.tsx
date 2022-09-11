@@ -21,19 +21,18 @@ import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbsc
 import { privateSettingsSelector } from '../store/slices/privateSettings';
 import { editingProfile, profilesSelector } from '../store/slices/profiles';
 
-import netflix from '../assets/netflix.png';
 import membersince from '../assets/membersince.png';
 import DeletePopup from '../components/DeletePopup';
+import MiniHeader from '../components/UI/MiniHeader';
 
 const account: FC = () => {
   const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { currentProfile, isEditingProfile } = useTypedSelector(profilesSelector);
+  const { isEditingProfile } = useTypedSelector(profilesSelector);
 
   const { logout, user } = useAuth();
   const profiles = useProfiles(user?.uid);
-  const profileIcon = useProfileIcon(user?.uid);
 
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
 
@@ -51,21 +50,7 @@ const account: FC = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <header className='bg-[#141414]'>
-        <Link href='/'>
-          <a>
-            <Image className='md:cursor-pointer' src={netflix} width={120} height={35} alt='logo' />
-          </a>
-        </Link>
-
-        <Image
-          src={profileIcon || '/icons/yellow'}
-          width={35}
-          height={35}
-          alt={currentProfile}
-          className='cursor-pointer rounded'
-        />
-      </header>
+      <MiniHeader isAccount={true} />
 
       <div className='flex flex-col justify-between min-h-screen'>
         <main className='mx-auto max-w-6xl px-5 pt-24 pb-12 transition-all md:px-10'>

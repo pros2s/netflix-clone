@@ -106,7 +106,7 @@ const Header: FC = () => {
         <p className='hidden lg:inline'>Kids</p>
         <BellIcon className='h-6 w-6 !mr-1' />
         <Link href='/account'>
-          <a>
+          <a className='h-[35px]'>
             <Image
               src={profileIcon || '/icons/yellow'}
               height={35}

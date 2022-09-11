@@ -1,9 +1,10 @@
 import { FC, useCallback, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
-import Link from 'next/link';
 
 import PlanTable from './PlanTable';
+import Footer from './UI/Footer';
+import MiniHeader from './UI/MiniHeader';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
@@ -19,10 +20,6 @@ import {
 
 import { Plan } from '../types';
 import { subsBenefits, subsPlans } from '../utils/subscription';
-
-import netflix from '../assets/netflix.png';
-import Image from 'next/image';
-import Footer from './UI/Footer';
 
 const Plans: FC = () => {
   const dispatch = useTypedDispatch();
@@ -47,16 +44,8 @@ const Plans: FC = () => {
         <title>Netflix</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <header className='border-b border-white/10 bg-[#141414]'>
-        <Link href='/'>
-          <a>
-            <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
-          </a>
-        </Link>
-        <button className='text-lg font-medium md:hover:underline' onClick={logout}>
-          Sign Out
-        </button>
-      </header>
+
+      <MiniHeader isSignOut={true} />
 
       <main className='mx-auto max-w-5xl px-5 pt-28 pb-12 transition-all md:px-10'>
         <h1 className='mb-3 text-3xl font-medium'>Choose the plan that's right for you</h1>

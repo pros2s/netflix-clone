@@ -2,8 +2,6 @@ import { ChangeEvent, FC, useState, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
 
 import useAuth from '../hooks/useAuth';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
@@ -12,9 +10,8 @@ import { passwordIsNotChanging } from '../store/slices/privateSettings';
 
 import Loader from './UI/Loader';
 import ErrorMessage from './UI/ErrorMessage';
-
-import netflix from '../assets/netflix.png';
 import Input from './UI/Input';
+import MiniHeader from './UI/MiniHeader';
 
 interface Passwords {
   repeatNewPassword: string;
@@ -99,11 +96,7 @@ const PasswordChanging: FC = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <header className='border-b border-white/10 bg-[#141414]'>
-        <Link href='/'>
-          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
-        </Link>
-      </header>
+      <MiniHeader isSignOut={true} />
 
       <form
         onSubmit={handleSubmit(onSubmit)}
