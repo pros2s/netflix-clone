@@ -29,7 +29,7 @@ const EditProfile: FC = () => {
   const { editingProfile, currentProfile, editingIcon, choosing } =
     useTypedSelector(profilesSelector);
   const dispatch = useTypedDispatch();
-  const { user, loading, deleteProfileLoading, editProfile } = useAuth();
+  const { user, loading, deleteProfileLoading, editProfile, deleteProfile } = useAuth();
   const profiles = useProfiles(user?.uid);
 
   const [inputVal, setInputVal] = useState<string>(editingProfile.name);
@@ -46,21 +46,21 @@ const EditProfile: FC = () => {
 
   const cancelEditing = () => {
     dispatch(setEditingIcon(''));
-    dispatch(notEditingProfile());
+    dispatch(notEditingProfile({ name: '', profileIcon: '' }));
   };
 
   const saveChanges = async () => {
     if (isInRange && !isExistName) {
       editingProfile.name === currentProfile && dispatch(setCurrentProfile(inputVal));
-    }
 
-    await editProfile(editingIcon, inputVal);
+      await editProfile(editingIcon, inputVal);
+    }
   };
 
-  const deleteProfile = async () => {
+  const deleteProf = async () => {
     await deleteProfile();
 
-    dispatch(notEditingProfile());
+    dispatch(notEditingProfile({ name: '', profileIcon: '' }));
   };
 
   if (choosing) return <ChosingIcon isEditing={true} />;
@@ -146,7 +146,7 @@ const EditProfile: FC = () => {
               data-text='This is the last profile in account. You can delete account in account menu'
               type='button'
               disabled={profiles.length === 1 ? true : false}
-              onClick={deleteProfile}
+              onClick={deleteProf}
             >
               {deleteProfileLoading ? (
                 <Loader color='dark:fill-gray-300' height='6' width='8' />

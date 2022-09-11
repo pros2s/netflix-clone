@@ -24,10 +24,16 @@ import {
   loginIsNotChanging,
   passwordIsNotChanging,
 } from '../store/slices/privateSettings';
-import { isNotchoosingIcon, notEditingProfile, profilesSelector } from '../store/slices/profiles';
+import {
+  isNotchoosingIcon,
+  notEditingProfile,
+  profilesSelector,
+  setCurrentProfile,
+} from '../store/slices/profiles';
 import { userIsNotChangingPlan } from '../store/slices/sutbscription';
 
 import { useProfiles } from './useProfiles';
+import { Profile } from '../types';
 
 interface IAuth {
   user: User | null;
@@ -133,7 +139,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
         dispatch(passwordIsNotChanging());
         dispatch(loginIsNotChanging());
-        dispatch(notEditingProfile());
+        dispatch(notEditingProfile({ name: '', profileIcon: '' }));
         dispatch(userIsNotChangingPlan());
         dispatch(isNotchoosingIcon());
       })
@@ -199,14 +205,17 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const storage = getStorage();
     const iconRef = storageRef(storage, editingIcon);
 
-    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name));
-
-    await setDoc(doc(db, 'users', user?.uid!, 'profiles', inputValue), {
+    const newProfile: Profile = {
       profileIcon: iconRef.name || editingProfile.profileIcon,
       name: inputValue,
-    });
+    };
 
-    dispatch(notEditingProfile());
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name)).then(() => {
+      setDoc(doc(db, 'users', user?.uid!, 'profiles', inputValue), newProfile);
+
+      dispatch(setCurrentProfile(newProfile.name));
+      dispatch(notEditingProfile(newProfile));
+    });
 
     setLoading(false);
   };

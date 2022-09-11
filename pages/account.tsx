@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import dateFormat from 'dateformat';
@@ -19,17 +20,19 @@ import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
-import { editingProfile, profilesSelector } from '../store/slices/profiles';
+import { profileIsEditing, profilesSelector } from '../store/slices/profiles';
 
 import membersince from '../assets/membersince.png';
 import DeletePopup from '../components/DeletePopup';
 import MiniHeader from '../components/UI/MiniHeader';
 
 const account: NextPage = () => {
+  const router = useRouter();
+
   const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { isEditingProfile } = useTypedSelector(profilesSelector);
+  const { isEditingProfile, editingProfile } = useTypedSelector(profilesSelector);
 
   const { logout, user } = useAuth();
   const profiles = useProfiles(user?.uid);
@@ -93,26 +96,37 @@ const account: NextPage = () => {
 
           <div className='accountRow'>
             <h4 className='uppercase text-lg text-[gray]'>Profiles</h4>
-            {profiles.map((profile) => (
-              <div key={profile.name} className='col-span-3 flex justify-between text-lg'>
-                <div className='flex items-center gap-x-4'>
-                  <Image
-                    src={'/icons/' + profile.profileIcon}
-                    alt={profile.name}
-                    width={40}
-                    height={40}
-                    className='rounded-md'
-                  />
-                  <p>{profile.name}</p>
+            <div className='col-span-2 space-y-2'>
+              {profiles.map((profile) => (
+                <div key={profile.name} className='col-span-2 flex justify-between text-lg'>
+                  <div className='flex items-center gap-x-4'>
+                    <Image
+                      src={'/icons/' + profile.profileIcon}
+                      alt={profile.name}
+                      width={40}
+                      height={40}
+                      className='rounded-md'
+                    />
+                    <div>
+                      <p className='leading-5'>{profile.name}</p>
+                      <button
+                        className='cursor-pointer text-blue-500 md:hover:underline md:text-right text-md'
+                        onClick={() => dispatch(profileIsEditing(profile))}
+                      >
+                        edit
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <button
-                  className='cursor-pointer text-blue-500 md:hover:underline md:text-right'
-                  onClick={() => dispatch(editingProfile(profile))}
-                >
-                  Edit
-                </button>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <button
+              className='cursor-pointer h-6 text-blue-500 md:hover:underline md:text-right'
+              onClick={() => router.push('/manage')}
+            >
+              Manage profiles
+            </button>
           </div>
         </main>
         <Footer />

@@ -37,15 +37,16 @@ const profilesSlice = createSlice({
     isNotchoosingIcon(state) {
       state.choosing = false;
     },
-    editingProfile(state, { payload }: PayloadAction<DocumentData | Profile>) {
+    profileIsEditing(state, { payload }: PayloadAction<DocumentData | Profile>) {
       state.isEditingProfile = true;
       state.editingProfile = payload;
     },
-    setEditingIcon(state, {payload}: PayloadAction<string>) {
+    setEditingIcon(state, { payload }: PayloadAction<string>) {
       state.editingIcon = payload;
     },
-    notEditingProfile(state) {
+    notEditingProfile(state, {payload}:PayloadAction<DocumentData | Profile>) {
       state.isEditingProfile = false;
+      state.editingProfile = payload;
     },
   },
 });
@@ -56,8 +57,8 @@ export const {
   choosingIcon,
   setCurrentProfile,
   setEditingIcon,
-  editingProfile,
-  notEditingProfile
+  profileIsEditing,
+  notEditingProfile,
 } = profilesSlice.actions;
 
 export default profilesSlice.reducer;
