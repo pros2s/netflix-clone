@@ -26,14 +26,23 @@ const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
 
   const [isReAuth, setIsReAuth] = useState<boolean>(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
+  const [isValueEmpty, setIsValueEmpty] = useState<boolean>(false);
   const [passwordValue, setPasswordValue] = useState<string>('');
 
   const confirmCurrentPassword = useCallback(
     async (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
 
+      if (!passwordValue) {
+        setIsValueEmpty(true);
+        return;
+      }
+
       await reAuth(passwordValue)
-        .then(() => setIsReAuth(true))
+        .then(() => {
+          setIsValueEmpty(false);
+          setIsReAuth(true);
+        })
         .catch((error) => {
           setIsReAuth(false);
           error.message.match(/wrong-password/gi)
@@ -45,6 +54,7 @@ const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
   );
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsValueEmpty(false);
     setIsPasswordCorrect(true);
     setPasswordValue(e.target.value);
   };
@@ -87,6 +97,11 @@ const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
               />
 
               <ErrorMessage isCheck={!isPasswordCorrect} message='Wrong password. Try again.' />
+
+              <ErrorMessage
+                isCheck={isValueEmpty}
+                message='Your password must contain between 6 and 60 characters.'
+              />
 
               <button
                 type='submit'
