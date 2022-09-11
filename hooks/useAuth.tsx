@@ -26,7 +26,8 @@ import {
 } from '../store/slices/privateSettings';
 import {
   isNotchoosingIcon,
-  notEditingProfile,
+  notAddingNewProfile,
+  notManagingProfile,
   profilesSelector,
   setCurrentProfile,
 } from '../store/slices/profiles';
@@ -46,6 +47,7 @@ interface IAuth {
   deleteAccount: () => Promise<void>;
   editProfile: (editingIcon: string, inputVal: string) => Promise<void>;
   deleteProfile: () => Promise<void>;
+  addNewProfile: (profileIcon: string, newProfileName: string) => Promise<void>;
   loading: boolean;
   deleteProfileLoading: boolean;
 }
@@ -61,6 +63,7 @@ const AuthContext = createContext<IAuth>({
   deleteAccount: async () => {},
   editProfile: async () => {},
   deleteProfile: async () => {},
+  addNewProfile: async () => {},
   loading: false,
   deleteProfileLoading: false,
 });
@@ -71,7 +74,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
-  const { editingProfile } = useTypedSelector(profilesSelector);
+  const { managingProfile } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -139,7 +142,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
         dispatch(passwordIsNotChanging());
         dispatch(loginIsNotChanging());
-        dispatch(notEditingProfile({ name: '', profileIcon: '' }));
+        dispatch(notManagingProfile({ name: '', profileIcon: '' }));
         dispatch(userIsNotChangingPlan());
         dispatch(isNotchoosingIcon());
       })
@@ -206,15 +209,15 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const iconRef = storageRef(storage, editingIcon);
 
     const newProfile: Profile = {
-      profileIcon: iconRef.name || editingProfile.profileIcon,
+      profileIcon: iconRef.name || managingProfile.profileIcon,
       name: inputValue,
     };
 
-    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name)).then(() => {
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', managingProfile.name)).then(() => {
       setDoc(doc(db, 'users', user?.uid!, 'profiles', inputValue), newProfile);
 
       dispatch(setCurrentProfile(newProfile.name));
-      dispatch(notEditingProfile(newProfile));
+      dispatch(notManagingProfile(newProfile));
     });
 
     setLoading(false);
@@ -223,9 +226,22 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const deleteProfile = async () => {
     setDeleteProfileLoading(true);
 
-    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name));
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', managingProfile.name));
 
     setDeleteProfileLoading(false);
+  };
+
+  const addNewProfile = async (profileIcon: string, newProfileName: string) => {
+    setLoading(true);
+
+    await setDoc(doc(db, 'users', user?.uid!, 'profiles', newProfileName), {
+      profileIcon,
+      name: newProfileName,
+    });
+
+    dispatch(notAddingNewProfile());
+
+    setLoading(false);
   };
 
   const memoedValue = useMemo(
@@ -241,6 +257,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       deleteAccount,
       editProfile,
       deleteProfile,
+      addNewProfile,
       deleteProfileLoading,
     }),
     [user, loading],

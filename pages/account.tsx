@@ -15,12 +15,12 @@ import PasswordChanging from '../components/PasswordChanging';
 import EmailChanging from '../components/EmailChanging';
 import Membership from '../components/Membership';
 import Plans from '../components/Plans';
-import EditProfile from '../components/EditProfile';
+import ManageProfile from '../components/ManageProfile';
 import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
-import { profileIsEditing, profilesSelector } from '../store/slices/profiles';
+import { profileIsManaging, profilesSelector } from '../store/slices/profiles';
 
 import membersince from '../assets/membersince.png';
 import DeletePopup from '../components/DeletePopup';
@@ -32,7 +32,7 @@ const account: NextPage = () => {
   const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { isEditingProfile, editingProfile } = useTypedSelector(profilesSelector);
+  const { isManagingProfile } = useTypedSelector(profilesSelector);
 
   const { logout, user } = useAuth();
   const profiles = useProfiles(user?.uid);
@@ -44,7 +44,7 @@ const account: NextPage = () => {
   if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;
   if (isChangingPlan) return <Plans />;
-  if (isEditingProfile) return <EditProfile />;
+  if (isManagingProfile) return <ManageProfile />;
 
   return (
     <div className='selection:bg-red-600 selection:text-white'>
@@ -111,7 +111,7 @@ const account: NextPage = () => {
                       <p className='leading-5'>{profile.name}</p>
                       <button
                         className='cursor-pointer text-blue-500 md:hover:underline md:text-right text-md'
-                        onClick={() => dispatch(profileIsEditing(profile))}
+                        onClick={() => dispatch(profileIsManaging(profile))}
                       >
                         edit
                       </button>

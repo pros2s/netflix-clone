@@ -2,25 +2,35 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { PencilIcon } from '@heroicons/react/outline';
+import { TiPlus } from 'react-icons/ti';
 
 import Footer from '../components/UI/Footer';
 import MiniHeader from '../components/UI/MiniHeader';
+import ManageProfile from '../components/ManageProfile';
 
 import useAuth from '../hooks/useAuth';
 import { useProfiles } from '../hooks/useProfiles';
-import EditProfile from '../components/EditProfile';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { profileIsEditing, profilesSelector } from '../store/slices/profiles';
+
+import { addingNewProfile, profileIsManaging, profilesSelector, setManagingIcon } from '../store/slices/profiles';
+import { icons } from '../utils/icons';
 
 const manage: NextPage = () => {
   const dispatch = useTypedDispatch();
-  const { isEditingProfile } = useTypedSelector(profilesSelector);
+  const { isManagingProfile, isAddingProfile } = useTypedSelector(profilesSelector);
 
   const { user } = useAuth();
   const profiles = useProfiles(user?.uid);
 
-  if (isEditingProfile) return <EditProfile />;
+  const onClickAddNewProfile = () => {
+    const rnd = icons[Math.floor(Math.random() * icons.length)].slice(7);
+    dispatch(setManagingIcon(rnd));
+
+    dispatch(addingNewProfile())
+  };
+
+  if (isManagingProfile || isAddingProfile) return <ManageProfile />;
 
   return (
     <>
@@ -32,14 +42,14 @@ const manage: NextPage = () => {
       <MiniHeader isSignOut={true} />
 
       <main className='relative h-screen flex flex-col items-center px-6'>
-        <h1 className='pt-24 text-2xl font-semibold md:text-3xl lg:text-4xl'>Manage Profiles:</h1>
+        <h1 className='pt-24 font-semibold text-4xl'>Manage Profiles:</h1>
 
-        <div className='flex flex-wrap justify-center items-center gap-1 md:gap-2 lg:gap-4 p-6 max-w-[38rem]'>
+        <div className='flex flex-wrap justify-center items-center gap-2 p-6 max-w-[38rem]'>
           {profiles.map((profile) => (
             <button
               key={Math.random()}
-              className='relative h-16 w-16 transition md:h-24 md:w-24 lg:h-32 lg:w-32 group'
-              onClick={() => dispatch(profileIsEditing(profile))}
+              className='relative h-32 w-32 transition group'
+              onClick={() => dispatch(profileIsManaging(profile))}
             >
               <Image
                 src={'/icons/' + profile.profileIcon}
@@ -49,16 +59,32 @@ const manage: NextPage = () => {
                 className='rounded-md opacity-50 transition duration-300 group-hover:opacity-40'
               />
 
-              <button className='bg-black/60 rounded-full p-1.5 absolute top-11 left-12 duration-300 group-hover:bg-black/80 group-hover:scale-110'>
+              <div className='bg-black/60 rounded-full p-1.5 absolute top-11 left-12 duration-300 group-hover:bg-black/80 group-hover:scale-110'>
                 <PencilIcon className='h-6 w-6' />
-              </button>
+              </div>
 
-              <p className='text-2xl'>{profile.name}</p>
+              <p className='text-md text-white/40 font-light duration-300 group-hover:text-white/80'>
+                {profile.name}
+              </p>
             </button>
           ))}
+
+          <button
+            className='relative flex flex-col items-center justify-center transition h-32 w-32 group'
+            onClick={onClickAddNewProfile}
+          >
+            <div className='flex bg-[gray] opacity-60 rounded-full h-16 w-16 duration-300 group-hover:opacity-100'>
+              <TiPlus className='h-14 w-14 m-auto text-[#141414] duration-300 group-hover:scale-110' />
+            </div>
+            <p className='absolute top-full text-md text-white/40 font-light mt-[6px] duration-300 group-hover:text-white/80'>
+              add profile
+            </p>
+          </button>
         </div>
 
-        <Footer isAbsolute={true} />
+        <footer className='absolute bottom-0 text-center min-w-[191px]'>
+          <Footer isAbsolute={true} />
+        </footer>
       </main>
     </>
   );

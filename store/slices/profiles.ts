@@ -7,21 +7,23 @@ interface IProfilesState {
   currentProfile: string;
   choosing: boolean;
   profileIcon: string;
-  editingProfile: DocumentData | Profile;
-  isEditingProfile: boolean;
-  editingIcon: string;
+  managingProfile: DocumentData | Profile;
+  isManagingProfile: boolean;
+  managingIcon: string;
+  isAddingProfile: boolean;
 }
 
 const initialState: IProfilesState = {
   currentProfile: '',
   choosing: false,
   profileIcon: '',
-  editingProfile: {
+  managingProfile: {
     name: '',
     profileIcon: '',
   },
-  isEditingProfile: false,
-  editingIcon: '',
+  isManagingProfile: false,
+  managingIcon: '',
+  isAddingProfile: false,
 };
 
 const profilesSlice = createSlice({
@@ -37,16 +39,22 @@ const profilesSlice = createSlice({
     isNotchoosingIcon(state) {
       state.choosing = false;
     },
-    profileIsEditing(state, { payload }: PayloadAction<DocumentData | Profile>) {
-      state.isEditingProfile = true;
-      state.editingProfile = payload;
+    profileIsManaging(state, { payload }: PayloadAction<DocumentData | Profile>) {
+      state.isManagingProfile = true;
+      state.managingProfile = payload;
     },
-    setEditingIcon(state, { payload }: PayloadAction<string>) {
-      state.editingIcon = payload;
+    setManagingIcon(state, { payload }: PayloadAction<string>) {
+      state.managingIcon = payload;
     },
-    notEditingProfile(state, {payload}:PayloadAction<DocumentData | Profile>) {
-      state.isEditingProfile = false;
-      state.editingProfile = payload;
+    notManagingProfile(state, { payload }: PayloadAction<DocumentData | Profile>) {
+      state.isManagingProfile = false;
+      state.managingProfile = payload;
+    },
+    addingNewProfile(state) {
+      state.isAddingProfile = true;
+    },
+    notAddingNewProfile(state) {
+      state.isAddingProfile = false;
     },
   },
 });
@@ -56,9 +64,11 @@ export const {
   isNotchoosingIcon,
   choosingIcon,
   setCurrentProfile,
-  setEditingIcon,
-  profileIsEditing,
-  notEditingProfile,
+  setManagingIcon,
+  profileIsManaging,
+  notManagingProfile,
+  addingNewProfile,
+  notAddingNewProfile,
 } = profilesSlice.actions;
 
 export default profilesSlice.reducer;

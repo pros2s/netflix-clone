@@ -13,14 +13,14 @@ import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import useAuth from '../hooks/useAuth';
 
-import { isNotchoosingIcon, profilesSelector, setEditingIcon } from '../store/slices/profiles';
+import { isNotchoosingIcon, profilesSelector, setManagingIcon } from '../store/slices/profiles';
 import { icons } from '../utils/icons';
 
 interface ChosingIconProps {
-  isEditing: boolean;
+  isManage: boolean;
 }
 
-const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
+const ChosingIcon: FC<ChosingIconProps> = ({ isManage }) => {
   const dispatch = useTypedDispatch();
   const { currentProfile } = useTypedSelector(profilesSelector);
   const { user } = useAuth();
@@ -37,8 +37,8 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
     const storage = getStorage();
     const iconRef = storageRef(storage, selectedIcon);
 
-    isEditing
-      ? dispatch(setEditingIcon(selectedIcon))
+    isManage
+      ? dispatch(setManagingIcon(selectedIcon))
       : await setDoc(doc(db, 'users', user?.uid!, 'profiles', currentProfile), {
           profileIcon: iconRef.name,
         });

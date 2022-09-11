@@ -285,7 +285,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className='relative w-full h-full'>
           <Image
             src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`}
             className='object-cover md:rounded'

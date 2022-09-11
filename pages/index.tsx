@@ -51,7 +51,7 @@ const Home: NextPage<NextPageProps> = ({
   const disliked = useMovieList(user?.uid, 'Disliked');
 
   if (loading) return null;
-  if (choosing) return <ChoosingIcon isEditing={false} />;
+  if (choosing) return <ChoosingIcon isManage={false} />;
   if (!isSubscription) return <Plans />;
 
   return (
