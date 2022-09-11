@@ -6,12 +6,15 @@ import { RiCloseCircleLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 
 import { Movie } from '../types';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { profilesSelector } from '../store/slices/profiles';
 
 export const handleMovieList = async (
   user: User | null,
   isMovieAdded: boolean,
   movie: Movie | DocumentData | null,
   movieCollection: string,
+  currentProfile: string,
   movieList: string,
 ) => {
   toast(
@@ -38,11 +41,27 @@ export const handleMovieList = async (
 
   if (isMovieAdded) {
     await deleteDoc(
-      doc(db, 'users', user!.uid, movieCollection, (movie?.title || movie?.original_name)!),
+      doc(
+        db,
+        'users',
+        user!.uid,
+        'profiles',
+        currentProfile,
+        movieCollection,
+        (movie?.title || movie?.original_name)!,
+      ),
     );
   } else {
     await setDoc(
-      doc(db, 'users', user!.uid, movieCollection, (movie?.title || movie?.original_name)!),
+      doc(
+        db,
+        'users',
+        user!.uid,
+        'profiles',
+        currentProfile,
+        movieCollection,
+        (movie?.title || movie?.original_name)!,
+      ),
       {
         ...movie,
       },
@@ -50,12 +69,28 @@ export const handleMovieList = async (
 
     movieCollection === 'Liked' &&
       (await deleteDoc(
-        doc(db, 'users', user!.uid, 'Disliked', (movie?.title || movie?.original_name)!),
+        doc(
+          db,
+          'users',
+          user!.uid,
+          'profiles',
+          currentProfile,
+          'Disliked',
+          (movie?.title || movie?.original_name)!,
+        ),
       ));
 
     movieCollection === 'Disliked' &&
       (await deleteDoc(
-        doc(db, 'users', user!.uid, 'Liked', (movie?.title || movie?.original_name)!),
+        doc(
+          db,
+          'users',
+          user!.uid,
+          'profiles',
+          currentProfile,
+          'Liked',
+          (movie?.title || movie?.original_name)!,
+        ),
       ));
   }
 };

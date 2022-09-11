@@ -1,10 +1,16 @@
+import { useEffect, useState } from 'react';
+
 import { User } from 'firebase/auth';
 import { collection, DocumentData, onSnapshot } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
 import { db } from '../firebase';
+
+import { useTypedSelector } from './useTypedSelector';
+import { profilesSelector } from '../store/slices/profiles';
 import { Movie } from '../types';
 
 export const useMovieButtons = (user: User | null, movie: Movie | DocumentData | null) => {
+  const { currentProfile } = useTypedSelector(profilesSelector);
+
   const [isMovieAdded, setIsMovieAdded] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
@@ -15,14 +21,17 @@ export const useMovieButtons = (user: User | null, movie: Movie | DocumentData |
 
   useEffect(() => {
     if (user) {
-      onSnapshot(collection(db, 'users', user.uid, 'myList'), (snapshot) =>
-        setMyListMovies(snapshot.docs),
+      onSnapshot(
+        collection(db, 'users', user.uid, 'profiles', currentProfile, 'myList'),
+        (snapshot) => setMyListMovies(snapshot.docs),
       );
-      onSnapshot(collection(db, 'users', user.uid, 'Liked'), (snapshot) =>
-        setLikedMovies(snapshot.docs),
+      onSnapshot(
+        collection(db, 'users', user.uid, 'profiles', currentProfile, 'Liked'),
+        (snapshot) => setLikedMovies(snapshot.docs),
       );
-      onSnapshot(collection(db, 'users', user.uid, 'Disliked'), (snapshot) =>
-        setDislikedMovies(snapshot.docs),
+      onSnapshot(
+        collection(db, 'users', user.uid, 'profiles', currentProfile, 'Disliked'),
+        (snapshot) => setDislikedMovies(snapshot.docs),
       );
     }
   }, [db, movie?.id]);

@@ -27,6 +27,7 @@ import useAuth from '../hooks/useAuth';
 
 import { modalSelector, openModal, toggleMuteVideo } from '../store/slices/modal';
 import { setCurrentMovie } from '../store/slices/movie';
+import { profilesSelector } from '../store/slices/profiles';
 
 import { Genre, Movie } from '../types';
 import { handleMovieList } from '../utils/toast';
@@ -41,6 +42,7 @@ interface ThumbnailProps {
 const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
   const dispatch = useTypedDispatch();
   const { isMutedVideo } = useTypedSelector(modalSelector);
+  const { currentProfile } = useTypedSelector(profilesSelector);
   const { user } = useAuth();
   const { isDisliked, isLiked, isMovieAdded } = useMovieButtons(user, movie);
 
@@ -166,7 +168,9 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                               index === 0 ? 'hover:after:-left-10' : 'hover:after:-left-12'
                             }`
                       }`}
-                      onClick={() => handleMovieList(user, isMovieAdded, movie, 'myList', 'list')}
+                      onClick={() =>
+                        handleMovieList(user, isMovieAdded, movie, 'myList', currentProfile, 'list')
+                      }
                     >
                       {isMovieAdded ? <CheckIcon /> : <PlusIcon />}
                     </button>
@@ -180,7 +184,9 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                       } ${isShowInfo && !isLiked && 'scale-110 border-white/80'} ${
                         isLiked && 'border-white'
                       }`}
-                      onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}
+                      onClick={() =>
+                        handleMovieList(user, isLiked, movie, 'Liked', currentProfile, 'liked')
+                      }
                     >
                       {isLiked ? (
                         <MdThumbUpAlt className='text-white md:hover:text-white/80' />
@@ -203,7 +209,14 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
                         isDisliked && 'opacity-60 md:hover:after:w-44 md:hover:after:-left-[70px]'
                       }`}
                       onClick={() =>
-                        handleMovieList(user, isDisliked, movie, 'Disliked', 'disliked')
+                        handleMovieList(
+                          user,
+                          isDisliked,
+                          movie,
+                          'Disliked',
+                          currentProfile,
+                          'disliked',
+                        )
                       }
                     >
                       {isDisliked ? <MdThumbDownAlt /> : <MdOutlineThumbDownOffAlt />}

@@ -89,7 +89,7 @@ const EditProfile: FC = () => {
         </Link>
       </header>
 
-      <main className='flex flex-col space-y-4 items-center m-auto pt-20 max-w-xs'>
+      <main className='flex flex-col space-y-4 items-center m-auto mb-2.5 pt-20 max-w-xs'>
         <h1 className='text-3xl pb-3 border-b border-white/10 md:text-5xl'>Edit Profile</h1>
 
         <div className='relative'>

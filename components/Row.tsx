@@ -19,7 +19,11 @@ const Row: FC<RowProps> = memo(({ movies, title }) => {
 
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState<boolean>(false);
-  const [displayMovies, setDisplayMovies] = useState<DocumentData[] | Movie[]>(movies);
+  const [displayMovies, setDisplayMovies] = useState<DocumentData[] | Movie[]>([]);
+
+  useEffect(() => {
+    setDisplayMovies(movies);
+  }, [movies]);
 
   useEffect(() => {
     const fuse = new Fuse(movies, {

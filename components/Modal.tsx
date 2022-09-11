@@ -20,6 +20,7 @@ import useAuth from '../hooks/useAuth';
 
 import { closeModal, modalSelector, toggleMuteVideo } from '../store/slices/modal';
 import { movieSelector } from '../store/slices/movie';
+import { profilesSelector } from '../store/slices/profiles';
 import { Genre } from '../types';
 import { handleMovieList } from '../utils/toast';
 
@@ -27,6 +28,7 @@ const Modal: FC = () => {
   const dispatch = useTypedDispatch();
   const { isOpenedModal, isMutedVideo } = useTypedSelector(modalSelector);
   const { movie } = useTypedSelector(movieSelector);
+  const { currentProfile } = useTypedSelector(profilesSelector);
 
   const { user } = useAuth();
   const { isLiked, isDisliked, isMovieAdded } = useMovieButtons(user, movie);
@@ -48,13 +50,15 @@ const Modal: FC = () => {
     <MuiModal
       className='fixed left-0 right-0 selection:bg-red-600 selection:text-white px-3 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-2xl scrollbar-hide md:!top-7'
       open={isOpenedModal}
-      onClose={() => dispatch(closeModal())}>
+      onClose={() => dispatch(closeModal())}
+    >
       <>
         <Toaster position='bottom-center' />
 
         <button
           className='modalButton absolute right-10 top-5 !z-40 h-9 w-9 border-0 bg-[#181818] md:hover:rotate-90 md:hover:bg-[#181818] md:hover:border-2'
-          onClick={() => dispatch(closeModal())}>
+          onClick={() => dispatch(closeModal())}
+        >
           <XIcon className='h-6 w-6' />
         </button>
 
@@ -91,7 +95,10 @@ const Modal: FC = () => {
                       ? 'hover:after:w-[150px] md:hover:after:-left-14'
                       : 'hover:after:-left-[82px]'
                   }`}
-                  onClick={() => handleMovieList(user, isMovieAdded, movie, 'myList', 'list')}>
+                  onClick={() =>
+                    handleMovieList(user, isMovieAdded, movie, 'myList', currentProfile, 'list')
+                  }
+                >
                   {isMovieAdded ? (
                     <CheckIcon className='h-7 w-7' />
                   ) : (
@@ -104,7 +111,10 @@ const Modal: FC = () => {
                 <button
                   data-text={`${isLiked ? 'Remove from Liked' : 'Like'}`}
                   className={`likeModal ${!isLiked && 'hover:after:w-20 md:hover:after:-left-4'}`}
-                  onClick={() => handleMovieList(user, isLiked, movie, 'Liked', 'liked')}>
+                  onClick={() =>
+                    handleMovieList(user, isLiked, movie, 'Liked', currentProfile, 'liked')
+                  }
+                >
                   {isLiked ? (
                     <MdThumbUpAlt className='h-6 w-6 text-white md:hover:text-white/80' />
                   ) : (
@@ -121,7 +131,10 @@ const Modal: FC = () => {
                       ? 'opacity-60 md:hover:after:w-60 md:hover:after:-left-[86px]'
                       : 'hover:after:w-32 md:hover:after:-left-[40px]'
                   }`}
-                  onClick={() => handleMovieList(user, isDisliked, movie, 'Disliked', 'disliked')}>
+                  onClick={() =>
+                    handleMovieList(user, isDisliked, movie, 'Disliked', currentProfile, 'disliked')
+                  }
+                >
                   {isDisliked ? (
                     <MdThumbDownAlt className='h-6 w-6' />
                   ) : (
@@ -136,7 +149,8 @@ const Modal: FC = () => {
               className={`muteModal ${
                 isMutedVideo ? 'hover:after:w-24' : 'hover:after:w-18 md:hover:after:-left-[17px]'
               }`}
-              onClick={() => dispatch(toggleMuteVideo())}>
+              onClick={() => dispatch(toggleMuteVideo())}
+            >
               {isMutedVideo ? (
                 <VolumeOffIcon className='h-6 w-6' />
               ) : (
