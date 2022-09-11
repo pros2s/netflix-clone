@@ -79,10 +79,14 @@ const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
               </button>
               <button
                 type='button'
-                className='py-1 px-2 w-40 bg-red-500 transition text-white font-semibold rounded-lg md:hover:bg-red-600'
+                className='py-1 px-2 w-40 h-8 bg-red-500 transition text-white font-semibold rounded-lg md:hover:bg-red-600'
                 onClick={deleteAccount}
               >
-                {loading ? <Loader color='dark:fill-gray-300' /> : 'Delete account'}
+                {loading ? (
+                  <Loader color='dark:fill-gray-300' height='6' width='40' />
+                ) : (
+                  'Delete account'
+                )}
               </button>
             </div>
           </>
@@ -108,7 +112,7 @@ const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
                 className='mt-3 rounded bg-[#e50914] px-6 py-1.5 font-semibold'
                 onClick={confirmCurrentPassword}
               >
-                {loading ? <Loader color='dark:fill-gray-300' /> : 'Enter'}
+                {loading ? <Loader color='dark:fill-gray-300' height='6' width='14' /> : 'Enter'}
               </button>
             </form>
           </>

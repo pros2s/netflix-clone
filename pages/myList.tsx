@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 
 import Header from '../components/UI/Header';
-import Modal from '../components/Modal';
+import Modal from '../components/UI/Modal';
 import Thumbnail from '../components/Thumbnail';
 import Footer from '../components/UI/Footer';
 
@@ -13,7 +13,7 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 
 import { modalSelector } from '../store/slices/modal';
 
-const myList: FC = () => {
+const myList: NextPage = () => {
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { loading, user } = useAuth();
   const myList = useMovieList(user?.uid, 'myList');

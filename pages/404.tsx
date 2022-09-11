@@ -1,10 +1,10 @@
+import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FC } from 'react';
 
 import netflix from '../assets/netflix.png';
 
-const NotFound: FC = () => {
+const NotFound: NextPage = () => {
   return (
     <div className='flex h-screen w-screen flex-col bg-black items-center justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <div className='absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6'>

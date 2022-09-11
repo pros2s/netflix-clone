@@ -14,7 +14,6 @@ import { searchSelector, setSearchValue } from '../../store/slices/search';
 import { profilesSelector } from '../../store/slices/profiles';
 
 import BasicMenu from './BasicMenu';
-import Loader from './Loader';
 
 import netflix from '../../assets/netflix.png';
 
@@ -23,7 +22,7 @@ const Header: FC = () => {
   const { searchValue } = useTypedSelector(searchSelector);
   const { currentProfile } = useTypedSelector(profilesSelector);
 
-  const { loading, user } = useAuth();
+  const { user } = useAuth();
   const profileIcon = useProfileIcon(user?.uid);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -61,7 +60,6 @@ const Header: FC = () => {
       <div className='flex items-center space-x-2 lg:ml-[49px] md:space-x-10'>
         <Image className='md:cursor-pointer' src={netflix} alt='logo' width={120} height={35} />
 
-        {loading && <Loader color='dark:fill-red-600' />}
         <BasicMenu />
 
         <ul className='hidden gap-x-4 md:flex'>

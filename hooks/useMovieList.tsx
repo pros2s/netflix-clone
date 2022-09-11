@@ -24,7 +24,7 @@ export const useMovieList = (userId: string | undefined, movieCollection: string
         );
       },
     );
-  }, [db, userId]);
+  }, [db, userId, currentProfile]);
 
   return movieList;
 };

@@ -19,9 +19,9 @@ const MiniHeader: FC<MiniHeaderProps> = ({ isAccount, isSignOut }) => {
   const { currentProfile } = useTypedSelector(profilesSelector);
   const { user, logout } = useAuth();
   const profileIcon = useProfileIcon(user?.uid);
-  
+
   return (
-    <header className='border-b border-white/10 bg-[#141414] pt-3.5 px-16'>
+    <header className='border-b border-white/10 bg-[#141414] pt-3.5 lg:px-16'>
       <Link href='/'>
         <a>
           <Image className='md:cursor-pointer' src={netflix} width={120} height={35} alt='logo' />

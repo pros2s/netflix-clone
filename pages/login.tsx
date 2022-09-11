@@ -310,7 +310,13 @@ const login: NextPage = () => {
         </div>
 
         <button className='w-full rounded bg-[#e50914] py-3 font-semibold' type='submit'>
-          {loading ? <Loader color='dark:fill-gray-300' /> : isSignIn ? 'Sign In' : 'Sign Up'}
+          {loading ? (
+            <Loader color='dark:fill-gray-300' height='6' width='14' />
+          ) : isSignIn ? (
+            'Sign In'
+          ) : (
+            'Sign Up'
+          )}
         </button>
 
         <div className='text-[gray]'>

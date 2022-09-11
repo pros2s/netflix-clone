@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { getStorage, ref as storageRef } from 'firebase/storage';
 import { db } from '../firebase';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
@@ -24,12 +23,13 @@ import Footer from './UI/Footer';
 import ErrorMessage from './UI/ErrorMessage';
 import MiniHeader from './UI/MiniHeader';
 import ChosingIcon from './ChosingIcon';
+import Loader from './UI/Loader';
 
 const EditProfile: FC = () => {
   const { editingProfile, currentProfile, editingIcon, choosing } =
     useTypedSelector(profilesSelector);
   const dispatch = useTypedDispatch();
-  const { user } = useAuth();
+  const { user, loading, deleteProfileLoading, editProfile } = useAuth();
   const profiles = useProfiles(user?.uid);
 
   const [inputVal, setInputVal] = useState<string>(editingProfile.name);
@@ -50,25 +50,15 @@ const EditProfile: FC = () => {
   };
 
   const saveChanges = async () => {
-    const storage = getStorage();
-    const iconRef = storageRef(storage, editingIcon);
-
     if (isInRange && !isExistName) {
       editingProfile.name === currentProfile && dispatch(setCurrentProfile(inputVal));
-
-      await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name));
-
-      await setDoc(doc(db, 'users', user?.uid!, 'profiles', inputVal), {
-        profileIcon: iconRef.name || editingProfile.profileIcon,
-        name: inputVal,
-      });
-
-      dispatch(notEditingProfile());
     }
+
+    await editProfile(editingIcon, inputVal);
   };
 
   const deleteProfile = async () => {
-    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name));
+    await deleteProfile();
 
     dispatch(notEditingProfile());
   };
@@ -138,7 +128,7 @@ const EditProfile: FC = () => {
               type='button'
               onClick={saveChanges}
             >
-              Save
+              {loading ? <Loader color='dark:fill-gray-300' height='6' width='8' /> : 'Save'}
             </button>
           </li>
           <li>
@@ -158,7 +148,11 @@ const EditProfile: FC = () => {
               disabled={profiles.length === 1 ? true : false}
               onClick={deleteProfile}
             >
-              Delete Profile
+              {deleteProfileLoading ? (
+                <Loader color='dark:fill-gray-300' height='6' width='8' />
+              ) : (
+                'Delete Profile'
+              )}
             </button>
           </li>
         </ul>

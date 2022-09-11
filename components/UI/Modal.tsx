@@ -12,17 +12,17 @@ import {
 import { FaPlay } from 'react-icons/fa';
 import MuiModal from '@mui/material/Modal';
 
-import { useTypedSelector } from '../hooks/useTypedSelector';
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import { useFetch } from '../hooks/useFetch';
-import { useMovieButtons } from '../hooks/useMovieButtons';
-import useAuth from '../hooks/useAuth';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useFetch } from '../../hooks/useFetch';
+import { useMovieButtons } from '../../hooks/useMovieButtons';
+import useAuth from '../../hooks/useAuth';
 
-import { closeModal, modalSelector, toggleMuteVideo } from '../store/slices/modal';
-import { movieSelector } from '../store/slices/movie';
-import { profilesSelector } from '../store/slices/profiles';
-import { Genre } from '../types';
-import { handleMovieList } from '../utils/toast';
+import { closeModal, modalSelector, toggleMuteVideo } from '../../store/slices/modal';
+import { movieSelector } from '../../store/slices/movie';
+import { profilesSelector } from '../../store/slices/profiles';
+import { Genre } from '../../types';
+import { handleMovieList } from '../../utils/toast';
 
 const Modal: FC = () => {
   const dispatch = useTypedDispatch();
@@ -92,7 +92,7 @@ const Modal: FC = () => {
                   data-text={`${isMovieAdded ? 'Remove from my list' : 'Add to my list'}`}
                   className={`myListModal ${
                     !isMovieAdded
-                      ? 'hover:after:w-[150px] md:hover:after:-left-14'
+                      ? 'hover:after:w-[160px] md:hover:after:-left-14'
                       : 'hover:after:-left-[82px]'
                   }`}
                   onClick={() =>

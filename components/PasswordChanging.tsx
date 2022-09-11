@@ -92,7 +92,7 @@ const PasswordChanging: FC = () => {
   return (
     <div className='relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <Head>
-        <title>Netflix</title>
+        <title>Account Setting</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
@@ -166,7 +166,7 @@ const PasswordChanging: FC = () => {
 
         <button className='w-full rounded bg-[#e50914] py-3 font-semibold' type='submit'>
           {loading ? (
-            <Loader color='dark:fill-gray-300' />
+            <Loader color='dark:fill-gray-300' height='6' width='14' />
           ) : !isPasswordConfirmed ? (
             'Next'
           ) : (

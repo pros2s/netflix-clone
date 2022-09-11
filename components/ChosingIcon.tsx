@@ -47,9 +47,9 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
   };
 
   return (
-    <div className=''>
+    <>
       <Head>
-        <title>Netflix</title>
+        <title>Choose Icon</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
@@ -84,7 +84,7 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isEditing }) => {
         </button>
         <Footer isAbsolute={true} />
       </main>
-    </div>
+    </>
   );
 };
 

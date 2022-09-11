@@ -1,13 +1,13 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
+
+import { NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import Image from 'next/image';
 import dateFormat from 'dateformat';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useProfiles } from '../hooks/useProfiles';
-import { useProfileIcon } from '../hooks/useProfileIcon';
 import useAuth from '../hooks/useAuth';
 
 import PasswordChanging from '../components/PasswordChanging';
@@ -25,7 +25,7 @@ import membersince from '../assets/membersince.png';
 import DeletePopup from '../components/DeletePopup';
 import MiniHeader from '../components/UI/MiniHeader';
 
-const account: FC = () => {
+const account: NextPage = () => {
   const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
@@ -46,7 +46,7 @@ const account: FC = () => {
   return (
     <div className='selection:bg-red-600 selection:text-white'>
       <Head>
-        <title>Account Settings - Netflix</title>
+        <title>Account Settings</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 

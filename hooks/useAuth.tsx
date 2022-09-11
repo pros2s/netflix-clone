@@ -2,6 +2,7 @@ import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState 
 import { useRouter } from 'next/router';
 import { auth, db } from '../firebase';
 import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { getStorage, ref as storageRef } from 'firebase/storage';
 import {
   createUserWithEmailAndPassword,
   deleteUser,
@@ -16,13 +17,14 @@ import {
 } from 'firebase/auth';
 
 import { useTypedDispatch } from './useTypedDispatch';
+import { useTypedSelector } from './useTypedSelector';
 
 import {
   loginIsChanging,
   loginIsNotChanging,
   passwordIsNotChanging,
 } from '../store/slices/privateSettings';
-import { isNotchoosingIcon, notEditingProfile } from '../store/slices/profiles';
+import { isNotchoosingIcon, notEditingProfile, profilesSelector } from '../store/slices/profiles';
 import { userIsNotChangingPlan } from '../store/slices/sutbscription';
 
 import { useProfiles } from './useProfiles';
@@ -36,7 +38,10 @@ interface IAuth {
   reAuth: (oldPassword: string) => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: () => Promise<void>;
+  editProfile: (editingIcon: string, inputVal: string) => Promise<void>;
+  deleteProfile: () => Promise<void>;
   loading: boolean;
+  deleteProfileLoading: boolean;
 }
 
 const AuthContext = createContext<IAuth>({
@@ -48,7 +53,10 @@ const AuthContext = createContext<IAuth>({
   setNewPassword: async () => {},
   reAuth: async () => {},
   deleteAccount: async () => {},
+  editProfile: async () => {},
+  deleteProfile: async () => {},
   loading: false,
+  deleteProfileLoading: false,
 });
 
 interface AuthProviderProps {
@@ -57,10 +65,12 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
+  const { editingProfile } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleteProfileLoading, setDeleteProfileLoading] = useState<boolean>(false);
   const [InitialLoading, setInitialLoading] = useState<boolean>(true);
 
   const profiles = useProfiles(user?.uid);
@@ -183,6 +193,32 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setLoading(false);
   };
 
+  const editProfile = async (editingIcon: string, inputValue: string) => {
+    setLoading(true);
+
+    const storage = getStorage();
+    const iconRef = storageRef(storage, editingIcon);
+
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name));
+
+    await setDoc(doc(db, 'users', user?.uid!, 'profiles', inputValue), {
+      profileIcon: iconRef.name || editingProfile.profileIcon,
+      name: inputValue,
+    });
+
+    dispatch(notEditingProfile());
+
+    setLoading(false);
+  };
+
+  const deleteProfile = async () => {
+    setDeleteProfileLoading(true);
+
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', editingProfile.name));
+
+    setDeleteProfileLoading(false);
+  };
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -194,6 +230,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       setNewPassword,
       reAuth,
       deleteAccount,
+      editProfile,
+      deleteProfile,
+      deleteProfileLoading,
     }),
     [user, loading],
   );

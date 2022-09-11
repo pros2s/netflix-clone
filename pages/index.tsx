@@ -5,7 +5,7 @@ import ChoosingIcon from '../components/ChosingIcon';
 import Plans from '../components/Plans';
 import Header from '../components/UI/Header';
 import Banner from '../components/Banner';
-import Modal from '../components/Modal';
+import Modal from '../components/UI/Modal';
 import Row from '../components/Row';
 import Footer from '../components/UI/Footer';
 

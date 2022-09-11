@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
 
-import PlanTable from './PlanTable';
+import PlanTable from './UI/PlanTable';
 import Footer from './UI/Footer';
 import MiniHeader from './UI/MiniHeader';
 
@@ -41,7 +41,7 @@ const Plans: FC = () => {
   return (
     <div className='selection:bg-red-600 selection:text-white'>
       <Head>
-        <title>Netflix</title>
+        <title>Change Plan</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 

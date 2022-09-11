@@ -1,6 +1,6 @@
 import { CheckIcon } from '@heroicons/react/outline';
 import { FC } from 'react';
-import { Plan } from '../types';
+import { Plan } from '../../types';
 
 interface PlanTableProps {
   plans: Plan[];
@@ -26,7 +26,8 @@ const PlanTable: FC<PlanTableProps> = ({ plans, selectedPlan }) => {
                 className={`tableDataFeature ${
                   selectedPlan?.id === plan.id ? 'text-[#E50914]' : 'text-[gray]'
                 }`}
-                key={plan.id}>
+                key={plan.id}
+              >
                 {i === 0 && <p>AED{plan.price}</p>}
                 {i === 1 && <p>{plan.quality}</p>}
                 {i === 2 && <p>{plan.resolution}</p>}
