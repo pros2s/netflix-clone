@@ -28,7 +28,6 @@ const EmailChanging: FC = () => {
   const confirmCurrentPassword = useCallback(
     async (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      setIsPasswordConfirmed(true);
       setIsPasswordCorrect(true);
 
       if (!passwordValue) {
@@ -37,12 +36,14 @@ const EmailChanging: FC = () => {
         return;
       }
 
-      await reAuth(passwordValue).catch((error) => {
-        setIsPasswordConfirmed(false);
-        error.message.match(/wrong-password/gi)
-          ? setIsPasswordCorrect(false)
-          : alert(error.message);
-      });
+      await reAuth(passwordValue)
+        .then(() => setIsPasswordConfirmed(true))
+        .catch((error) => {
+          setIsPasswordConfirmed(false);
+          error.message.match(/wrong-password/gi)
+            ? setIsPasswordCorrect(false)
+            : alert(error.message);
+        });
     },
     [passwordValue],
   );
@@ -85,7 +86,8 @@ const EmailChanging: FC = () => {
 
       <form
         noValidate
-        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-lg md:px-14'>
+        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-lg md:px-14'
+      >
         <h1 className='text-4xl font-semibold'>
           {!isPasswordConfirmed ? 'Enter your password' : 'Enter your new email'}
         </h1>
@@ -119,7 +121,8 @@ const EmailChanging: FC = () => {
           type='submit'
           onClick={(e) => {
             !isPasswordConfirmed ? confirmCurrentPassword(e) : confirmNewEmail(e);
-          }}>
+          }}
+        >
           {loading ? (
             <Loader color='dark:fill-gray-300' />
           ) : !isPasswordConfirmed ? (
@@ -131,7 +134,8 @@ const EmailChanging: FC = () => {
 
         <button
           className='membershipLink text-center w-full'
-          onClick={() => dispatch(loginIsNotChanging())}>
+          onClick={() => dispatch(loginIsNotChanging())}
+        >
           Cancel
         </button>
       </form>

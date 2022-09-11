@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   EmailAuthProvider,
   onAuthStateChanged,
   reauthenticateWithCredential,
@@ -15,7 +16,8 @@ import {
 
 import { loginIsChanging } from '../store/slices/privateSettings';
 import { useTypedDispatch } from './useTypedDispatch';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { useProfiles } from './useProfiles';
 
 interface IAuth {
   user: User | null;
@@ -25,6 +27,7 @@ interface IAuth {
   setNewPassword: (newPassword: string, email: string) => Promise<void>;
   reAuth: (oldPassword: string) => Promise<void>;
   logout: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
   loading: boolean;
 }
 
@@ -36,6 +39,7 @@ const AuthContext = createContext<IAuth>({
   setNewEmail: async () => {},
   setNewPassword: async () => {},
   reAuth: async () => {},
+  deleteAccount: async () => {},
   loading: false,
 });
 
@@ -46,9 +50,12 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
   const router = useRouter();
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [InitialLoading, setInitialLoading] = useState<boolean>(true);
+
+  const profiles = useProfiles(user?.uid);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -149,6 +156,19 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .finally(() => setLoading(false));
   };
 
+  const deleteAccount = async () => {
+    setLoading(true);
+
+    profiles.forEach(
+      async (profile) =>
+        await deleteDoc(doc(db, 'users', auth.currentUser?.uid!, 'profiles', profile.name)),
+    );
+    await deleteDoc(doc(db, 'users', auth.currentUser?.uid!));
+    await deleteUser(auth.currentUser!);
+    
+    setLoading(false);
+  };
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -159,6 +179,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       setNewEmail,
       setNewPassword,
       reAuth,
+      deleteAccount,
     }),
     [user, loading],
   );

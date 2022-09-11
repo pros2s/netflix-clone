@@ -31,8 +31,8 @@ const login: NextPage = () => {
   if (user) router.push('/');
 
   const dispatch = useTypedDispatch();
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const eqPasswordRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLDivElement>(null);
+  const eqPasswordRef = useRef<HTMLDivElement>(null);
 
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);

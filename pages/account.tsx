@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -23,6 +23,7 @@ import { editingProfile, profilesSelector } from '../store/slices/profiles';
 
 import netflix from '../assets/netflix.png';
 import membersince from '../assets/membersince.png';
+import DeletePopup from '../components/DeletePopup';
 
 const account: FC = () => {
   const dispatch = useTypedDispatch();
@@ -34,12 +35,14 @@ const account: FC = () => {
   const profiles = useProfiles(user?.uid);
   const profileIcon = useProfileIcon(user?.uid);
 
+  const [deletePopup, setDeletePopup] = useState<boolean>(false);
+
   const formatDate = dateFormat(startDate!);
 
   if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;
   if (isChangingPlan) return <Plans />;
-  if (isEditingProfile) return <EditProfile />
+  if (isEditingProfile) return <EditProfile />;
 
   return (
     <div className='selection:bg-red-600 selection:text-white'>
@@ -90,10 +93,16 @@ const account: FC = () => {
           <div className='accountRow'>
             <h4 className='uppercase text-lg text-[gray]'>Settings</h4>
             <button
-              className='text-start col-span-3 cursor-pointer text-blue-500 md:hover:underline'
+              className='text-start col-span-2 cursor-pointer text-blue-500 md:hover:underline'
               onClick={logout}
             >
               Sign out of all devices
+            </button>
+            <button
+              className='text-end cursor-pointer text-red-600 md:hover:underline'
+              onClick={() => setDeletePopup(true)}
+            >
+              Delete Account
             </button>
           </div>
 
@@ -123,6 +132,8 @@ const account: FC = () => {
         </main>
         <Footer />
       </div>
+
+      {deletePopup && <DeletePopup deletePopup={deletePopup} setDeletePopup={setDeletePopup} />}
     </div>
   );
 };

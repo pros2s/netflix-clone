@@ -38,7 +38,6 @@ const PasswordChanging: FC = () => {
   } = useForm<Passwords>();
 
   const confirmCurrentPassword = async () => {
-    setIsPasswordConfirmed(true);
     setIsPasswordCorrect(true);
 
     if (!passwordValue) {
@@ -47,10 +46,14 @@ const PasswordChanging: FC = () => {
       return;
     }
 
-    await reAuth(passwordValue).catch((error) => {
-      setIsPasswordConfirmed(false);
-      error.message.match(/wrong-password/gi) ? setIsPasswordCorrect(false) : alert(error.message);
-    });
+    await reAuth(passwordValue)
+      .then(() => setIsPasswordConfirmed(true))
+      .catch((error) => {
+        setIsPasswordConfirmed(false);
+        error.message.match(/wrong-password/gi)
+          ? setIsPasswordCorrect(false)
+          : alert(error.message);
+      });
   };
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +104,8 @@ const PasswordChanging: FC = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-xl md:px-14'>
+        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-xl md:px-14'
+      >
         <h1 className='text-4xl font-semibold'>
           {!isPasswordConfirmed ? 'Enter your password' : 'Enter your new password'}
         </h1>
@@ -154,7 +158,8 @@ const PasswordChanging: FC = () => {
 
         <button
           className='membershipLink text-center w-full'
-          onClick={() => dispatch(passwordIsNotChanging())}>
+          onClick={() => dispatch(passwordIsNotChanging())}
+        >
           Cancel
         </button>
       </form>
