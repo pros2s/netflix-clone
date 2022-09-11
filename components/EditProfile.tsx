@@ -3,9 +3,6 @@ import { PencilIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
-import { db } from '../firebase';
-
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useProfiles } from '../hooks/useProfiles';
