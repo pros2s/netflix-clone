@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useState, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import Head from 'next/head';
@@ -14,6 +14,7 @@ import Loader from './UI/Loader';
 import ErrorMessage from './UI/ErrorMessage';
 
 import netflix from '../assets/netflix.png';
+import Input from './UI/Input';
 
 interface Passwords {
   repeatNewPassword: string;
@@ -22,6 +23,9 @@ interface Passwords {
 const PasswordChanging: FC = () => {
   const dispatch = useTypedDispatch();
   const { reAuth, setNewPassword, loading, user } = useAuth();
+
+  const passwordRef = useRef<HTMLDivElement>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [newPasswordValue, setNewPasswordValue] = useState<string>('');
@@ -104,44 +108,65 @@ const PasswordChanging: FC = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-xl md:px-14'
+        className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-md md:px-14'
       >
-        <h1 className='text-4xl font-semibold'>
+        <h1 className='text-4xl font-semibold text-center'>
           {!isPasswordConfirmed ? 'Enter your password' : 'Enter your new password'}
         </h1>
 
         <div className='space-y-4'>
           <label className='inline-block w-full'>
-            <input
-              value={!isPasswordConfirmed ? passwordValue : newPasswordValue}
-              onChange={(e) => handleInputsChange(e)}
-              type='password'
-              placeholder={!isPasswordConfirmed ? 'Your password' : 'New Password'}
-              className='input'
-            />
-            <ErrorMessage isCheck={!isPasswordCorrect} message='Wrong password. Try again.' />
-            <ErrorMessage
-              isCheck={isWeakPassword}
-              message='Password should be at least 6 characters.'
-            />
+            <div className='relative group'>
+              <Input
+                isPassword={true}
+                placeholder={!isPasswordConfirmed ? 'Your password' : 'New Password'}
+                handleChangeInput={handleInputsChange}
+                inputValue={!isPasswordConfirmed ? passwordValue : newPasswordValue}
+              />
+
+              <ErrorMessage isCheck={!isPasswordCorrect} message='Wrong password. Try again.' />
+              <ErrorMessage
+                isCheck={isWeakPassword}
+                message='Password should be at least 6 characters.'
+              />
+            </div>
           </label>
 
           {isPasswordConfirmed && (
             <label className='inline-block w-full pt-4'>
-              <input
-                type='password'
-                placeholder='Repeat new password'
-                className='input'
-                {...register('repeatNewPassword', {
-                  required: true,
-                  onChange: () => setIsEqualNewPasswords(true),
-                })}
-              />
-              <ErrorMessage
-                isCheck={!!errors.repeatNewPassword}
-                message='Your password must contain between 6 and 60 characters.'
-              />
-              <ErrorMessage isCheck={!isEqualNewPasswords} message='Passwords are not equal.' />
+              <div className='relative group'>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className='input'
+                  {...register('repeatNewPassword', {
+                    required: true,
+                    onChange: () => setIsEqualNewPasswords(true),
+                  })}
+                />
+                <label
+                  htmlFor='input'
+                  className={`placeholder ${newPasswordValue ? 'placeholderIn' : 'placeholderOut'}`}
+                >
+                  Repeat new password
+                </label>
+
+                <button
+                  type='button'
+                  className='opacity-0 pointer-events-none transition-opacity absolute top-3 right-3 text-[darkgray] uppercase group-focus-within:opacity-100 group-focus-within:pointer-events-auto'
+                  onClick={() => {
+                    passwordRef.current?.click();
+                    setShowPassword((state) => !state);
+                  }}
+                >
+                  {showPassword ? 'hide' : 'show'}
+                </button>
+
+                <ErrorMessage
+                  isCheck={!!errors.repeatNewPassword}
+                  message='Your password must contain between 6 and 60 characters.'
+                />
+                <ErrorMessage isCheck={!isEqualNewPasswords} message='Passwords are not equal.' />
+              </div>
             </label>
           )}
         </div>

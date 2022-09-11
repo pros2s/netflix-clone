@@ -35,6 +35,13 @@ export interface Profile {
   profileIcon: string;
 }
 
+export interface Inputs {
+  email: string;
+  password: string;
+  equalPassword: string;
+  username: string;
+}
+
 export interface Element {
   type: 'Bloopers' | 'Featurette' | 'Behind the Scenes' | 'Clip' | 'Trailer' | 'Teaser';
 }

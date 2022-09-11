@@ -9,6 +9,7 @@ import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { loginIsNotChanging } from '../store/slices/privateSettings';
 
 import Loader from './UI/Loader';
+import Input from './UI/Input';
 import ErrorMessage from './UI/ErrorMessage';
 
 import netflix from '../assets/netflix.png';
@@ -88,21 +89,20 @@ const EmailChanging: FC = () => {
         noValidate
         className='relative mt-24 space-y-8 rounded bg-black/75 py-5 px-6 md:mt-0 md:max-w-lg md:px-14'
       >
-        <h1 className='text-4xl font-semibold'>
+        <h1 className='text-4xl font-semibold text-center'>
           {!isPasswordConfirmed ? 'Enter your password' : 'Enter your new email'}
         </h1>
 
         <div className='space-y-4'>
           <label className='inline-block w-full'>
-            <div>
-              <input
-                value={!isPasswordConfirmed ? passwordValue : emailValue}
-                onChange={(e) => handleInputsChange(e)}
-                type={!isPasswordConfirmed ? 'password' : 'email'}
-                required
+            <div className='relative group'>
+              <Input
+                isPassword={!isPasswordConfirmed}
                 placeholder={!isPasswordConfirmed ? 'Your password' : 'New Email'}
-                className='input'
+                handleChangeInput={handleInputsChange}
+                inputValue={!isPasswordConfirmed ? passwordValue : emailValue}
               />
+
               <ErrorMessage isCheck={!isPasswordCorrect} message='Wrong password. Try again.' />
               <ErrorMessage
                 isCheck={!isEmailCorrect}

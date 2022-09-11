@@ -49,7 +49,9 @@ const Plans: FC = () => {
       </Head>
       <header className='border-b border-white/10 bg-[#141414]'>
         <Link href='/'>
-          <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
+          <a>
+            <Image className='md:cursor-pointer' src={netflix} alt='icon' width={120} height={35} />
+          </a>
         </Link>
         <button className='text-lg font-medium md:hover:underline' onClick={logout}>
           Sign Out
