@@ -44,14 +44,14 @@ const Home: NextPage<NextPageProps> = ({
   const { loading, user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
-  const { choosing } = useTypedSelector(profilesSelector);
+  const { isChoosing } = useTypedSelector(profilesSelector);
 
   const myList = useMovieList(user?.uid, 'myList');
   const liked = useMovieList(user?.uid, 'Liked');
   const disliked = useMovieList(user?.uid, 'Disliked');
 
   if (loading) return null;
-  if (choosing) return <ChoosingIcon isManage={false} />;
+  if (isChoosing) return <ChoosingIcon isManage={false} />;
   if (!isSubscription) return <Plans />;
 
   return (

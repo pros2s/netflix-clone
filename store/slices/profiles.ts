@@ -5,7 +5,7 @@ import { RootState } from '../store';
 
 interface IProfilesState {
   currentProfile: string;
-  choosing: boolean;
+  isChoosing: boolean;
   profileIcon: string;
   managingProfile: DocumentData | Profile;
   isManagingProfile: boolean;
@@ -15,7 +15,7 @@ interface IProfilesState {
 
 const initialState: IProfilesState = {
   currentProfile: '',
-  choosing: false,
+  isChoosing: false,
   profileIcon: '',
   managingProfile: {
     name: '',
@@ -34,10 +34,10 @@ const profilesSlice = createSlice({
       state.currentProfile = payload;
     },
     choosingIcon(state) {
-      state.choosing = true;
+      state.isChoosing = true;
     },
     isNotchoosingIcon(state) {
-      state.choosing = false;
+      state.isChoosing = false;
     },
     profileIsManaging(state, { payload }: PayloadAction<DocumentData | Profile>) {
       state.isManagingProfile = true;

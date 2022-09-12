@@ -53,7 +53,6 @@ interface IAuth {
   deleteProfile: (name: string) => Promise<void>;
   addNewProfile: (profileIcon: string, newProfileName: string) => Promise<void>;
   loading: boolean;
-  deleteProfileLoading: boolean;
 }
 
 const AuthContext = createContext<IAuth>({
@@ -69,7 +68,6 @@ const AuthContext = createContext<IAuth>({
   deleteProfile: async () => {},
   addNewProfile: async () => {},
   loading: false,
-  deleteProfileLoading: false,
 });
 
 interface AuthProviderProps {
@@ -78,12 +76,11 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
-  const { managingProfile } = useTypedSelector(profilesSelector);
+  const { managingProfile, currentProfile } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deleteProfileLoading, setDeleteProfileLoading] = useState<boolean>(false);
   const [InitialLoading, setInitialLoading] = useState<boolean>(true);
 
   const profiles = useProfiles(user?.uid);
@@ -227,6 +224,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         newProfile,
       );
 
+      currentProfile === deleteProfile.name && dispatch(setCurrentProfile(newProfile.name));
       dispatch(notManagingProfile());
     });
 
@@ -234,11 +232,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   };
 
   const deleteProfile = async (name: string) => {
-    setDeleteProfileLoading(true);
+    setLoading(true);
 
     await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', name));
+    dispatch(notManagingProfile());
 
-    setDeleteProfileLoading(false);
+    setLoading(false);
   };
 
   const addNewProfile = async (profileIcon: string, newProfileName: string) => {
@@ -270,7 +269,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       editProfile,
       deleteProfile,
       addNewProfile,
-      deleteProfileLoading,
     }),
     [user, loading],
   );

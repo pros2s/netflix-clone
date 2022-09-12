@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { PencilIcon } from '@heroicons/react/outline';
 import { TiPlus } from 'react-icons/ti';
 
@@ -13,12 +14,18 @@ import { useProfiles } from '../hooks/useProfiles';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 
-import { addingNewProfile, profileIsManaging, profilesSelector, setManagingIcon } from '../store/slices/profiles';
+import {
+  addingNewProfile,
+  profileIsManaging,
+  profilesSelector,
+  setManagingIcon,
+} from '../store/slices/profiles';
 import { icons } from '../utils/icons';
 
 const manage: NextPage = () => {
   const dispatch = useTypedDispatch();
   const { isManagingProfile, isAddingProfile } = useTypedSelector(profilesSelector);
+  const router = useRouter();
 
   const { user } = useAuth();
   const profiles = useProfiles(user?.uid);
@@ -27,7 +34,7 @@ const manage: NextPage = () => {
     const rnd = icons[Math.floor(Math.random() * icons.length)].slice(7);
     dispatch(setManagingIcon(rnd));
 
-    dispatch(addingNewProfile())
+    dispatch(addingNewProfile());
   };
 
   if (isManagingProfile || isAddingProfile) return <ManageProfile />;
@@ -44,7 +51,7 @@ const manage: NextPage = () => {
       <main className='relative h-screen flex flex-col items-center px-6'>
         <h1 className='pt-24 font-semibold text-4xl'>Manage Profiles:</h1>
 
-        <div className='flex flex-wrap justify-center items-center gap-2 p-6 max-w-[38rem]'>
+        <div className='flex flex-wrap justify-center items-center gap-x-4 gap-y-10 p-6 max-w-[47rem]'>
           {profiles.map((profile) => (
             <button
               key={Math.random()}
@@ -70,7 +77,9 @@ const manage: NextPage = () => {
           ))}
 
           <button
-            className='relative flex flex-col items-center justify-center transition h-32 w-32 group'
+            className={`${
+              profiles.length < 5 ? 'flex' : 'hidden'
+            } relative flex-col items-center justify-center transition h-32 w-32 group`}
             onClick={onClickAddNewProfile}
           >
             <div className='flex bg-[gray] opacity-60 rounded-full h-16 w-16 duration-300 group-hover:opacity-100'>
@@ -82,7 +91,15 @@ const manage: NextPage = () => {
           </button>
         </div>
 
-        <footer className='absolute bottom-0 text-center min-w-[191px]'>
+        <button
+          className='bg-white text-lg duration-300 font-medium text-[#141414] px-4 py-1 rounded-sm mt-16 md:hover:bg-white/70'
+          type='submit'
+          onClick={() => router.back()}
+        >
+          Done
+        </button>
+
+        <footer className='md:absolute md:bottom-0 text-center min-w-[191px]'>
           <Footer isAbsolute={true} />
         </footer>
       </main>

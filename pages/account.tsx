@@ -34,7 +34,7 @@ const account: NextPage = () => {
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
   const { isManagingProfile } = useTypedSelector(profilesSelector);
 
-  const { logout, user } = useAuth();
+  const { logout, user, deleteAccount } = useAuth();
   const profiles = useProfiles(user?.uid);
 
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
@@ -132,7 +132,13 @@ const account: NextPage = () => {
         <Footer />
       </div>
 
-      {deletePopup && <DeletePopup deletePopup={deletePopup} setDeletePopup={setDeletePopup} />}
+      {deletePopup && (
+        <DeletePopup
+          deleteFunciton={deleteAccount}
+          deletePopup={deletePopup}
+          setDeletePopup={setDeletePopup}
+        />
+      )}
     </div>
   );
 };

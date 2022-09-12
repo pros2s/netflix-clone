@@ -1,13 +1,20 @@
-import { FC, useRef, useState, ChangeEvent } from 'react';
+import { FC, useRef, useState, ChangeEvent, RefObject } from 'react';
 
 interface InputProps {
   isPassword: boolean;
   placeholder: string;
   inputValue: string;
+  inputRef?: RefObject<HTMLInputElement>;
   handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: FC<InputProps> = ({ isPassword, placeholder, handleChangeInput, inputValue }) => {
+const Input: FC<InputProps> = ({
+  isPassword,
+  placeholder,
+  handleChangeInput,
+  inputValue,
+  inputRef,
+}) => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -19,7 +26,7 @@ const Input: FC<InputProps> = ({ isPassword, placeholder, handleChangeInput, inp
         className='input'
         value={inputValue}
         onChange={(e) => handleChangeInput(e)}
-        ref={passwordRef}
+        ref={isPassword ? passwordRef : inputRef}
       />
       <label
         htmlFor='input'

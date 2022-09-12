@@ -37,12 +37,13 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isManage }) => {
     const storage = getStorage();
     const iconRef = storageRef(storage, selectedIcon);
 
-    isManage
-      ? dispatch(setManagingIcon(selectedIcon.slice(7)))
-      : await setDoc(doc(db, 'users', user?.uid!, 'profiles', currentProfile), {
-          profileIcon: iconRef.name,
-        });
+    !isManage &&
+      (await setDoc(doc(db, 'users', user?.uid!, 'profiles', currentProfile), {
+        name: currentProfile,
+        profileIcon: iconRef.name,
+      }));
 
+    dispatch(setManagingIcon(selectedIcon.slice(7)));
     dispatch(isNotchoosingIcon());
   };
 
@@ -81,6 +82,14 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isManage }) => {
           onClick={chooseIcon}
         >
           This icon is awesome!
+        </button>
+
+        <button
+          type='button'
+          onClick={() => dispatch(isNotchoosingIcon())}
+          className='cursor-pointer mt-2 text-blue-500 md:hover:underline'
+        >
+          Cancel
         </button>
         <Footer isAbsolute={true} />
       </main>

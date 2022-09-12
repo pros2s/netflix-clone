@@ -6,7 +6,6 @@ import {
   MouseEvent,
   ChangeEvent,
   useCallback,
-  useRef,
 } from 'react';
 import MuiModal from '@mui/material/Modal';
 
@@ -18,11 +17,12 @@ import Input from './UI/Input';
 
 interface DeletePopupProps {
   deletePopup: boolean;
+  deleteFunciton: () => Promise<void>;
   setDeletePopup: Dispatch<SetStateAction<boolean>>;
 }
 
-const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
-  const { deleteAccount, reAuth, loading } = useAuth();
+const DeletePopup: FC<DeletePopupProps> = ({ deleteFunciton, deletePopup, setDeletePopup }) => {
+  const { reAuth, loading } = useAuth();
 
   const [isReAuth, setIsReAuth] = useState<boolean>(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
@@ -68,25 +68,21 @@ const DeletePopup: FC<DeletePopupProps> = ({ deletePopup, setDeletePopup }) => {
       <div className='flex flex-col mx-auto mt-52 max-w-sm bg-[#242424] text-white py-4 px-6 rounded-xl'>
         {isReAuth ? (
           <>
-            <h1 className='mb-3 text-xl text-center'>Are you sure you want to delete account?</h1>
+            <h1 className='mb-3 text-xl text-center'>Are you sure?</h1>
             <div className='flex justify-around gap-x-2'>
               <button
                 type='button'
-                className='py-1 px-2 bg-white/90 transition text-black font-semibold rounded-lg md:hover:bg-white'
+                className='py-1 px-2 w-[50%] bg-white/90 transition text-black font-semibold rounded-lg md:hover:bg-white'
                 onClick={() => setDeletePopup(false)}
               >
-                Save account
+                Save
               </button>
               <button
                 type='button'
-                className='py-1 px-2 w-40 h-8 bg-red-500 transition text-white font-semibold rounded-lg md:hover:bg-red-600'
-                onClick={deleteAccount}
+                className='py-1 px-2 w-[50%] h-8 bg-red-500 transition text-white font-semibold rounded-lg md:hover:bg-red-600'
+                onClick={deleteFunciton}
               >
-                {loading ? (
-                  <Loader color='dark:fill-gray-300' height='6' width='40' />
-                ) : (
-                  'Delete account'
-                )}
+                {loading ? <Loader color='dark:fill-gray-300' height='6' width='35' /> : 'Delete'}
               </button>
             </div>
           </>
