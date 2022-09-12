@@ -38,7 +38,7 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isManage }) => {
     const iconRef = storageRef(storage, selectedIcon);
 
     isManage
-      ? dispatch(setManagingIcon(selectedIcon))
+      ? dispatch(setManagingIcon(selectedIcon.slice(7)))
       : await setDoc(doc(db, 'users', user?.uid!, 'profiles', currentProfile), {
           profileIcon: iconRef.name,
         });

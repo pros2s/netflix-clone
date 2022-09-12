@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth, db } from '../firebase';
-import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, DocumentData, setDoc } from 'firebase/firestore';
 import { getStorage, ref as storageRef } from 'firebase/storage';
 import {
   createUserWithEmailAndPassword,
@@ -45,8 +45,12 @@ interface IAuth {
   reAuth: (oldPassword: string) => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: () => Promise<void>;
-  editProfile: (editingIcon: string, inputVal: string) => Promise<void>;
-  deleteProfile: () => Promise<void>;
+  editProfile: (
+    editingIcon: string,
+    inputVal: string,
+    deleteProfile: Profile | DocumentData,
+  ) => Promise<void>;
+  deleteProfile: (name: string) => Promise<void>;
   addNewProfile: (profileIcon: string, newProfileName: string) => Promise<void>;
   loading: boolean;
   deleteProfileLoading: boolean;
@@ -142,7 +146,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
         dispatch(passwordIsNotChanging());
         dispatch(loginIsNotChanging());
-        dispatch(notManagingProfile({ name: '', profileIcon: '' }));
+        dispatch(notManagingProfile());
         dispatch(userIsNotChangingPlan());
         dispatch(isNotchoosingIcon());
       })
@@ -202,37 +206,44 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setLoading(false);
   };
 
-  const editProfile = async (editingIcon: string, inputValue: string) => {
+  const editProfile = async (
+    editingIcon: string,
+    inputValue: string,
+    deleteProfile: Profile | DocumentData,
+  ) => {
     setLoading(true);
 
     const storage = getStorage();
     const iconRef = storageRef(storage, editingIcon);
 
     const newProfile: Profile = {
-      profileIcon: iconRef.name || managingProfile.profileIcon,
-      name: inputValue,
+      profileIcon: iconRef.name || deleteProfile.profileIcon,
+      name: inputValue || deleteProfile.name,
     };
 
-    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', managingProfile.name)).then(() => {
-      setDoc(doc(db, 'users', user?.uid!, 'profiles', inputValue), newProfile);
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', deleteProfile.name)).then(() => {
+      setDoc(
+        doc(db, 'users', user?.uid!, 'profiles', inputValue || deleteProfile.name),
+        newProfile,
+      );
 
-      dispatch(setCurrentProfile(newProfile.name));
-      dispatch(notManagingProfile(newProfile));
+      dispatch(notManagingProfile());
     });
 
     setLoading(false);
   };
 
-  const deleteProfile = async () => {
+  const deleteProfile = async (name: string) => {
     setDeleteProfileLoading(true);
 
-    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', managingProfile.name));
+    await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', name));
 
     setDeleteProfileLoading(false);
   };
 
   const addNewProfile = async (profileIcon: string, newProfileName: string) => {
     setLoading(true);
+    console.log('add ' + managingProfile.name);
 
     await setDoc(doc(db, 'users', user?.uid!, 'profiles', newProfileName), {
       profileIcon,
@@ -240,6 +251,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     });
 
     dispatch(notAddingNewProfile());
+    dispatch(notManagingProfile());
 
     setLoading(false);
   };

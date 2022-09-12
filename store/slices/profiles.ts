@@ -46,15 +46,17 @@ const profilesSlice = createSlice({
     setManagingIcon(state, { payload }: PayloadAction<string>) {
       state.managingIcon = payload;
     },
-    notManagingProfile(state, { payload }: PayloadAction<DocumentData | Profile>) {
+    notManagingProfile(state) {
       state.isManagingProfile = false;
-      state.managingProfile = payload;
+      state.managingIcon = '';
+      state.managingProfile = { name: '', profileIcon: '' };
     },
     addingNewProfile(state) {
       state.isAddingProfile = true;
     },
     notAddingNewProfile(state) {
       state.isAddingProfile = false;
+      state.managingIcon = '';
     },
   },
 });

@@ -35,12 +35,14 @@ const ManageProfile: FC = () => {
   const [inputVal, setInputVal] = useState<string>(
     isAddingProfile ? 'New profile' : managingProfile.name,
   );
-  const [isExistName, setIsExistName] = useState<boolean>(true);
+  const [isExistName, setIsExistName] = useState<boolean>(false);
   const [isInRange, setIsInRange] = useState<boolean>(true);
 
   useEffect(() => {
     inputValidate();
   }, [inputVal]);
+
+  console.log(managingIcon);
 
   const inputValidate = () => {
     profiles.find((profile) => profile.name === inputVal)
@@ -57,7 +59,7 @@ const ManageProfile: FC = () => {
   const cancelManaging = () => {
     dispatch(setManagingIcon(''));
     dispatch(notAddingNewProfile());
-    dispatch(notManagingProfile({ name: '', profileIcon: '' }));
+    dispatch(notManagingProfile());
   };
 
   const saveChanges = async () => {
@@ -67,15 +69,15 @@ const ManageProfile: FC = () => {
       } else {
         managingProfile.name === currentProfile && dispatch(setCurrentProfile(inputVal));
 
-        await editProfile(managingIcon, inputVal || managingProfile.name);
+        await editProfile(managingIcon, inputVal, managingProfile);
       }
     }
   };
 
   const deleteProf = async () => {
-    await deleteProfile();
+    await deleteProfile(managingProfile.name);
 
-    dispatch(notManagingProfile({ name: '', profileIcon: '' }));
+    dispatch(notManagingProfile());
   };
 
   if (choosing) return <ChosingIcon isManage={true} />;
