@@ -6,8 +6,6 @@ import { RiCloseCircleLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 
 import { Movie } from '../types';
-import { useTypedSelector } from '../hooks/useTypedSelector';
-import { profilesSelector } from '../store/slices/profiles';
 
 export const handleMovieList = async (
   user: User | null,

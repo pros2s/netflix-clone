@@ -1,4 +1,5 @@
 import { FC, useRef, useState, ChangeEvent, RefObject } from 'react';
+import rndStr from 'randomstring';
 
 interface InputProps {
   isPassword: boolean;
@@ -18,18 +19,20 @@ const Input: FC<InputProps> = ({
   const passwordRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  const [randomId] = useState<string>(rndStr.generate(5));
+
   return (
     <>
       <input
         type={!isPassword || showPassword ? 'text' : 'password'}
-        id='input'
+        id={randomId}
         className='input'
         value={inputValue}
         onChange={(e) => handleChangeInput(e)}
         ref={isPassword ? passwordRef : inputRef}
       />
       <label
-        htmlFor='input'
+        htmlFor={randomId}
         className={`placeholder ${inputValue ? 'placeholderIn' : 'placeholderOut'}`}
       >
         {placeholder}
