@@ -94,7 +94,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
   return (
     <div
       className={`relative ${index === 0 && 'md:ml-[60px]'} ${
-        index === rowLength! - 1 && 'md:!mr-[60px]'
+        index === rowLength! - 1 && 'md:!mr-20'
       } h-28 min-w-[180px] md:cursor-pointer md:min-w-[260px] md:h-36 md:-top-12`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
@@ -132,8 +132,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
             <button
               data-text={`${isMutedVideo ? 'Unmute' : 'Mute'}`}
               className={`muteButton ${
-                isMutedVideo ? 'hover:after:-left-7' : 'hover:after:-left-5'
-              }`}
+                index === rowLength! - 1 && 'md:hover:after:-left-9'
+              } ${isMutedVideo ? 'hover:after:-left-7' : 'hover:after:-left-5'}`}
               onClick={() => dispatch(toggleMuteVideo())}
             >
               {isMutedVideo ? (
