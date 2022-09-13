@@ -130,8 +130,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .then((userCredential) => {
         setUser(userCredential.user);
 
-        router.push('/manage');
-        dispatch(setIsWhoIsWatching());
+        if (profiles.length > 1) {
+          router.push('/manage');
+          dispatch(setIsWhoIsWatching());
+        } else {
+          router.push('/');
+        }
       })
       .finally(() => setLoading(false));
   };
@@ -240,8 +244,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     dispatch(notManagingProfile());
 
     if (name === currentProfile) {
-      dispatch(setIsWhoIsWatching());
-      router.push('/manage');
+      if (profiles.length > 2) {
+        dispatch(setIsWhoIsWatching());
+        router.push('/manage');
+      } else {
+        dispatch(setCurrentProfile(profiles.filter((profile) => profile.name !== name)[0].name));
+      }
     }
 
     setLoading(false);

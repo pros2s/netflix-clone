@@ -75,7 +75,7 @@ const manage: NextPage = () => {
       <MiniHeader isSignOut={true} />
 
       <main className='relative h-screen flex flex-col items-center px-6'>
-        <h1 className='pt-24 font-semibold text-4xl'>
+        <h1 className='pt-24 font-semibold text-3xl md:text-4xl'>
           {toggleWhoIsWAndManage ? 'Who is watching?' : 'Manage Profiles:'}
         </h1>
 
@@ -103,7 +103,7 @@ const manage: NextPage = () => {
                 </div>
               )}
 
-              <p className='text-md text-white/40 font-light duration-300 group-hover:text-white/80'>
+              <p className='text-md text-ellipsis overflow-hidden whitespace-nowrap text-white/40 font-light duration-300 group-hover:text-white/80'>
                 {profile.name}
               </p>
             </button>

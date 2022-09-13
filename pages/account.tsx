@@ -87,7 +87,7 @@ const account: NextPage = () => {
               {loading ? <Loader color='dark:fill-gray-300' height='8' width='8' /> : plan?.name}
             </p>
             <button
-              className='cursor-pointer text-blue-500 md:hover:underline md:text-right'
+              className='text-end cursor-pointer text-blue-500 md:hover:underline md:text-right'
               onClick={() => dispatch(userIsChangingPlan())}
             >
               Change plan
@@ -128,10 +128,14 @@ const account: NextPage = () => {
                       />
                       <div>
                         <div className='flex gap-x-4'>
-                          <p className='leading-5'>{profile.name}</p>
-                          <p className='leading-5 text-green-500'>
-                            {currentProfile === profile.name && 'current'}
+                          <p className='leading-5'>
+                            {profile.name}
                           </p>
+                          {profiles.length > 1 && (
+                            <p className='leading-5 text-green-500'>
+                              {currentProfile === profile.name && 'current'}
+                            </p>
+                          )}
                         </div>
                         <button
                           className='cursor-pointer text-blue-500 md:hover:underline md:text-right text-md'
@@ -147,14 +151,16 @@ const account: NextPage = () => {
             )}
 
             <div className='flex flex-col'>
+              {profiles.length > 1 && (
+                <button
+                  className='cursor-pointer h-6 text-blue-500 md:hover:underline text-end'
+                  onClick={whoIsWatchingHangler}
+                >
+                  Who is watching?
+                </button>
+              )}
               <button
-                className='cursor-pointer h-6 text-blue-500 md:hover:underline md:text-right'
-                onClick={whoIsWatchingHangler}
-              >
-                Who is watching?
-              </button>
-              <button
-                className='cursor-pointer h-6 text-blue-500 md:hover:underline md:text-right'
+                className='cursor-pointer h-6 text-blue-500 md:hover:underline text-end'
                 onClick={() => router.push('/manage')}
               >
                 Manage profiles
