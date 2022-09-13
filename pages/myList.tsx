@@ -36,9 +36,11 @@ const myList: NextPage = () => {
           <h3 className='text-lg text-center px-3 md:text-xl md:mb-[70px] lg:ml-14'>
             Seems like your <span className='text-red-600 font-bold'>list</span> is empty. Let's go{' '}
             <Link href={'/'}>
-              <span className='border-b-[1px] transition duration-150 cursor-pointer md:hover:border-b-red-600'>
-                back home
-              </span>
+              <a>
+                <span className='border-b-[1px] transition duration-150 cursor-pointer md:hover:border-b-red-600'>
+                  back home
+                </span>
+              </a>
             </Link>{' '}
             and add some movies.
           </h3>

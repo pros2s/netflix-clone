@@ -2,6 +2,11 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+
+import { useState } from 'react';
+
+import { DocumentData } from 'firebase/firestore';
+
 import { PencilIcon } from '@heroicons/react/outline';
 import { TiPlus } from 'react-icons/ti';
 
@@ -18,17 +23,38 @@ import {
   addingNewProfile,
   profileIsManaging,
   profilesSelector,
+  setCurrentProfile,
   setManagingIcon,
+  setNotWhoIsWatching,
 } from '../store/slices/profiles';
 import { icons } from '../utils/icons';
+import { Profile } from '../types';
 
 const manage: NextPage = () => {
   const dispatch = useTypedDispatch();
-  const { isManagingProfile, isAddingProfile } = useTypedSelector(profilesSelector);
+  const { isManagingProfile, isAddingProfile, isWhoIsWatching } =
+    useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const { user } = useAuth();
   const profiles = useProfiles(user?.uid);
+
+  const [toggleWhoIsWAndManage, setToggleWhoIsWAndManage] = useState<boolean>(isWhoIsWatching);
+
+  const profileClickHangler = (profile: DocumentData | Profile) => {
+    if (toggleWhoIsWAndManage) {
+      router.push('/');
+      dispatch(setCurrentProfile(profile.name));
+      dispatch(setNotWhoIsWatching());
+      setToggleWhoIsWAndManage((state) => !state);
+    } else {
+      dispatch(profileIsManaging(profile));
+    }
+  };
+
+  const buttonHandler = () => {
+    isWhoIsWatching ? setToggleWhoIsWAndManage((state) => !state) : router.back();
+  };
 
   const onClickAddNewProfile = () => {
     const rnd = icons[Math.floor(Math.random() * icons.length)].slice(7);
@@ -49,26 +75,33 @@ const manage: NextPage = () => {
       <MiniHeader isSignOut={true} />
 
       <main className='relative h-screen flex flex-col items-center px-6'>
-        <h1 className='pt-24 font-semibold text-4xl'>Manage Profiles:</h1>
+        <h1 className='pt-24 font-semibold text-4xl'>
+          {toggleWhoIsWAndManage ? 'Who is watching?' : 'Manage Profiles:'}
+        </h1>
 
         <div className='flex flex-wrap justify-center items-center gap-x-4 gap-y-10 p-6 max-w-[47rem]'>
           {profiles.map((profile) => (
             <button
               key={Math.random()}
               className='relative h-32 w-32 transition group'
-              onClick={() => dispatch(profileIsManaging(profile))}
+              onClick={() => profileClickHangler(profile)}
             >
               <Image
                 src={'/icons/' + profile.profileIcon}
                 alt={profile.name}
                 width={140}
                 height={140}
-                className='rounded-md opacity-50 transition duration-300 group-hover:opacity-40'
+                className={`rounded-md ${
+                  !toggleWhoIsWAndManage &&
+                  'opacity-50 transition duration-300 group-hover:opacity-40'
+                }`}
               />
 
-              <div className='bg-black/60 rounded-full p-1.5 absolute top-11 left-12 duration-300 group-hover:bg-black/80 group-hover:scale-110'>
-                <PencilIcon className='h-6 w-6' />
-              </div>
+              {!toggleWhoIsWAndManage && (
+                <div className='bg-black/60 rounded-full p-1.5 absolute top-11 left-12 duration-300 group-hover:bg-black/80 group-hover:scale-110'>
+                  <PencilIcon className='h-6 w-6' />
+                </div>
+              )}
 
               <p className='text-md text-white/40 font-light duration-300 group-hover:text-white/80'>
                 {profile.name}
@@ -94,9 +127,13 @@ const manage: NextPage = () => {
         <button
           className='bg-white text-lg duration-300 font-medium text-[#141414] px-4 py-1 rounded-sm mt-16 md:hover:bg-white/70'
           type='submit'
-          onClick={() => router.back()}
+          onClick={buttonHandler}
         >
-          Done
+          {isWhoIsWatching
+            ? toggleWhoIsWAndManage
+              ? 'Manage profiles'
+              : 'Who is watching?'
+            : 'Done'}
         </button>
 
         <footer className='md:absolute md:bottom-0 text-center min-w-[191px]'>

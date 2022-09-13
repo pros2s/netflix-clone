@@ -29,6 +29,14 @@ const Header: FC = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
 
+  let toggleSearchTimeout: ReturnType<typeof setTimeout>;
+  const clearInput = () => {
+    dispatch(setSearchValue(''));
+    toggleSearchTimeout = setTimeout(() => {
+      setToggleSearch(false);
+    }, 50);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false);
@@ -38,19 +46,13 @@ const Header: FC = () => {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      clearTimeout(toggleSearchTimeout);
     };
   }, []);
 
   const searchClickHandler = () => {
     inputRef.current?.focus();
     setToggleSearch((state) => !state);
-  };
-
-  const clearInput = () => {
-    dispatch(setSearchValue(''));
-    setTimeout(() => {
-      setToggleSearch(false);
-    }, 50);
   };
 
   return (
@@ -66,16 +68,24 @@ const Header: FC = () => {
 
         <ul className='hidden gap-x-4 md:flex'>
           <li className='headerLink'>
-            <Link href='/'>Home</Link>
+            <Link href='/'>
+              <a>Home</a>
+            </Link>
           </li>
           <li className='headerLink'>
-            <Link href='/myList'>My List</Link>
+            <Link href='/myList'>
+              <a>My List</a>
+            </Link>
           </li>
           <li className='headerLink'>
-            <Link href='/liked'>Liked</Link>
+            <Link href='/liked'>
+              <a>Liked</a>
+            </Link>
           </li>
           <li className='headerLink'>
-            <Link href='/disliked'>Disliked</Link>
+            <Link href='/disliked'>
+              <a>Disliked</a>
+            </Link>
           </li>
         </ul>
       </div>

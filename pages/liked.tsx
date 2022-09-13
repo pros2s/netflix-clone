@@ -36,9 +36,11 @@ const liked: NextPage = () => {
             Hmm.. Your <span className='text-red-600 font-bold'>liked list</span> is empty. Why
             would you not go{' '}
             <Link href={'/'}>
-              <span className='border-b-[1px] transition duration-150 cursor-pointer md:hover:border-b-red-600'>
-                back home
-              </span>
+              <a>
+                <span className='border-b-[1px] transition duration-150 cursor-pointer md:hover:border-b-red-600'>
+                  back home
+                </span>
+              </a>
             </Link>{' '}
             and like some movies.
           </h3>

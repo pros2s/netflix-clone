@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useRef, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import type { NextPage } from 'next';
@@ -28,7 +28,6 @@ interface Inputs {
 const login: NextPage = () => {
   const { signIn, signUp, loading, user } = useAuth();
   const router = useRouter();
-  if (user) router.push('/');
 
   const dispatch = useTypedDispatch();
   const passwordRef = useRef<HTMLDivElement>(null);
@@ -58,6 +57,10 @@ const login: NextPage = () => {
     getValues,
     formState: { errors },
   } = useForm<Inputs>();
+
+  useEffect(() => {
+    user && router.push('/');
+  }, []);
 
   const usernameValidation = {
     min: 2,

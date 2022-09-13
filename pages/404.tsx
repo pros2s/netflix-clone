@@ -21,9 +21,11 @@ const NotFound: NextPage = () => {
       <p className='text-lg mt-6 md:text-2xl md:mt-12'>
         Come{' '}
         <Link href={'/'}>
-          <span className='border-b-[1px] border-b-red-600 transition duration-150 cursor-pointer md:border-b-white md:hover:border-b-red-600'>
-            back home
-          </span>
+          <a>
+            <span className='border-b-[1px] border-b-red-600 transition duration-150 cursor-pointer md:border-b-white md:hover:border-b-red-600'>
+              back home
+            </span>
+          </a>
         </Link>{' '}
       </p>
     </div>

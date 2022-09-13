@@ -20,7 +20,7 @@ import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
-import { profileIsManaging, profilesSelector } from '../store/slices/profiles';
+import { profileIsManaging, profilesSelector, setIsWhoIsWatching } from '../store/slices/profiles';
 
 import membersince from '../assets/membersince.png';
 import DeletePopup from '../components/DeletePopup';
@@ -32,7 +32,7 @@ const account: NextPage = () => {
   const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { startDate, plan, isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { isManagingProfile } = useTypedSelector(profilesSelector);
+  const { isManagingProfile, currentProfile } = useTypedSelector(profilesSelector);
 
   const { logout, user, deleteAccount } = useAuth();
   const profiles = useProfiles(user?.uid);
@@ -40,6 +40,11 @@ const account: NextPage = () => {
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
 
   const formatDate = dateFormat(startDate!);
+
+  const whoIsWatchingHangler = () => {
+    router.push('/manage');
+    dispatch(setIsWhoIsWatching());
+  };
 
   if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;
@@ -108,7 +113,12 @@ const account: NextPage = () => {
                       className='rounded-md'
                     />
                     <div>
-                      <p className='leading-5'>{profile.name}</p>
+                      <div className='flex gap-x-4'>
+                        <p className='leading-5'>{profile.name}</p>
+                        <p className='leading-5 text-green-500'>
+                          {currentProfile === profile.name && 'current'}
+                        </p>
+                      </div>
                       <button
                         className='cursor-pointer text-blue-500 md:hover:underline md:text-right text-md'
                         onClick={() => dispatch(profileIsManaging(profile))}
@@ -121,12 +131,20 @@ const account: NextPage = () => {
               ))}
             </div>
 
-            <button
-              className='cursor-pointer h-6 text-blue-500 md:hover:underline md:text-right'
-              onClick={() => router.push('/manage')}
-            >
-              Manage profiles
-            </button>
+            <div className='flex flex-col'>
+              <button
+                className='cursor-pointer h-6 text-blue-500 md:hover:underline md:text-right'
+                onClick={whoIsWatchingHangler}
+              >
+                Who is watching?
+              </button>
+              <button
+                className='cursor-pointer h-6 text-blue-500 md:hover:underline md:text-right'
+                onClick={() => router.push('/manage')}
+              >
+                Manage profiles
+              </button>
+            </div>
           </div>
         </main>
         <Footer />

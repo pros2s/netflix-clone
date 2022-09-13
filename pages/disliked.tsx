@@ -36,9 +36,11 @@ const disliked: NextPage = () => {
             Your <span className='text-red-600 font-bold'>disliked list</span> is empty. Let's just
             leave it like that. But you can go{' '}
             <Link href={'/'}>
-              <span className='border-b-[1px] transition duration-150 cursor-pointer md:hover:border-b-red-600'>
-                back home
-              </span>
+              <a>
+                <span className='border-b-[1px] transition duration-150 cursor-pointer md:hover:border-b-red-600'>
+                  back home
+                </span>
+              </a>
             </Link>{' '}
             and choose some movies to your list.
           </h3>

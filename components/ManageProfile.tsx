@@ -33,7 +33,7 @@ const ManageProfile: FC = () => {
   const profiles = useProfiles(user?.uid);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [inputVal, setInputVal] = useState<string>(isAddingProfile ? '' : managingProfile.name);
+  const [inputVal, setInputVal] = useState<string>(isAddingProfile ? '' : managingProfile?.name);
   const [isExistName, setIsExistName] = useState<boolean>(false);
   const [isInRange, setIsInRange] = useState<boolean>(true);
 
@@ -48,7 +48,7 @@ const ManageProfile: FC = () => {
   }, [inputVal]);
 
   const inputValidate = () => {
-    profiles.find((profile) => profile.name === inputVal)
+    profiles.find((profile) => profile?.name === inputVal)
       ? setIsExistName(true)
       : setIsExistName(false);
 
@@ -72,7 +72,7 @@ const ManageProfile: FC = () => {
       if (isAddingProfile) {
         await addNewProfile(managingIcon, inputVal);
       } else {
-        managingProfile.name === currentProfile && dispatch(setCurrentProfile(inputVal));
+        managingProfile?.name === currentProfile && dispatch(setCurrentProfile(inputVal));
 
         await editProfile(managingIcon, inputVal, managingProfile);
       }
@@ -95,21 +95,25 @@ const ManageProfile: FC = () => {
           {isAddingProfile ? 'Add new profile' : 'Edit profile'}
         </h1>
 
-        <div className='relative'>
+        <div className='relative '>
           <Image
             src={managingIcon ? '/icons/' + managingIcon : '/icons/' + managingProfile.profileIcon}
-            alt={isAddingProfile ? 'Adding icon' : managingProfile.name}
+            alt={isAddingProfile ? 'Adding icon' : managingProfile?.name}
             width={320}
             height={320}
             className='rounded-md'
           />
 
+          <p className='absolute top-1 left-1 text-2xl shadow-2xl text-shadow-md text-white/60 bg-[#141414]/30 rounded-md py-0.5 px-1.5 transition md:hover:text-white md:hover:bg-[#141414]/70'>
+            {currentProfile === managingProfile?.name && 'current'}
+          </p>
+
           <button
             type='button'
-            className='bg-black rounded-full p-1.5 absolute top-1 right-1 shadow-2xl group'
+            className='bg-[#141414]/30 rounded-full p-1.5 absolute top-1 right-1 shadow-2xl transition md:hover:bg-[#141414] group'
             onClick={() => dispatch(choosingIcon())}
           >
-            <PencilIcon className='h-6 w-6 transition group-hover:scale-110' />
+            <PencilIcon className='h-6 w-6 transition text-white/60 group-hover:scale-110 group-hover:text-white' />
           </button>
         </div>
 
@@ -168,7 +172,6 @@ const ManageProfile: FC = () => {
                 className='manageButton deleteProfileButton'
                 data-text='This is the last profile. You can delete account in account menu'
                 type='button'
-                disabled={profiles.length === 1 ? true : false}
                 onClick={() => setIsDeleting(true)}
               >
                 Delete Profile
@@ -184,7 +187,7 @@ const ManageProfile: FC = () => {
 
       {isDeleting && (
         <DeletePopup
-          deleteFunciton={() => deleteProfile(managingProfile.name)}
+          deleteFunciton={() => deleteProfile(managingProfile?.name)}
           deletePopup={isDeleting}
           setDeletePopup={setIsDeleting}
         />

@@ -64,6 +64,7 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
   }, [movie]);
 
   let isPlayTimeout: ReturnType<typeof setTimeout>;
+
   const onHover = useCallback(() => {
     !hover && window.innerWidth > 1023 && setHover(true);
 
@@ -75,6 +76,8 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
       }, 2000);
     }
   }, [hover]);
+
+  useEffect(() => () => clearTimeout(isPlayTimeout), []);
 
   const onLeave = useCallback(() => {
     clearTimeout(isPlayTimeout);

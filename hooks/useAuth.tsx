@@ -26,6 +26,7 @@ import {
 } from '../store/slices/privateSettings';
 import {
   isNotchoosingIcon,
+  setIsWhoIsWatching,
   notAddingNewProfile,
   notManagingProfile,
   profilesSelector,
@@ -128,8 +129,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user);
-        router.push('/');
-        setLoading(false);
+
+        router.push('/manage');
+        dispatch(setIsWhoIsWatching());
       })
       .finally(() => setLoading(false));
   };
@@ -237,12 +239,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', name));
     dispatch(notManagingProfile());
 
+    if (name === currentProfile) {
+      dispatch(setIsWhoIsWatching());
+      router.push('/manage');
+    }
+
     setLoading(false);
   };
 
   const addNewProfile = async (profileIcon: string, newProfileName: string) => {
     setLoading(true);
-    console.log('add ' + managingProfile.name);
 
     await setDoc(doc(db, 'users', user?.uid!, 'profiles', newProfileName), {
       profileIcon,

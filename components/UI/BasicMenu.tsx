@@ -21,7 +21,8 @@ const BasicMenu: FC = () => {
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
         onClick={(e) => setAnchorEl(e.currentTarget)}
-        className='!capitalize !text-white after:ml-1 after:order-solid after:border-t-white after:border-t-[5px] after:border-x-transparent after:border-x-[5px] after:border-b-0'>
+        className='!capitalize !text-white after:ml-1 after:order-solid after:border-t-white after:border-t-[5px] after:border-x-transparent after:border-x-[5px] after:border-b-0'
+      >
         Browse
       </Button>
       <Menu
@@ -32,18 +33,27 @@ const BasicMenu: FC = () => {
         className='menu'
         MenuListProps={{
           'aria-labelledby': 'basic-button',
-        }}>
+        }}
+      >
         <Link href='/'>
-          <MenuItem>Home</MenuItem>
+          <a>
+            <MenuItem>Home</MenuItem>
+          </a>
         </Link>
         <Link href='/myList'>
-          <MenuItem>My List</MenuItem>
+          <a>
+            <MenuItem>My List</MenuItem>
+          </a>
         </Link>
         <Link href='/liked'>
-          <MenuItem>Liked</MenuItem>
+          <a>
+            <MenuItem>Liked</MenuItem>
+          </a>
         </Link>
         <Link href='/disliked'>
-          <MenuItem>Disliked</MenuItem>
+          <a>
+            <MenuItem>Disliked</MenuItem>
+          </a>
         </Link>
       </Menu>
     </div>

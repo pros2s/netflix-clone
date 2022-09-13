@@ -36,7 +36,7 @@ const Banner: FC<BannerProps> = memo(({ netflixOriginals }) => {
         {movie?.title || movie?.name || movie?.original_name}
       </h1>
 
-      <p className='max-w-xs text-xs text-shadow-md md:max-w-lg md:text-lg lg:max-w-2xl lg:text-2xl'>
+      <p className='max-w-xs text-xs text-shadow-md max-h-28 overflow-hidden md:max-h-36 md:max-w-lg md:text-lg lg:max-w-2xl lg:text-2xl lg:max-h-48'>
         {movie?.overview}
       </p>
 

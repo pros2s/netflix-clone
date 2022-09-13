@@ -7,12 +7,13 @@ import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { subscriptionSelector, userUnsubscribed } from '../store/slices/sutbscription';
 import { loginIsChanging, passwordIsChanging } from '../store/slices/privateSettings';
+import Loader from './UI/Loader';
 
 const Membership: FC = () => {
   const dispatch = useTypedDispatch();
   const { isSubscription } = useTypedSelector(subscriptionSelector);
   const { startDate } = useTypedSelector(subscriptionSelector);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   const [isPaymentInformation, setIsPaymentInformation] = useState<boolean>(false);
@@ -47,10 +48,14 @@ const Membership: FC = () => {
 
       <div className='col-span-3'>
         <div className='flex flex-col justify-between border-b border-white/10 py-4 md:flex-row'>
-          <div>
-            <p className='font-medium'>{user?.email}</p>
-            <p className='text-[gray]'>Password: ********</p>
-          </div>
+          {loading ? (
+            <Loader color='dark:fill-gray-300' height='8' width='8' />
+          ) : (
+            <div>
+              <p className='font-medium'>{user?.email}</p>
+              <p className='text-[gray]'>Password: ********</p>
+            </div>
+          )}
           <div className='flex flex-col items-end md:text-right'>
             <button className='membershipLink' onClick={() => dispatch(loginIsChanging())}>
               Change email
