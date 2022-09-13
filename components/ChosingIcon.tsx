@@ -22,7 +22,7 @@ interface ChosingIconProps {
 
 const ChosingIcon: FC<ChosingIconProps> = ({ isManage }) => {
   const dispatch = useTypedDispatch();
-  const { currentProfile } = useTypedSelector(profilesSelector);
+  const { currentProfile, isChoosing } = useTypedSelector(profilesSelector);
   const { user } = useAuth();
   const choseIconRef = useRef<HTMLButtonElement>(null);
 
@@ -84,13 +84,15 @@ const ChosingIcon: FC<ChosingIconProps> = ({ isManage }) => {
           This icon is awesome!
         </button>
 
-        <button
-          type='button'
-          onClick={() => dispatch(isNotchoosingIcon())}
-          className='cursor-pointer mt-2 text-blue-500 md:hover:underline'
-        >
-          Cancel
-        </button>
+        {!isChoosing && (
+          <button
+            type='button'
+            onClick={() => dispatch(isNotchoosingIcon())}
+            className='cursor-pointer mt-2 text-blue-500 md:hover:underline'
+          >
+            Cancel
+          </button>
+        )}
         <Footer isAbsolute={true} />
       </main>
     </>

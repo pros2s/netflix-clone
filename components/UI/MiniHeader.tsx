@@ -8,6 +8,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 import { profilesSelector } from '../../store/slices/profiles';
 
+import Loader from './Loader';
 import netflix from '../../assets/netflix.png';
 
 interface MiniHeaderProps {
@@ -17,7 +18,7 @@ interface MiniHeaderProps {
 
 const MiniHeader: FC<MiniHeaderProps> = ({ isAccount, isSignOut }) => {
   const { currentProfile } = useTypedSelector(profilesSelector);
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const profileIcon = useProfileIcon(user?.uid);
 
   return (
@@ -29,13 +30,19 @@ const MiniHeader: FC<MiniHeaderProps> = ({ isAccount, isSignOut }) => {
       </Link>
 
       {isAccount && (
-        <Image
-          src={profileIcon || '/icons/yellow'}
-          width={35}
-          height={35}
-          alt={currentProfile}
-          className='cursor-pointer rounded'
-        />
+        <div className='w-9'>
+          {loading ? (
+            <Loader color='dark:fill-gray-300' height='8' width='8' />
+          ) : (
+            <Image
+              src={profileIcon || '/icons/yellow'}
+              width={35}
+              height={35}
+              alt={currentProfile}
+              className='cursor-pointer rounded'
+            />
+          )}
+        </div>
       )}
 
       {isSignOut && (

@@ -48,14 +48,16 @@ const Membership: FC = () => {
 
       <div className='col-span-3'>
         <div className='flex flex-col justify-between border-b border-white/10 py-4 md:flex-row'>
-          {loading ? (
-            <Loader color='dark:fill-gray-300' height='8' width='8' />
-          ) : (
-            <div>
-              <p className='font-medium'>{user?.email}</p>
-              <p className='text-[gray]'>Password: ********</p>
-            </div>
-          )}
+          <div>
+            {loading ? (
+              <Loader color='dark:fill-gray-300' height='8' width='8' />
+            ) : (
+              <>
+                <p className='font-medium'>{user?.email}</p>
+                <p className='text-[gray]'>Password: ********</p>
+              </>
+            )}
+          </div>
           <div className='flex flex-col items-end md:text-right'>
             <button className='membershipLink' onClick={() => dispatch(loginIsChanging())}>
               Change email
@@ -68,7 +70,11 @@ const Membership: FC = () => {
 
         <div className='flex flex-col justify-between pt-4 pb-4 md:flex-row md:pb-0'>
           <div>
-            <p>Your next billing date is {endDate}</p>
+            {loading ? (
+              <Loader color='dark:fill-gray-300' height='8' width='8' />
+            ) : (
+              <p>Your next billing date is {endDate}</p>
+            )}
             {isPaymentInformation && <p className='text-red-600'>Payment has not integrated yet</p>}
           </div>
           <div

@@ -26,7 +26,7 @@
   }
 
   .placeholderIn {
-    @apply top-1 left-[10px] text-[darkgray] text-sm;
+    @apply top-1 left-2 text-[darkgray] text-sm;
   }
 
   .placeholderOut {

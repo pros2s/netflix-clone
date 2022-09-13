@@ -1,6 +1,9 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+
+import { useEffect } from 'react';
 
 import Header from '../components/UI/Header';
 import Modal from '../components/UI/Modal';
@@ -12,11 +15,18 @@ import { useMovieList } from '../hooks/useMovieList';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 
 import { modalSelector } from '../store/slices/modal';
+import { profilesSelector } from '../store/slices/profiles';
 
 const myList: NextPage = () => {
+  const router = useRouter();
   const { isOpenedModal } = useTypedSelector(modalSelector);
+  const { isWhoIsWatching } = useTypedSelector(profilesSelector);
   const { loading, user } = useAuth();
   const myList = useMovieList(user?.uid, 'myList');
+
+  useEffect(() => {
+    if (isWhoIsWatching) router.push('/manage');
+  }, []);
 
   if (loading) return null;
 
