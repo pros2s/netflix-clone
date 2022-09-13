@@ -103,7 +103,7 @@ const manage: NextPage = () => {
                 </div>
               )}
 
-              <p className='text-md text-ellipsis overflow-hidden whitespace-nowrap text-white/40 font-light duration-300 group-hover:text-white/80'>
+              <p className='text-md text-ellipsis first-letter:capitalize overflow-hidden whitespace-nowrap text-white/40 font-light duration-300 group-hover:text-white/80'>
                 {profile.name}
               </p>
             </button>

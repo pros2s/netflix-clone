@@ -244,10 +244,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     dispatch(notManagingProfile());
 
     if (name === currentProfile) {
-      if (profiles.length > 2) {
+      if (profiles.length > 2 || profiles.length === 1) {
         dispatch(setIsWhoIsWatching());
-        router.push('/manage');
-      } else {
+      } else if (profiles.length > 0) {
         dispatch(setCurrentProfile(profiles.filter((profile) => profile.name !== name)[0].name));
       }
     }

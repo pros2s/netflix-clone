@@ -29,29 +29,26 @@ const DeletePopup: FC<DeletePopupProps> = ({ deleteFunciton, deletePopup, setDel
   const [isValueEmpty, setIsValueEmpty] = useState<boolean>(false);
   const [passwordValue, setPasswordValue] = useState<string>('');
 
-  const confirmCurrentPassword = useCallback(
-    async (e: MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+  const confirmCurrentPassword = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-      if (!passwordValue) {
-        setIsValueEmpty(true);
-        return;
-      }
+    if (!passwordValue) {
+      setIsValueEmpty(true);
+      return;
+    }
 
-      await reAuth(passwordValue)
-        .then(() => {
-          setIsValueEmpty(false);
-          setIsReAuth(true);
-        })
-        .catch((error) => {
-          setIsReAuth(false);
-          error.message.match(/wrong-password/gi)
-            ? setIsPasswordCorrect(false)
-            : alert(error.message);
-        });
-    },
-    [passwordValue],
-  );
+    await reAuth(passwordValue)
+      .then(() => {
+        setIsReAuth(true);
+        setIsValueEmpty(false);
+      })
+      .catch((error) => {
+        setIsReAuth(false);
+        error.message.match(/wrong-password/gi)
+          ? setIsPasswordCorrect(false)
+          : alert(error.message);
+      });
+  };
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setIsValueEmpty(false);

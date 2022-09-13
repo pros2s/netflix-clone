@@ -26,6 +26,7 @@ import membersince from '../assets/membersince.png';
 import DeletePopup from '../components/DeletePopup';
 import MiniHeader from '../components/UI/MiniHeader';
 import Loader from '../components/UI/Loader';
+import ProfilesList from '../components/ProfilesList';
 
 const account: NextPage = () => {
   const router = useRouter();
@@ -116,37 +117,7 @@ const account: NextPage = () => {
               <Loader color='dark:fill-gray-300' height='8' width='8' />
             ) : (
               <div className='col-span-2 space-y-2'>
-                {profiles.map((profile) => (
-                  <div key={profile.name} className='col-span-2 flex justify-between text-lg'>
-                    <div className='flex items-center gap-x-4'>
-                      <Image
-                        src={'/icons/' + profile.profileIcon}
-                        alt={profile.name}
-                        width={40}
-                        height={40}
-                        className='rounded-md'
-                      />
-                      <div>
-                        <div className='flex gap-x-4'>
-                          <p className='leading-5'>
-                            {profile.name}
-                          </p>
-                          {profiles.length > 1 && (
-                            <p className='leading-5 text-green-500'>
-                              {currentProfile === profile.name && 'current'}
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          className='cursor-pointer text-blue-500 md:hover:underline md:text-right text-md'
-                          onClick={() => dispatch(profileIsManaging(profile))}
-                        >
-                          edit
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <ProfilesList />
               </div>
             )}
 

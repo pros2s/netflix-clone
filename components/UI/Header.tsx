@@ -13,6 +13,7 @@ import useAuth from '../../hooks/useAuth';
 import { searchSelector, setSearchValue } from '../../store/slices/search';
 import { profilesSelector } from '../../store/slices/profiles';
 
+import AccountMenu from './AccountMenu';
 import BasicMenu from './BasicMenu';
 
 import netflix from '../../assets/netflix.png';
@@ -28,6 +29,7 @@ const Header: FC = () => {
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
+  const [toggleAccountMenu, setToggleAccountMenu] = useState<boolean>(false);
 
   let toggleSearchTimeout: ReturnType<typeof setTimeout>;
   const clearInput = () => {
@@ -114,17 +116,26 @@ const Header: FC = () => {
           </div>
         </div>
 
-        <Link href='/account'>
-          <a className='h-[35px]'>
-            <Image
-              src={profileIcon || '/icons/yellow'}
-              height={35}
-              width={35}
-              alt={currentProfile}
-              className='cursor-pointer rounded'
-            />
-          </a>
-        </Link>
+        <div
+          className={`relative h-[35px] accountButtonTriangle ${
+            toggleAccountMenu && 'after:rotate-180'
+          }`}
+          onClick={() => setToggleAccountMenu((state) => !state)}
+        >
+          <Image
+            src={profileIcon || '/icons/yellow'}
+            height={35}
+            width={35}
+            alt={currentProfile}
+            className='cursor-pointer rounded'
+          />
+
+          {toggleAccountMenu && (
+            <div className='absolute top-[52px] -left-[8.5rem] w-48'>
+              <AccountMenu />
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

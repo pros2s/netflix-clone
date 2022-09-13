@@ -8,13 +8,21 @@
   }
 
   header {
-    @apply fixed top-0 z-50 w-full py-4 px-4 flex items-center justify-between transition-all;
+    @apply fixed top-0 z-50 w-full py-4 pl-4 pr-9 lg:pr-4 flex items-center justify-between transition-all;
   }
 }
 
 @layer components {
   .headerLink {
-    @apply text-sm font-light cursor-pointer text-[#d4d4d4] transition duration-[.4s]   md:hover:text-white;
+    @apply text-sm font-light cursor-pointer text-[#d4d4d4] transition duration-[.4s] md:hover:text-white;
+  }
+
+  .accountButtonTriangle {
+    @apply after:absolute after:top-4 after:-right-4 after:transition after:border-t-[7px] after:border-t-white after:border-r-4 after:border-r-transparent after:border-l-4 after:border-l-transparent;
+  }
+
+  .accountMenuTriangle {
+    @apply after:absolute after:-top-[9px] after:right-8 after:transition after:border-b-8 after:border-b-white after:border-r-[7px] after:border-r-transparent after:border-l-[7px] after:border-l-transparent;
   }
 
   .input {
@@ -40,6 +48,7 @@
   .chevronButton {
     @apply absolute -top-24 bottom-0 z-[150] m-auto h-32 w-11 opacity-0 cursor-pointer transition  md:hover:opacity-100  md:hover:scale-125 group-hover:opacity-80;
   }
+
   .defaultText {
     @apply text-sm md:text-lg lg:text-xl;
   }

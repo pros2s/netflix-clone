@@ -2,6 +2,7 @@ import { FC, useState, useEffect, ChangeEvent, MouseEvent, useRef } from 'react'
 import { PencilIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
@@ -31,6 +32,8 @@ const ManageProfile: FC = () => {
   const dispatch = useTypedDispatch();
   const { user, loading, editProfile, addNewProfile, deleteProfile } = useAuth();
   const profiles = useProfiles(user?.uid);
+
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputVal, setInputVal] = useState<string>(isAddingProfile ? '' : managingProfile?.name);

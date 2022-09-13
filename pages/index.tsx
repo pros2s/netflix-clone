@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import ChoosingIcon from '../components/ChosingIcon';
+import ManageProfile from '../components/ManageProfile';
 import Plans from '../components/Plans';
 import Header from '../components/UI/Header';
 import Banner from '../components/Banner';
@@ -48,7 +49,7 @@ const Home: NextPage<NextPageProps> = ({
   const { loading, user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
-  const { isChoosing, isWhoIsWatching } = useTypedSelector(profilesSelector);
+  const { isChoosing, isWhoIsWatching, isManagingProfile } = useTypedSelector(profilesSelector);
 
   const myList = useMovieList(user?.uid, 'myList');
   const liked = useMovieList(user?.uid, 'Liked');
@@ -58,9 +59,9 @@ const Home: NextPage<NextPageProps> = ({
     if (isWhoIsWatching) router.push('/manage');
   }, []);
 
-  if (loading) return null;
   if (isChoosing) return <ChoosingIcon isManage={false} />;
   if (!isSubscription) return <Plans />;
+  if (isManagingProfile) return <ManageProfile />;
 
   return (
     <div
