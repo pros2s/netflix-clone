@@ -3,7 +3,7 @@ import { DocumentData } from 'firebase/firestore';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import Fuse from 'fuse.js';
 
-import Thumbnail from './Thumbnail';
+import Thumbnail from './thumbnail/Thumbnail';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { Movie } from '../types';

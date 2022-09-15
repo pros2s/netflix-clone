@@ -1,9 +1,9 @@
 import { FC, useState } from 'react';
+import Link from 'next/link';
 
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Link from 'next/link';
 
 const BasicMenu: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

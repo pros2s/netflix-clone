@@ -23,14 +23,19 @@ const ProfilesList: FC<ProfilesListProps> = ({ small }) => {
   const { user } = useAuth();
   const profiles = useProfiles(user?.uid);
 
+  const editProfile = (profile: DocumentData | Profile) => {
+    router.push('/manage');
+    dispatch(profileIsManaging(profile));
+  };
+
   return (
     <>
       {profiles.map((profile) => (
         <div
           key={profile.name}
-          className={`col-span-2 flex justify-between ${small ? 'text-sm cursor-pointer' : 'text-lg'} ${
-            small && profile.name === currentProfile && 'hidden'
-          }`}
+          className={`col-span-2 flex justify-between ${
+            small ? 'text-sm cursor-pointer' : 'text-lg'
+          } ${small && profile.name === currentProfile && 'hidden'}`}
         >
           <div className='flex items-center gap-x-4'>
             <Image
@@ -41,14 +46,15 @@ const ProfilesList: FC<ProfilesListProps> = ({ small }) => {
               className={`${small ? 'rounded-sm' : 'rounded-md'}`}
             />
             <div className={`${small && 'flex flex-col items-start'}`}>
-              <div className='flex gap-x-4 w-[120px]'>
+              <div className='flex gap-x-4'>
                 <p
-                  className={`leading-5 first-letter:capitalize overflow-hidden whitespace-nowrap text-ellipsis ${
-                    small && 'font-medium'
+                  className={` leading-6 first-letter:capitalize overflow-hidden whitespace-nowrap text-ellipsis ${
+                    small && 'w-[103px] font-medium'
                   }`}
                 >
                   {profile.name}
                 </p>
+
                 {profiles.length > 1 && (
                   <p className='leading-5 text-green-500'>
                     {currentProfile === profile.name && !small && 'current'}
@@ -57,7 +63,7 @@ const ProfilesList: FC<ProfilesListProps> = ({ small }) => {
               </div>
               <button
                 className='cursor-pointer text-blue-500 md:hover:underline md:text-right text-md'
-                onClick={() => dispatch(profileIsManaging(profile))}
+                onClick={() => editProfile(profile)}
               >
                 edit
               </button>

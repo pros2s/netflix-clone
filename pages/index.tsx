@@ -5,11 +5,11 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import ChoosingIcon from '../components/ChosingIcon';
-import ManageProfile from '../components/ManageProfile';
+import ManageProfile from '../components/manage/ManageProfile';
 import Plans from '../components/Plans';
-import Header from '../components/UI/Header';
+import Header from '../components/UI/header/Header';
 import Banner from '../components/Banner';
-import Modal from '../components/UI/Modal';
+import Modal from '../components/UI/modal/Modal';
 import Row from '../components/Row';
 import Footer from '../components/UI/Footer';
 
@@ -46,7 +46,7 @@ const Home: NextPage<NextPageProps> = ({
   trendingNow,
 }) => {
   const router = useRouter();
-  const { loading, user } = useAuth();
+  const { user } = useAuth();
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
   const { isChoosing, isWhoIsWatching, isManagingProfile } = useTypedSelector(profilesSelector);

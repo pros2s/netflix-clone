@@ -1,5 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+
 import { auth, db } from '../firebase';
 import { collection, deleteDoc, doc, DocumentData, setDoc } from 'firebase/firestore';
 import { getStorage, ref as storageRef } from 'firebase/storage';
@@ -19,6 +20,7 @@ import {
 import { useTypedDispatch } from './useTypedDispatch';
 import { useTypedSelector } from './useTypedSelector';
 
+import { userIsNotChangingPlan } from '../store/slices/sutbscription';
 import {
   loginIsChanging,
   loginIsNotChanging,
@@ -32,7 +34,6 @@ import {
   profilesSelector,
   setCurrentProfile,
 } from '../store/slices/profiles';
-import { userIsNotChangingPlan } from '../store/slices/sutbscription';
 
 import { useProfiles } from './useProfiles';
 import { Profile } from '../types';
@@ -77,7 +78,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
-  const { managingProfile, currentProfile } = useTypedSelector(profilesSelector);
+  const { isWhoIsWatching, currentProfile } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -241,7 +242,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
 
     await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', name));
-    dispatch(notManagingProfile());
 
     if (name === currentProfile) {
       if (profiles.length > 2 || profiles.length === 1) {
@@ -251,6 +251,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       }
     }
 
+    dispatch(notManagingProfile());
     setLoading(false);
   };
 

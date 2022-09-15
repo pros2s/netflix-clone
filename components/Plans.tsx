@@ -24,7 +24,7 @@ import { subsBenefits, subsPlans } from '../utils/subscription';
 const Plans: FC = () => {
   const dispatch = useTypedDispatch();
   const { isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
 
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
 
@@ -81,6 +81,7 @@ const Plans: FC = () => {
           >
             {isChangingPlan ? 'Change plan' : 'Subscribe'}
           </button>
+
           {isChangingPlan && (
             <button className='membershipLink' onClick={() => dispatch(userIsNotChangingPlan())}>
               Cancel

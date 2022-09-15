@@ -1,5 +1,6 @@
+import { FC, memo } from 'react';
 import { CheckIcon } from '@heroicons/react/outline';
-import { FC } from 'react';
+
 import { Plan } from '../../types';
 
 interface PlanTableProps {
@@ -7,7 +8,7 @@ interface PlanTableProps {
   selectedPlan: Plan | null;
 }
 
-const PlanTable: FC<PlanTableProps> = ({ plans, selectedPlan }) => {
+const PlanTable: FC<PlanTableProps> = memo(({ plans, selectedPlan }) => {
   const tableRowsNames = [
     'Monthly price',
     'Video quality',
@@ -39,6 +40,6 @@ const PlanTable: FC<PlanTableProps> = ({ plans, selectedPlan }) => {
       </tbody>
     </table>
   );
-};
+});
 
 export default PlanTable;

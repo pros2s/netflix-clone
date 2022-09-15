@@ -1,5 +1,6 @@
-import { DocumentData } from 'firebase/firestore';
 import axios from 'axios';
+import { DocumentData } from 'firebase/firestore';
+
 import { Element, Genre, Movie } from '../types';
 
 export const useFetch = async (movie: Movie | DocumentData | null) => {

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -16,7 +16,7 @@ interface MiniHeaderProps {
   isSignOut?: boolean;
 }
 
-const MiniHeader: FC<MiniHeaderProps> = ({ isAccount, isSignOut }) => {
+const MiniHeader: FC<MiniHeaderProps> = memo(({ isAccount, isSignOut }) => {
   const { currentProfile } = useTypedSelector(profilesSelector);
   const { user, loading, logout } = useAuth();
   const profileIcon = useProfileIcon(user?.uid);
@@ -52,6 +52,6 @@ const MiniHeader: FC<MiniHeaderProps> = ({ isAccount, isSignOut }) => {
       )}
     </header>
   );
-};
+});
 
 export default MiniHeader;

@@ -4,6 +4,7 @@ import { db } from '../firebase';
 
 import { useTypedSelector } from './useTypedSelector';
 import { profilesSelector } from '../store/slices/profiles';
+
 import { Movie } from '../types';
 
 export const useMovieList = (userId: string | undefined, movieCollection: string) => {

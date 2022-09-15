@@ -1,12 +1,9 @@
-import Image from 'next/image';
 import { FC, memo, useEffect, useState } from 'react';
-import { FaPlay } from 'react-icons/fa';
-import { InformationCircleIcon } from '@heroicons/react/solid';
+import Image from 'next/image';
+
+import BannerBTNs from './UI/BannerBTNs';
 
 import { baseUrl } from '../constants/movie';
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import { openModal } from '../store/slices/modal';
-import { setCurrentMovie } from '../store/slices/movie';
 import { Movie } from '../types';
 
 interface BannerProps {
@@ -14,7 +11,6 @@ interface BannerProps {
 }
 
 const Banner: FC<BannerProps> = memo(({ netflixOriginals }) => {
-  const dispatch = useTypedDispatch();
   const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
@@ -40,21 +36,7 @@ const Banner: FC<BannerProps> = memo(({ netflixOriginals }) => {
         {movie?.overview}
       </p>
 
-      <div className='flex space-x-3'>
-        <button className='bannerButton bg-white text-black'>
-          <FaPlay className='h-4 w-4 text-black md:h-7 md:w-7' />{' '}
-          <p className='defaultText line-through'>Play</p>
-        </button>
-        <button
-          className='bannerButton bg-[gray]/70'
-          onClick={() => {
-            dispatch(openModal());
-            movie && dispatch(setCurrentMovie(movie));
-          }}>
-          <p className='defaultText'>More Info</p>{' '}
-          <InformationCircleIcon className='h-5 w-5 md:h-8 md:w-8' />
-        </button>
-      </div>
+      <BannerBTNs movie={movie} />
     </div>
   );
 });

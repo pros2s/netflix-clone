@@ -42,6 +42,10 @@ export interface Inputs {
   username: string;
 }
 
+export interface MovieProp {
+  movie: Movie | DocumentData | null;
+}
+
 export interface Element {
   type: 'Bloopers' | 'Featurette' | 'Behind the Scenes' | 'Clip' | 'Trailer' | 'Teaser';
 }

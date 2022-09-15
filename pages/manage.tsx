@@ -12,7 +12,7 @@ import { TiPlus } from 'react-icons/ti';
 
 import Footer from '../components/UI/Footer';
 import MiniHeader from '../components/UI/MiniHeader';
-import ManageProfile from '../components/ManageProfile';
+import ManageProfile from '../components/manage/ManageProfile';
 
 import useAuth from '../hooks/useAuth';
 import { useProfiles } from '../hooks/useProfiles';

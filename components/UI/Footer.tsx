@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { FaGlobe, FaTelegramPlane } from 'react-icons/fa';
 import { SiGithub, SiGmail } from 'react-icons/si';
 
@@ -6,12 +6,13 @@ interface FooterProps {
   isAbsolute?: boolean;
 }
 
-const Footer: FC<FooterProps> = ({ isAbsolute }) => {
+const Footer: FC<FooterProps> = memo(({ isAbsolute }) => {
   return (
     <footer
       className={`${
         isAbsolute && 'md:absolute md:bottom-0'
-      } pt-10 pb-6 text-center font-medium space-y-1 text-[#cacaca] transition duration-200 md:hover:text-white`}>
+      } pt-10 pb-6 text-center font-medium space-y-1 text-[#cacaca] transition duration-200 md:hover:text-white`}
+    >
       <p>Alexandr Podoplelov 2022</p>
 
       <ul className='flex justify-center gap-x-2 cursor-pointer'>
@@ -38,6 +39,6 @@ const Footer: FC<FooterProps> = ({ isAbsolute }) => {
       </ul>
     </footer>
   );
-};
+});
 
 export default Footer;
