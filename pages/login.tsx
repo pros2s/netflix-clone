@@ -156,7 +156,7 @@ const login: NextPage = () => {
   );
 
   return (
-    <div className='relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
+    <div className='relative flex h-screen w-screen flex-col bg-gradient-to-t from-black/60 via-black/[0.05] to-black/60 bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <Head>
         <title>Netflix</title>
         <link rel='icon' href='/favicon.ico' />
