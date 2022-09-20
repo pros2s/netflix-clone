@@ -78,7 +78,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
-  const { isWhoIsWatching, currentProfile } = useTypedSelector(profilesSelector);
+  const { currentProfile } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -131,12 +131,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .then((userCredential) => {
         setUser(userCredential.user);
 
-        if (profiles.length > 1) {
-          router.push('/manage');
-          dispatch(setIsWhoIsWatching());
-        } else {
-          router.push('/');
-        }
+        router.push('/manage');
+        dispatch(setIsWhoIsWatching());
       })
       .finally(() => setLoading(false));
   };

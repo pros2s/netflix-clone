@@ -15,6 +15,7 @@ import { choosingIcon, setCurrentProfile } from '../store/slices/profiles';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import useAuth from '../hooks/useAuth';
+import { useProfiles } from '../hooks/useProfiles';
 
 import netflix from '../assets/netflix.png';
 
