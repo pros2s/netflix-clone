@@ -12,7 +12,7 @@ import OwnMoviesPage from '../components/OwnMoviesPage';
 const myList: NextPage = () => {
   const router = useRouter();
   const { isWhoIsWatching } = useTypedSelector(profilesSelector);
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
 
   useEffect(() => {
     if (isWhoIsWatching) router.push('/manage');

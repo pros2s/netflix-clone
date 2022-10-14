@@ -50,7 +50,7 @@ interface IAuth {
   editProfile: (
     editingIcon: string,
     inputVal: string,
-    deleteProfile: Profile | DocumentData,
+    deleteProfile: Profile | DocumentData
   ) => Promise<void>;
   deleteProfile: (name: string) => Promise<void>;
   addNewProfile: (profileIcon: string, newProfileName: string) => Promise<void>;
@@ -131,8 +131,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .then((userCredential) => {
         setUser(userCredential.user);
 
-        router.push('/manage');
-        dispatch(setIsWhoIsWatching());
+        router.push('/');
+
+        if (profiles.length > 1) {
+          dispatch(setIsWhoIsWatching());
+        }
       })
       .finally(() => setLoading(false));
   };
@@ -159,7 +162,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const credential = EmailAuthProvider.credential(auth.currentUser?.email!, oldPassword);
     await reauthenticateWithCredential(auth.currentUser!, credential).finally(() =>
-      setLoading(false),
+      setLoading(false)
     );
   };
 
@@ -198,7 +201,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     profiles.forEach(
       async (profile) =>
-        await deleteDoc(doc(db, 'users', auth.currentUser?.uid!, 'profiles', profile.name)),
+        await deleteDoc(doc(db, 'users', auth.currentUser?.uid!, 'profiles', profile.name))
     );
     await deleteDoc(doc(db, 'users', auth.currentUser?.uid!));
     await deleteUser(auth.currentUser!);
@@ -209,7 +212,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const editProfile = async (
     editingIcon: string,
     inputValue: string,
-    deleteProfile: Profile | DocumentData,
+    deleteProfile: Profile | DocumentData
   ) => {
     setLoading(true);
 
@@ -224,7 +227,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await deleteDoc(doc(db, 'users', user?.uid!, 'profiles', deleteProfile.name)).then(() => {
       setDoc(
         doc(db, 'users', user?.uid!, 'profiles', inputValue || deleteProfile.name),
-        newProfile,
+        newProfile
       );
 
       currentProfile === deleteProfile.name && dispatch(setCurrentProfile(newProfile.name));
@@ -280,7 +283,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       deleteProfile,
       addNewProfile,
     }),
-    [user, loading],
+    [user, loading]
   );
 
   return (

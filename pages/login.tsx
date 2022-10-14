@@ -15,7 +15,6 @@ import { choosingIcon, setCurrentProfile } from '../store/slices/profiles';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import useAuth from '../hooks/useAuth';
-import { useProfiles } from '../hooks/useProfiles';
 
 import netflix from '../assets/netflix.png';
 
@@ -60,7 +59,9 @@ const login: NextPage = () => {
   } = useForm<Inputs>();
 
   useEffect(() => {
-    user && router.push('/');
+    if (user) {
+      router.push('/');
+    }
   }, []);
 
   const usernameValidation = {
@@ -113,7 +114,7 @@ const login: NextPage = () => {
         setIsSignUp(false);
       }
     },
-    [isSignIn],
+    [isSignIn]
   );
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(
@@ -153,7 +154,7 @@ const login: NextPage = () => {
         dispatch(choosingIcon());
       }
     },
-    [isSignIn, isSignUp],
+    [isSignIn, isSignUp]
   );
 
   return (

@@ -4,9 +4,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { useProfiles } from '../hooks/useProfiles';
 import useAuth from '../hooks/useAuth';
 
 import PasswordChanging from '../components/PasswordChanging';
@@ -15,27 +13,25 @@ import Membership from '../components/Membership';
 import Plans from '../components/Plans';
 import Footer from '../components/UI/Footer';
 
-import { subscriptionSelector, userIsChangingPlan } from '../store/slices/sutbscription';
+import { subscriptionSelector } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
-import { profilesSelector, setIsWhoIsWatching } from '../store/slices/profiles';
+import { profilesSelector } from '../store/slices/profiles';
 
 import ProfilesList from '../components/ProfilesList';
 import AccountHeader from '../components/accountPage/AccountHeader';
 
 import DeletePopup from '../components/UI/DeletePopup';
 import MiniHeader from '../components/UI/MiniHeader';
-import Loader from '../components/UI/Loader';
 import RowsList from '../components/accountPage/RowsList';
 
 const account: NextPage = () => {
   const router = useRouter();
 
-  const dispatch = useTypedDispatch();
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { isChangingPlan } = useTypedSelector(subscriptionSelector);
   const { isWhoIsWatching } = useTypedSelector(profilesSelector);
 
-  const { deleteAccount } = useAuth();
+  const { deleteAccount, user } = useAuth();
 
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
 
