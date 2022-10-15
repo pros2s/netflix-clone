@@ -148,7 +148,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
         if (profiles.length === 0) {
           dispatch(choosingIcon());
-          dispatch(userSubscribed());
+          dispatch(userUnsubscribed());
         } else {
           dispatch(isNotchoosingIcon());
         }
@@ -172,7 +172,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         dispatch(notManagingProfile());
         dispatch(userIsNotChangingPlan());
         dispatch(isNotchoosingIcon());
-        dispatch(userUnsubscribed());
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
