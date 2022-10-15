@@ -1,4 +1,13 @@
-import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 
 import { auth, db } from '../firebase';
@@ -20,7 +29,11 @@ import {
 import { useTypedDispatch } from './useTypedDispatch';
 import { useTypedSelector } from './useTypedSelector';
 
-import { userIsNotChangingPlan } from '../store/slices/sutbscription';
+import {
+  userIsNotChangingPlan,
+  userSubscribed,
+  userUnsubscribed,
+} from '../store/slices/sutbscription';
 import {
   loginIsChanging,
   loginIsNotChanging,
@@ -33,6 +46,7 @@ import {
   notManagingProfile,
   profilesSelector,
   setCurrentProfile,
+  choosingIcon,
 } from '../store/slices/profiles';
 
 import { useProfiles } from './useProfiles';
@@ -78,7 +92,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
-  const { currentProfile } = useTypedSelector(profilesSelector);
+  const { currentProfile, isWhoIsWatching } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -87,11 +101,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const profiles = useProfiles(user?.uid);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
         setLoading(false);
+
+        isWhoIsWatching ? router.push('/manage') : router.push('/');
       } else {
         setUser(null);
         setLoading(true);
@@ -118,7 +134,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           password,
         });
 
-        router.push('/');
         setLoading(false);
       })
       .finally(() => setLoading(false));
@@ -131,7 +146,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .then((userCredential) => {
         setUser(userCredential.user);
 
-        router.push('/');
+        if (profiles.length === 0) {
+          dispatch(choosingIcon());
+          dispatch(userSubscribed());
+        } else {
+          dispatch(isNotchoosingIcon());
+        }
 
         if (profiles.length > 1) {
           dispatch(setIsWhoIsWatching());
@@ -152,6 +172,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         dispatch(notManagingProfile());
         dispatch(userIsNotChangingPlan());
         dispatch(isNotchoosingIcon());
+        dispatch(userUnsubscribed());
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { DocumentData } from 'firebase/firestore';
 
@@ -37,10 +37,6 @@ const manage: NextPage = () => {
   const router = useRouter();
 
   const { user } = useAuth();
-  
-  useEffect(() => {
-    if (!user) router.push('/login');
-  }, []);
 
   const profiles = useProfiles(user?.uid);
 

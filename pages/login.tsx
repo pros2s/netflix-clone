@@ -129,8 +129,6 @@ const login: NextPage = () => {
             alert(error.message);
           }
         });
-
-        dispatch(userSubscribed());
       }
 
       if (isSignUp) {

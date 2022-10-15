@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import { useTypedSelector } from '../hooks/useTypedSelector';
@@ -15,9 +14,7 @@ import Footer from '../components/UI/Footer';
 
 import { subscriptionSelector } from '../store/slices/sutbscription';
 import { privateSettingsSelector } from '../store/slices/privateSettings';
-import { profilesSelector } from '../store/slices/profiles';
 
-import ProfilesList from '../components/ProfilesList';
 import AccountHeader from '../components/accountPage/AccountHeader';
 
 import DeletePopup from '../components/UI/DeletePopup';
@@ -25,19 +22,12 @@ import MiniHeader from '../components/UI/MiniHeader';
 import RowsList from '../components/accountPage/RowsList';
 
 const account: NextPage = () => {
-  const router = useRouter();
-
   const { isLoginChanging, isPasswordChanging } = useTypedSelector(privateSettingsSelector);
   const { isChangingPlan } = useTypedSelector(subscriptionSelector);
-  const { isWhoIsWatching } = useTypedSelector(profilesSelector);
 
-  const { deleteAccount, user } = useAuth();
+  const { deleteAccount } = useAuth();
 
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isWhoIsWatching) router.push('/manage');
-  }, []);
 
   if (isLoginChanging) return <EmailChanging />;
   if (isPasswordChanging) return <PasswordChanging />;

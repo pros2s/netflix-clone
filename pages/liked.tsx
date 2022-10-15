@@ -1,22 +1,13 @@
 import { useEffect } from 'react';
-
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 
 import useAuth from '../hooks/useAuth';
-import { useTypedSelector } from '../hooks/useTypedSelector';
-
-import { profilesSelector } from '../store/slices/profiles';
 import OwnMoviesPage from '../components/OwnMoviesPage';
 
 const liked: NextPage = () => {
-  const router = useRouter();
-  const { isWhoIsWatching } = useTypedSelector(profilesSelector);
-  const { loading, user } = useAuth();
+  const { loading } = useAuth();
 
-  useEffect(() => {
-    if (isWhoIsWatching) router.push('/manage');
-  }, []);
+  useEffect(() => {}, []);
 
   if (loading) return null;
 
