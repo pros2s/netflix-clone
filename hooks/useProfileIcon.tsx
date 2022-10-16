@@ -10,7 +10,7 @@ export const useProfileIcon = (userId: string | undefined) => {
   const [profileIcon, setProfileIcon] = useState<string>('');
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !currentProfile) return;
 
     return onSnapshot(doc(db, 'users', userId, 'profiles', currentProfile), (snapshot) =>
       setProfileIcon('/icons/' + snapshot.data()?.profileIcon),

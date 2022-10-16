@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -20,6 +21,7 @@ import useAuth from '../hooks/useAuth';
 
 import requests from '../utils/requests';
 import { Movie } from '../types';
+import { useRouter } from 'next/router';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -42,7 +44,9 @@ const Home: NextPage<NextPageProps> = ({
   topRated,
   trendingNow,
 }) => {
+  const router = useRouter();
   const { user } = useAuth();
+  const { isWhoIsWatching } = useTypedSelector(profilesSelector);
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
   const { isChoosing, isManagingProfile } = useTypedSelector(profilesSelector);
@@ -50,6 +54,10 @@ const Home: NextPage<NextPageProps> = ({
   const myList = useMovieList(user?.uid, 'myList');
   const liked = useMovieList(user?.uid, 'Liked');
   const disliked = useMovieList(user?.uid, 'Disliked');
+
+  useEffect(() => {
+    isWhoIsWatching && router.push('/manage');
+  }, []);
 
   if (isChoosing) return <ChoosingIcon isManage={false} />;
   if (!isSubscription) return <Plans />;

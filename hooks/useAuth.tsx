@@ -92,7 +92,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useTypedDispatch();
-  const { currentProfile, isWhoIsWatching } = useTypedSelector(profilesSelector);
+  const { currentProfile } = useTypedSelector(profilesSelector);
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -106,8 +106,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       if (user) {
         setUser(user);
         setLoading(false);
-
-        isWhoIsWatching ? router.push('/manage') : router.push('/');
+        router.push('/');
       } else {
         setUser(null);
         setLoading(true);
@@ -173,7 +172,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         dispatch(userIsNotChangingPlan());
         dispatch(isNotchoosingIcon());
       })
-      .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
   };
 
@@ -226,6 +224,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     await deleteDoc(doc(db, 'users', auth.currentUser?.uid!));
     await deleteUser(auth.currentUser!);
 
+    dispatch(setCurrentProfile(''));
     setLoading(false);
   };
 

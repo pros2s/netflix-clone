@@ -12,7 +12,7 @@ export const useMovieList = (userId: string | undefined, movieCollection: string
   const { currentProfile } = useTypedSelector(profilesSelector);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !currentProfile) return;
 
     return onSnapshot(
       collection(db, 'users', userId, 'profiles', currentProfile, movieCollection),
@@ -21,9 +21,9 @@ export const useMovieList = (userId: string | undefined, movieCollection: string
           snapshot.docs.map((movie) => ({
             id: movie.id,
             ...movie.data(),
-          })),
+          }))
         );
-      },
+      }
     );
   }, [db, userId, currentProfile]);
 
