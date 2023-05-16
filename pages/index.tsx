@@ -22,6 +22,7 @@ import useAuth from '../hooks/useAuth';
 import requests from '../utils/requests';
 import { Movie } from '../types';
 import { useRouter } from 'next/router';
+import { useProfiles } from '../hooks/useProfiles';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -46,6 +47,7 @@ const Home: NextPage<NextPageProps> = ({
 }) => {
   const router = useRouter();
   const { user } = useAuth();
+  const profiles = useProfiles(user?.uid);
   const { isWhoIsWatching } = useTypedSelector(profilesSelector);
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);
@@ -56,7 +58,7 @@ const Home: NextPage<NextPageProps> = ({
   const disliked = useMovieList(user?.uid, 'Disliked');
 
   useEffect(() => {
-    isWhoIsWatching && router.push('/manage');
+    if (isWhoIsWatching) router.push('/manage');
   }, []);
 
   if (isChoosing) return <ChoosingIcon isManage={false} />;
@@ -123,14 +125,14 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      netflixOriginals: netflixOriginals.results,
-      trendingNow: trendingNow.results,
-      topRated: topRated.results,
-      actionMovies: actionMovies.results,
-      comedyMovies: comedyMovies.results,
-      horrorMovies: horrorMovies.results,
-      romanceMovies: romanceMovies.results,
-      documentaries: documentaries.results,
+      netflixOriginals: netflixOriginals?.results,
+      trendingNow: trendingNow?.results,
+      topRated: topRated?.results,
+      actionMovies: actionMovies?.results,
+      comedyMovies: comedyMovies?.results,
+      horrorMovies: horrorMovies?.results,
+      romanceMovies: romanceMovies?.results,
+      documentaries: documentaries?.results,
     },
   };
 };

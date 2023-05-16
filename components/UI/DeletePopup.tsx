@@ -83,7 +83,7 @@ const DeletePopup: FC<DeletePopupProps> = memo(
         </div>
       </MuiModal>
     );
-  },
+  }
 );
 
 export default DeletePopup;

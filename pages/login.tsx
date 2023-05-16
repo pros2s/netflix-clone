@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import type { NextPage } from 'next';
@@ -10,13 +10,16 @@ import Loader from '../components/UI/Loader';
 import ErrorMessage from '../components/UI/ErrorMessage';
 import Footer from '../components/UI/Footer';
 
-import { userSubscribed, userUnsubscribed } from '../store/slices/sutbscription';
+import { userUnsubscribed } from '../store/slices/sutbscription';
 import { choosingIcon, setCurrentProfile } from '../store/slices/profiles';
 
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import useAuth from '../hooks/useAuth';
 
 import netflix from '../assets/netflix.png';
+import wallpaper from '../assets/netflix.jpg';
+import wallpaper2 from '../assets/login.jpg';
+import wallpaper3 from '../assets/xx.png';
 
 interface Inputs {
   email: string;
@@ -155,6 +158,15 @@ const login: NextPage = () => {
     [isSignIn, isSignUp]
   );
 
+  const wichWallpaper = useMemo(() => {
+    const rand = Math.random();
+
+    if (rand > 0.66) return wallpaper;
+    if (rand < 0.66 && rand > 0.33) return wallpaper2;
+
+    return wallpaper3;
+  }, []);
+
   return (
     <div className='relative flex h-screen w-screen flex-col bg-gradient-to-t from-black/60 via-black/[0.05] to-black/60 bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <Head>
@@ -162,7 +174,7 @@ const login: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Image
-        src='https://rb.gy/p2hphi'
+        src={wichWallpaper}
         layout='fill'
         objectFit='cover'
         className='-z-10 !hidden opacity-60 sm:!inline md:cursor-pointer'
