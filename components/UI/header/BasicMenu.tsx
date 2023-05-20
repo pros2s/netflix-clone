@@ -55,6 +55,11 @@ const BasicMenu: FC = () => {
             <MenuItem>Disliked</MenuItem>
           </a>
         </Link>
+        <Link href='/last-viewed'>
+          <a>
+            <MenuItem>Last Viewed</MenuItem>
+          </a>
+        </Link>
       </Menu>
     </div>
   );

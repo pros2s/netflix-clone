@@ -6,11 +6,19 @@ import { InformationCircleIcon } from '@heroicons/react/solid';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { openModal } from '../../store/slices/modal';
 import { setCurrentMovie } from '../../store/slices/movie';
+import { profilesSelector } from '../../store/slices/profiles';
 
 import { MovieProp } from '../../types';
+import { handleMovieList } from '../../utils/toast';
+import useAuth from '../../hooks/useAuth';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { moviesHistorySelector, setLastMovie } from '../../store/slices/moviesHistory';
 
 const BannerBTNs = memo(({ movie }: MovieProp) => {
   const dispatch = useTypedDispatch();
+  const { currentProfile } = useTypedSelector(profilesSelector);
+  const { user } = useAuth();
+  const { firstMovie, lastMovies } = useTypedSelector(moviesHistorySelector);
 
   return (
     <div className='flex space-x-3'>
@@ -23,6 +31,19 @@ const BannerBTNs = memo(({ movie }: MovieProp) => {
         onClick={() => {
           dispatch(openModal());
           movie && dispatch(setCurrentMovie(movie));
+          dispatch(setLastMovie(movie));
+          handleMovieList(user, false, movie, 'last-viewed', currentProfile, 'Last viewed list');
+
+          if (!!firstMovie) {
+            handleMovieList(
+              user,
+              true,
+              firstMovie,
+              'last-viewed',
+              currentProfile,
+              'Last viewed list'
+            );
+          }
         }}
       >
         <p className='defaultText'>More Info</p>{' '}

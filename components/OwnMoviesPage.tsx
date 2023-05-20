@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -12,6 +12,8 @@ import Thumbnail from './thumbnail/Thumbnail';
 import Footer from './UI/Footer';
 import Header from './UI/header/Header';
 import Modal from './UI/modal/Modal';
+import { Movie } from '../types';
+import { DocumentData } from 'firebase/firestore';
 
 interface OwnMoviesPageProps {
   pageName: string;
@@ -39,6 +41,12 @@ const OwnMoviesPage: FC<OwnMoviesPageProps> = ({ pageName }) => {
       inSideSpan = 'liked list';
       afterSpan = ' is empty. Why would you not go';
       afterLink = 'and like some movies.';
+      break;
+    case 'last-viewed':
+      beforeSpan = 'Hmm.. Your ';
+      inSideSpan = 'last viewed list';
+      afterSpan = ' is empty. Why would you not go';
+      afterLink = 'and watch some movies.';
       break;
     default:
       beforeSpan = 'Your ';
@@ -84,9 +92,9 @@ const OwnMoviesPage: FC<OwnMoviesPageProps> = ({ pageName }) => {
           <>
             <div className='md:pr-[55px] lg:pr-0'>
               <div className='flex flex-wrap items-center justify-center h-full gap-0.5 md:gap-1 mdmax:overflow-x-hidden md:pt-10 md:ml-0.5 md:-mx-[60px] md:mb-[70px]'>
-                {pageList.map((movie) => (
-                  <Thumbnail key={movie.id} movie={movie} />
-                ))}
+                {pageName === 'last-viewed'
+                  ? pageList.reverse().map((movie) => <Thumbnail key={movie.id} movie={movie} />)
+                  : pageList.map((movie) => <Thumbnail key={movie.id} movie={movie} />)}
               </div>
             </div>
             {isOpenedModal && <Modal />}

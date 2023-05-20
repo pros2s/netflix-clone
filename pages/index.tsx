@@ -23,6 +23,8 @@ import requests from '../utils/requests';
 import { Movie } from '../types';
 import { useRouter } from 'next/router';
 import { useProfiles } from '../hooks/useProfiles';
+import { useTypedDispatch } from '../hooks/useTypedDispatch';
+import { initMovies } from '../store/slices/moviesHistory';
 
 interface NextPageProps {
   netflixOriginals: Movie[];
@@ -47,7 +49,7 @@ const Home: NextPage<NextPageProps> = ({
 }) => {
   const router = useRouter();
   const { user } = useAuth();
-  const profiles = useProfiles(user?.uid);
+  const dispatch = useTypedDispatch();
   const { isWhoIsWatching } = useTypedSelector(profilesSelector);
   const { isOpenedModal } = useTypedSelector(modalSelector);
   const { isSubscription } = useTypedSelector(subscriptionSelector);

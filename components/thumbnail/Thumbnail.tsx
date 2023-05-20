@@ -17,6 +17,10 @@ import { Genre, Movie } from '../../types';
 import LeftBTNs from './LeftBTNs';
 import RightBTNs from './RightBTNs';
 import Info from './Info';
+import { moviesHistorySelector, setLastMovie } from '../../store/slices/moviesHistory';
+import { handleMovieList } from '../../utils/toast';
+import { profilesSelector } from '../../store/slices/profiles';
+import useAuth from '../../hooks/useAuth';
 
 interface ThumbnailProps {
   movie: Movie | DocumentData;
@@ -68,9 +72,19 @@ const Thumbnail: FC<ThumbnailProps> = memo(({ movie, index, rowLength }) => {
     setIsShowInfo(false);
   }, [hover]);
 
+  const { currentProfile } = useTypedSelector(profilesSelector);
+  const { user } = useAuth();
+  const { firstMovie } = useTypedSelector(moviesHistorySelector);
+
   const handleModal = () => {
     dispatch(openModal());
     movie && dispatch(setCurrentMovie(movie));
+    dispatch(setLastMovie(movie));
+    handleMovieList(user, false, movie, 'last-viewed', currentProfile, 'Last viewed list');
+
+    if (!!firstMovie) {
+      handleMovieList(user, true, firstMovie, 'last-viewed', currentProfile, 'Last viewed list');
+    }
   };
 
   return (

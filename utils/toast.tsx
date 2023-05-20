@@ -13,7 +13,7 @@ export const handleMovieList = async (
   movie: Movie | DocumentData | null,
   movieCollection: string,
   currentProfile: string,
-  movieList: string,
+  movieList: string
 ) => {
   toast(
     (t) => (
@@ -34,7 +34,7 @@ export const handleMovieList = async (
         borderRadius: '8px',
         boxShadow: 'none',
       },
-    },
+    }
   );
 
   if (isMovieAdded) {
@@ -46,8 +46,8 @@ export const handleMovieList = async (
         'profiles',
         currentProfile,
         movieCollection,
-        (movie?.title || movie?.original_name)!,
-      ),
+        (movie?.title || movie?.original_name)!
+      )
     );
   } else {
     await setDoc(
@@ -58,11 +58,11 @@ export const handleMovieList = async (
         'profiles',
         currentProfile,
         movieCollection,
-        (movie?.title || movie?.original_name)!,
+        (movie?.title || movie?.original_name)!
       ),
       {
         ...movie,
-      },
+      }
     );
 
     movieCollection === 'Liked' &&
@@ -74,8 +74,8 @@ export const handleMovieList = async (
           'profiles',
           currentProfile,
           'Disliked',
-          (movie?.title || movie?.original_name)!,
-        ),
+          (movie?.title || movie?.original_name)!
+        )
       ));
 
     movieCollection === 'Disliked' &&
@@ -87,8 +87,8 @@ export const handleMovieList = async (
           'profiles',
           currentProfile,
           'Liked',
-          (movie?.title || movie?.original_name)!,
-        ),
+          (movie?.title || movie?.original_name)!
+        )
       ));
   }
 };

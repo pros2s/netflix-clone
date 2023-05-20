@@ -8,6 +8,7 @@ import subscriptionReducer from './slices/sutbscription';
 import privateSettingsReducer from './slices/privateSettings';
 import searchReducer from './slices/search';
 import profilesReducer from './slices/profiles';
+import moviesHistoryReducer from './slices/moviesHistory';
 
 const persistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ export const rootReducer = combineReducers({
   privateSettings: privateSettingsReducer,
   search: searchReducer,
   profiles: profilesReducer,
+  moviesHistory: moviesHistoryReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

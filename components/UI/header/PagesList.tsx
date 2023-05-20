@@ -24,6 +24,11 @@ const PagesList: FC = () => {
           <a>Disliked</a>
         </Link>
       </li>
+      <li className='headerLink'>
+        <Link href='/last-viewed'>
+          <a>Last Viewed</a>
+        </Link>
+      </li>
     </ul>
   );
 };
