@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import netflix from '../assets/netflix.png';
+import netflix from '../assets/qionix.png';
 
 const NotFound: NextPage = () => {
   return (

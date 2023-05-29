@@ -74,7 +74,7 @@ const Home: NextPage<NextPageProps> = ({
       }`}
     >
       <Head>
-        <title>Home - Netflix</title>
+        <title>Home - Qionix</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 

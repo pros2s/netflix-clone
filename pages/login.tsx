@@ -16,7 +16,7 @@ import { choosingIcon, setCurrentProfile } from '../store/slices/profiles';
 import { useTypedDispatch } from '../hooks/useTypedDispatch';
 import useAuth from '../hooks/useAuth';
 
-import netflix from '../assets/netflix.png';
+import netflix from '../assets/qionix.png';
 import wallpaper from '../assets/netflix.jpg';
 import wallpaper2 from '../assets/login.jpg';
 import wallpaper3 from '../assets/xx.png';
@@ -170,7 +170,7 @@ const login: NextPage = () => {
   return (
     <div className='relative flex h-screen w-screen flex-col bg-gradient-to-t from-black/60 via-black/[0.05] to-black/60 bg-black md:items-center md:justify-center md:bg-transparent selection:bg-red-600 selection:text-white'>
       <Head>
-        <title>Netflix</title>
+        <title>Qionix</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Image
@@ -335,7 +335,7 @@ const login: NextPage = () => {
         </button>
 
         <div className='text-[gray]'>
-          {isSignIn ? 'New to Netflix? ' : 'Already have account? '}
+          {isSignIn ? 'New to Qionix? ' : 'Already have account? '}
           <button
             className='cursor-pointer text-white md:hover:underline'
             type='button'

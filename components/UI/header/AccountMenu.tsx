@@ -30,7 +30,7 @@ const AccountMenu: FC = () => {
         className='cursor-pointer -mt-1 h-6 font-medium text-white text-end md:hover:underline'
         onClick={logout}
       >
-        Sign out of Netflix
+        Sign out of Qionix
       </button>
     </div>
   );

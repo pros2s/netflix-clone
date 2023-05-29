@@ -6,7 +6,7 @@ import BasicMenu from './BasicMenu';
 import Search from './Search';
 import Account from './Account';
 
-import netflix from '../../../assets/netflix.png';
+import netflix from '../../../assets/qionix.png';
 
 const Header: FC = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);

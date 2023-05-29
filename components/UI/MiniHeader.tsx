@@ -9,7 +9,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { profilesSelector } from '../../store/slices/profiles';
 
 import Loader from './Loader';
-import netflix from '../../assets/netflix.png';
+import netflix from '../../assets/qionix.png';
 
 interface MiniHeaderProps {
   isAccount?: boolean;
